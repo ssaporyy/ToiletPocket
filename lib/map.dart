@@ -16,9 +16,10 @@ class MapSampleState extends State<MapSample> {
     return MaterialApp(
       home: Scaffold(
         body: GoogleMap(
+          // myLocationEnabled: true,
           initialCameraPosition: CameraPosition(
             target: LatLng(13.757429, 100.502465), //กำหนดพิกัดเริ่มต้นบนแผนที่
-            zoom: 15, //กำหนดระยะการซูม สามารถกำหนดค่าได้ 0-20
+            zoom: 18, //กำหนดระยะการซูม สามารถกำหนดค่าได้ 0-20
           ),
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
