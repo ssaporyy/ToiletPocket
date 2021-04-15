@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => MapSample(),
+        '/': (context) => FirstScreen(),
         // When navigating to the "/second" route, build the SecondScreen widget.
-        '/second': (context) => SecondScreen(),
+        '/second': (context) => MapSample(),
       },
     );
   }
