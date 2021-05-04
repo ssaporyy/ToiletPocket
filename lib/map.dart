@@ -32,6 +32,82 @@ class MapSampleState extends State<MapSample> {
             },
           ),
 
+          //search bar
+          Container(
+            margin: EdgeInsets.only(top: 50.0, left: 10.0, right: 10.0),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 5.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(
+                        0.7,
+                        0.7,
+                      ))
+                ]),
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      // Icon(
+                      //   OMIcons.search,
+                      //   color: Colors.blueAccent,
+                      // ),
+
+                      FlatButton.icon(
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'third');
+                        },
+                        icon: Icon(OMIcons.search),label: Text('Search Destination'),textColor: Colors.black54,
+                      ),
+
+                      SizedBox(
+                        width: 10,
+                      ),
+                      // Text(
+                      //   'Search Destination',
+                      //   style: TextStyle(color: Colors.black54),
+                      // ),
+                      // FlatButton(
+                      //     onPressed: () {
+                      //       Navigator.pushNamedAndRemoveUntil(
+                      //           context, SearchBar.id, (route) => false);
+                      //     },
+                      //     child: Text('Search Destination')),
+                    ],
+                  ),
+                  // onPressed: () {
+                  // Navigator.pushNamed(context, SearchBar.id);}
+                  // IconButton(
+                  //   icon: const Icon(Icons.account_circle),
+                  //   iconSize: 30.0,
+                  //   color: Colors.blueAccent,
+                  //   // onPressed: () {
+                  //   //   Navigator.pushNamed(context, SearchBar.id);
+                  //   // },
+                  // ),
+                  Icon(
+                    Icons.account_circle,
+                    color: Colors.blueAccent,
+                    size: 30,
+                  ),                      
+                ],
+              ),
+
+              // FlatButton(
+              //     onPressed: () {
+              //       Navigator.pushNamedAndRemoveUntil(
+              //           context, RegistrationPage.id, (route) => false);
+              //     },
+              //     child: Text('Don\'t have an account, sign up here')),
+            ),
+          ),
 
 
           Expanded(

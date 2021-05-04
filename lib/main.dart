@@ -1,3 +1,4 @@
+import 'package:ToiletPocket/searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:ToiletPocket/map.dart';
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => FirstScreen(),
         // When navigating to the "/second" route, build the SecondScreen widget.
         '/second': (context) => MapSample(),
+        'third': (context) => SearchBar(),
       },
     );
   }
