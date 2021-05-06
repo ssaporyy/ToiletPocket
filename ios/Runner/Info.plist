@@ -22,6 +22,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs your location to test the location feature of the Google Maps plugin.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,9 +43,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Needed to access location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-        <string>This app needs your location to test the location feature of the Google Maps plugin.</string>
-        <key>io.flutter.embedded_views_preview</key>
-    <true/>
+	<string>Needed to access location</string>
+	<true/>
 </dict>
 </plist>

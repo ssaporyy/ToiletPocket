@@ -1,9 +1,10 @@
 import 'dart:async';
-
 import 'package:ToiletPocket/brand_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:location/location.dart';
+
 
 class MapSample extends StatefulWidget {
   @override
@@ -11,26 +12,35 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-  Completer<GoogleMapController> _controller = Completer();
+  static const _initialCameraPosition = CameraPosition(
+    target: LatLng(13.757429, 100.502465), 
+    zoom: 15,
+    );
+
+  GoogleMapController _googleMapController;
+
+   @override
+  void dispose() {
+    _googleMapController.dispose();
+    super.dispose();
+  }
 
   @override
    Widget build(BuildContext context) {
-    // double width = MediaQuery.of(context).size.width;
-    // double heigth = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: SizedBox.expand(
         child: Stack(children: <Widget>[
           GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target:
-                  LatLng(13.757429, 100.502465), //กำหนดพิกัดเริ่มต้นบนแผนที่
-              zoom: 15, //กำหนดระยะการซูม สามารถกำหนดค่าได้ 0-20
-            ),
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
+            myLocationButtonEnabled: true,
+            myLocationEnabled: true,
+            zoomControlsEnabled: false,
+            initialCameraPosition: _initialCameraPosition,
+            onMapCreated: (controller) => _googleMapController = controller,
           ),
+          FloatingActionButton(
+            backgroundColor: Colors.white,
+            onPressed: () => _googleMapController.animateCamera(
+              CameraUpdate.newCameraPosition(_initialCameraPosition)),),
 
           //search bar
           Container(
@@ -200,7 +210,6 @@ class MapSampleState extends State<MapSample> {
 
 
                 SizedBox(height: 10),
-
 
                         Text(
                           'Nice to see you!',
