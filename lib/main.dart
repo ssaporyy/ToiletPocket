@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => MapSample(),
         // When navigating to the "/second" route, build the SecondScreen widget.
         // '/second': (context) => (),
-        // 'third': (context) => SearchBar(),
+        'third': (context) => SearchBar(),
       },
     );
   }

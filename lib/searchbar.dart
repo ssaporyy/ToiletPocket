@@ -17,6 +17,7 @@ class _SearchBarState extends State<SearchBar> {
           children: <Widget>[
             Container(
               child: FloatingSearchBar(
+                margins: EdgeInsets.only(top: 60,left: 9,right: 9),
                 borderRadius: BorderRadius.circular(30),
                 hint: 'Search.....',
                 openAxisAlignment: 0.0,
@@ -37,10 +38,10 @@ class _SearchBarState extends State<SearchBar> {
                   FloatingSearchBarAction(
                     showIfOpened: false,
                     child: CircularButton(
-                      icon: Icon(Icons.place),
-                      onPressed: () {
-                        print('Places Pressed');
-                      },
+                      icon: Icon(Icons.search,color: Colors.black45,),
+                      // onPressed: () {
+                      //   print('Places Pressed');
+                      // },
                     ),
                   ),
                   FloatingSearchBarAction.searchToClear(
@@ -72,7 +73,7 @@ class _SearchBarState extends State<SearchBar> {
             ),
 
           Container(
-            margin: EdgeInsets.symmetric(vertical: 120, horizontal: 10),
+            margin: EdgeInsets.only(top: 115,left: 9),
             height: 50,
             child: ListView(
               scrollDirection: Axis.horizontal,
