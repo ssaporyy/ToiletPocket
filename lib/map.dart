@@ -1,6 +1,7 @@
-import 'dart:async';
+// import 'dart:async';
 import 'package:ToiletPocket/brand_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:location/location.dart';
@@ -10,16 +11,30 @@ class MapSample extends StatefulWidget {
   State<MapSample> createState() => MapSampleState();
 }
 
+Future<LocationData> getCurrentLocation() async {
+  Location location = Location();
+  try {
+    return await location.getLocation();
+  } on PlatformException catch (e) {
+    if (e.code == 'PERMISSION_DENIED') {
+      // Permission denied
+    }
+    return null;
+  }
+}
+
 class MapSampleState extends State<MapSample> {
-  static const _initialCameraPosition = CameraPosition(
-    target: LatLng(13.757429, 100.502465),
-    zoom: 15,
-  );
-
   GoogleMapController _googleMapController;
+  LocationData currentLocation;
 
-
-
+  Future _goToMe() async {
+    final GoogleMapController controller = await _googleMapController;
+    currentLocation = await getCurrentLocation();
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      target: LatLng(currentLocation.latitude, currentLocation.longitude),
+      zoom: 16,
+    )));
+  }
 
   @override
   void dispose() {
@@ -36,38 +51,33 @@ class MapSampleState extends State<MapSample> {
             myLocationButtonEnabled: true,
             myLocationEnabled: true,
             zoomControlsEnabled: false,
-            initialCameraPosition: _initialCameraPosition,
+            initialCameraPosition: CameraPosition(
+          target: LatLng(13.7650836, 100.5379664),
+          zoom: 16,
+        ),
             onMapCreated: (controller) => _googleMapController = controller,
           ),
-          //ตัวเก่า
-          // FloatingActionButton(
-          //   backgroundColor: Colors.white,
-          //   onPressed: () => _googleMapController.animateCamera(
-          //       CameraUpdate.newCameraPosition(_initialCameraPosition)),
-          // ),
 
+//button current location
           Container(
-              margin: EdgeInsets.all(10),
-              padding: const EdgeInsets.fromLTRB(
-                290 /*left*/, 620 /*top*/, 0 /*right*/, 0 /*bottom*/),
-              child: FloatingActionButton(
-                backgroundColor:
-                    Colors.white, //Theme.of(context).primaryColorLight,
-                foregroundColor: Colors.black,
-                onPressed: () => _googleMapController.animateCamera(
-                  CameraUpdate.newCameraPosition(_initialCameraPosition),
-                ),
-
-                child: Icon(
-                  Icons.my_location,
-                  size: 31,
-                ),
+            color: Colors.transparent,
+            margin: EdgeInsets.all(15),
+            padding: const EdgeInsets.fromLTRB(
+                320 /*left*/, 110 /*top*/, 0 /*right*/, 0 /*bottom*/),
+            child: FloatingActionButton(
+              backgroundColor: Colors.white.withOpacity(0.8),
+              //Theme.of(context).primaryColorLight,
+              foregroundColor: Colors.black,
+              onPressed: _goToMe,
+              child: Icon(
+                Icons.my_location,
+                size: 20,
               ),
             ),
+          ),
 
           //search bar
           Container(
-            
             margin: EdgeInsets.only(top: 60.0, left: 15.0, right: 15.0),
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -105,10 +115,8 @@ class MapSampleState extends State<MapSample> {
                       SizedBox(
                         width: 10,
                       ),
-
                     ],
                   ),
-
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                     child: Icon(
@@ -119,7 +127,6 @@ class MapSampleState extends State<MapSample> {
                   ),
                 ],
               ),
-
             ),
           ),
 
