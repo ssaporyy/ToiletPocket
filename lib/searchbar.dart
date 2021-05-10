@@ -1,3 +1,4 @@
+import 'package:ToiletPocket/detailcard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
@@ -9,110 +10,127 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SizedBox.expand(
+ _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, height + 180),
         child: Stack(
           children: <Widget>[
             Container(
-              child: FloatingSearchBar(
-                margins: EdgeInsets.only(top: 60,left: 9,right: 9),
-                borderRadius: BorderRadius.circular(30),
-                hint: 'Search.....',
-                openAxisAlignment: 0.0,
-                //maxWidth: 600,
-                axisAlignment: 0.0,
-                scrollPadding: EdgeInsets.only(top: 16, bottom: 20),
-                elevation: 4.0,
-                physics: BouncingScrollPhysics(),
-                onQueryChanged: (query) {
-                  //Your methods will be here
-                },
-                //showDrawerHamburger: false,
-                transitionCurve: Curves.easeInOut,
-                transitionDuration: Duration(milliseconds: 500),
-                transition: CircularFloatingSearchBarTransition(),
-                debounceDelay: Duration(milliseconds: 500),
-                actions: [
-                  FloatingSearchBarAction(
-                    showIfOpened: false,
-                    child: CircularButton(
-                      icon: Icon(Icons.search,color: Colors.black45,),
-                      // onPressed: () {
-                      //   print('Places Pressed');
-                      // },
-                    ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colors.deepPurple[200],
+                Colors.lightBlue[200],
+              ],
+            )
+
+          ),
+              // Background
+              child: Center(
+                child: Text(
+                  "Search",
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Poppins',
+                      color: Colors.white),
+                ),
+              ),
+              // color: Colors.deepPurple[100],
+              height: height + 85,
+              width: MediaQuery.of(context).size.width,
+            ),
+
+            Positioned(
+              // To take AppBar Size only
+              top: 115.0,
+              left: 20.0,
+              right: 20.0,
+              child: AppBar(
+                backgroundColor: Colors.white,
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.black87),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/');
+                  },
+                ),
+                primary: false,
+                title: TextField(
+                    decoration: InputDecoration(
+                        hintText: "Search",
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: Colors.grey,fontSize: 18))),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.search,color: Colors.black54),
+                    onPressed: () {},
                   ),
-                  FloatingSearchBarAction.searchToClear(
-                    showIfClosed: false,
-                  ),
+
                 ],
-                builder: (context, transition) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Material(
-                      color: Colors.white,
-                      //แสดงคำ(เคย)ที่เสิร์จ
-                      // child: Container(
-                      //   height: 200.0,
-                      //   color: Colors.white,
-                      //   child: Column(
-                      //     children: [
-                      //       ListTile(
-                      //         title: Text('Home'),
-                      //         subtitle: Text('more info here........'),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                    ),
-                  );
-                },
+                elevation: 10.0,
+                shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(30),
+                  bottom: Radius.circular(30),
+                  ),
+                ),
               ),
             ),
 
-          Container(
-            margin: EdgeInsets.only(top: 115,left: 9),
-            height: 50,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                'toilet',
-                'Most toilet',
-                'near toilet',
-                'toilet 1',
-                'toilet 1',
-                'Etc...'
-              ]
-                  .map((e) =>
-                  Container(
-                        margin: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 8.0),
+            Padding(
+              padding: const EdgeInsets.only(top: 170),
+              child: Container(
+                // margin: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                // margin: EdgeInsets.only(top: 0,left: 15),
+                margin: EdgeInsets.only(left: 15),
+                height: 50,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    'toilet',
+                    'Most toilet',
+                    'near toilet',
+                    'toilet 1',
+                    'toilet 1',
+                    'Etc...'
+                  ]
+                      .map((e) =>
+                      Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 8.0),
+                            child: Opacity(
+                              opacity: 0.6,
+                              child: RaisedButton(
+                                color: Colors.white,
+                                onPressed: () {},
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    ),
 
-                        child: Opacity(
-                          opacity: 0.6,
-                          child: RaisedButton(
-                            color: Colors.white,
-                            onPressed: () {},
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                ),
-
-                            child: Text(e),
-                          ),
-                        ),
-                      ))
-                  .toList(),
+                                child: Text(e),
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                ),
+              ),
             ),
-          ),
+
 
           ],
         ),
-      ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _appBar(AppBar().preferredSize.height),
+      body: DetailCard(),
 
     );
   }
+
 }
 
 
