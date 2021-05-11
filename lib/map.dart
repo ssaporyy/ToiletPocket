@@ -11,6 +11,62 @@ class MapSample extends StatefulWidget {
   State<MapSample> createState() => MapSampleState();
 }
 
+// Set<Marker> _markers = {};
+  // BitmapDescriptor mapMarker;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   setCustomMarker();
+  // }
+
+  // void setCustomMarker() async {
+  //   mapMarker = await BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration(size: Size(55,55)), 'images/flush.png');
+  // }
+
+  // void _onMapCreated(GoogleMapController) {
+  //   setState(() {
+  //     _markers.add(
+  //       Marker(
+  //         markerId: MarkerId('id-1'),
+  //         position: LatLng(13.649894, 100.498704),
+  //         icon: mapMarker,
+  //         infoWindow: InfoWindow(
+  //           title: 'Toilet Packet',
+  //           snippet: 'Address place',
+  //         ),
+  //       ),
+  //     );
+  //   });
+  // }
+
+   Marker mytoilet = Marker(
+    markerId: MarkerId('id-1'),
+    position: LatLng(13.7650836, 100.5379664),
+    icon:
+    BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueCyan,
+    ),
+    infoWindow: InfoWindow(
+      title: 'Toilet Packet',
+      snippet: 'Address place',
+    ),
+  );
+
+  Marker mytoilet2 = Marker(
+    markerId: MarkerId('id-2'),
+    position: LatLng(13.757429, 100.502465),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueViolet,
+    ),
+    infoWindow: InfoWindow(
+      title: 'Toilet Packet',
+      snippet: 'MyAddress place',
+    ),
+  );
+
+
 Future<LocationData> getCurrentLocation() async {
   Location location = Location();
   try {
@@ -52,10 +108,12 @@ class MapSampleState extends State<MapSample> {
             myLocationEnabled: true,
             zoomControlsEnabled: false,
             initialCameraPosition: CameraPosition(
-          target: LatLng(13.7650836, 100.5379664),
-          zoom: 16,
-        ),
+              target: LatLng(13.7650836, 100.5379664),
+              zoom: 16,
+            ),
             onMapCreated: (controller) => _googleMapController = controller,
+            markers: {mytoilet,mytoilet2},
+            // markers: _markers,
           ),
 
 //button current location
@@ -63,7 +121,7 @@ class MapSampleState extends State<MapSample> {
             color: Colors.transparent,
             margin: EdgeInsets.all(15),
             padding: const EdgeInsets.fromLTRB(
-                320 /*left*/, 110 /*top*/, 0 /*right*/, 0 /*bottom*/),
+                310 /*left*/, 110 /*top*/, 0 /*right*/, 0 /*bottom*/),
             child: FloatingActionButton(
               backgroundColor: Colors.white.withOpacity(0.8),
               //Theme.of(context).primaryColorLight,
@@ -164,14 +222,14 @@ class MapSampleState extends State<MapSample> {
                               children: <Widget>[
                                 Image(
                                   //alignment: Alignment.bottomLeft,
-                                  height: 150.0,
-                                  width: 150.0,
+                                  height: 120.0,
+                                  width: 120.0,
                                   image: AssetImage('images/mmm.png'),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(width: 13),
+                          SizedBox(width: 10),
                           Container(
                             child: Column(
                               children: <Widget>[
@@ -199,17 +257,28 @@ class MapSampleState extends State<MapSample> {
                                   style: TextStyle(
                                       fontSize: 15, fontFamily: 'Brand-Bold'),
                                 ),
-                                Text(
-                                  'Where are you going?',
-                                  style: TextStyle(
-                                      fontSize: 15, fontFamily: 'Brand-Bold'),
-                                ),
-                                Text(
-                                  'Where are you going?',
-                                  style: TextStyle(
-                                      fontSize: 15, fontFamily: 'Brand-Bold'),
-                                ),
+                                // Text(
+                                //   'Where are you going?',
+                                //   style: TextStyle(
+                                //       fontSize: 15, fontFamily: 'Brand-Bold'),
+                                // ),
+                                // Text(
+                                //   'Where are you going?',
+                                //   style: TextStyle(
+                                //       fontSize: 15, fontFamily: 'Brand-Bold'),
+                                // ),
                               ],
+                            ),
+                          ),
+                          SizedBox(width: 10,height: 10,),
+                          Container(
+                            color: Colors.transparent,
+                            // margin: EdgeInsets.all(3),
+                            // padding: const EdgeInsets.fromLTRB( 5 /*left*/,
+                            //      1 /*top*/, 0 /*right*/, 0 /*bottom*/),
+                            child: FloatingActionButton(
+                              backgroundColor: Colors.grey[400],
+                              // onPressed: _goToMe,
                             ),
                           ),
                         ],
