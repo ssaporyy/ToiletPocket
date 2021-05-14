@@ -38,6 +38,7 @@ dependencies:
   services: ^0.0.1
   android_intent: ^2.0.0
   flutter_polyline_points: ^0.2.4
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
