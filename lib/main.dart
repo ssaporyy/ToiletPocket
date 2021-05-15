@@ -1,7 +1,7 @@
-import 'package:ToiletPocket/searchbar.dart';
+// import 'package:ToiletPocket/searchbar.dart';
 import 'package:ToiletPocket/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:ToiletPocket/map.dart';
+// import 'package:ToiletPocket/map.dart';
 import 'package:provider/provider.dart';
 import 'blocs/application_bloc.dart';
 
@@ -23,6 +23,8 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: HomeScreen(),
+        // home: SearchBar(),
+
         // initialRoute: '/',
         // routes: {
         //   // When navigating to the "/" route, build the FirstScreen widget.
