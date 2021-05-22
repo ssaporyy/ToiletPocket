@@ -135,88 +135,68 @@ class MapSampleState extends State<MapSample> {
             ),
           ),
 
-
-
-
-
-
-
           //search bar
-          // Container(
-          //   margin: EdgeInsets.only(top: 60.0, left: 15.0, right: 15.0),
-          //   decoration: BoxDecoration(
-          //       color: Colors.white,
-          //       borderRadius: BorderRadius.circular(30),
-          //       boxShadow: [
-          //         BoxShadow(
-          //             color: Colors.black12,
-          //             blurRadius: 5.0,
-          //             spreadRadius: 0.5,
-          //             offset: Offset(
-          //               0.7,
-          //               0.7,
-          //             ))
-          //       ]),
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(2.0),
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //       children: <Widget>[
-          //         Row(
-          //           children: [
-          //             Icon(
-          //               OMIcons.search,
-          //               color: Colors.blueAccent,
-          //             ),
-          //
-          //             // FlatButton.icon(
-          //             //   onPressed: () {
-          //             //     Navigator.pushNamed(context, 'third');
-          //             //   },
-          //             //   icon: Icon(OMIcons.search),
-          //             //   label: Text('Search Destination'),
-          //             //   textColor: Colors.black54,
-          //             // ),
-          //
-          //             TextField(
-          //               decoration: InputDecoration(
-          //               hintText: "Search",
-          //               border: InputBorder.none,
-          //               hintStyle:
-          //                   TextStyle(color: Colors.grey, fontSize: 18))),
-          //
-          //
-          //             SizedBox(
-          //               width: 10,
-          //             ),
-          //           ],
-          //         ),
-          //         Padding(
-          //           padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-          //           child: Icon(
-          //             Icons.account_circle,
-          //             color: Colors.blueAccent,
-          //             size: 35,
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          Container(
+            margin: EdgeInsets.only(top: 60.0, left: 15.0, right: 15.0),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 5.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(
+                        0.7,
+                        0.7,
+                      ))
+                ]),
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      Icon(
+                        OMIcons.search,
+                        color: Colors.blueAccent,
+                      ),
+          
+                      // FlatButton.icon(
+                      //   onPressed: () {
+                      //     Navigator.pushNamed(context, 'third');
+                      //   },
+                      //   icon: Icon(OMIcons.search),
+                      //   label: Text('Search Destination'),
+                      //   textColor: Colors.black54,
+                      // ),
+          
+                      TextField(
+                        decoration: InputDecoration(
+                        hintText: "Search",
+                        border: InputBorder.none,
+                        hintStyle:
+                            TextStyle(color: Colors.grey, fontSize: 18))),
+          
+          
+                      SizedBox(
+                        width: 10,
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Icon(
+                      Icons.account_circle,
+                      color: Colors.blueAccent,
+                      size: 35,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
 
 
           Expanded(
