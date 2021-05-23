@@ -1,7 +1,6 @@
 import 'package:ToiletPocket/detailcard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 class SearchBar extends StatefulWidget {
@@ -10,38 +9,39 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-  _appBar(height) => PreferredSize(
+
+ _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 180),
         child: Stack(
           children: <Widget>[
-            // Container(
-            //   decoration: BoxDecoration(
-            //       gradient: LinearGradient(
-            //     begin: Alignment.topRight,
-            //     end: Alignment.bottomLeft,
-            //     colors: [
-            //       Colors.deepPurple[200],
-            //       Colors.lightBlue[200],
-            //     ],
-            //   )),
-            //   // Background
-            //   child: Center(
-            //     child: 
-            //     // TextField(
-            //       Text(
-            //       "Search",
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colors.deepPurple[200],
+                Colors.lightBlue[200],
+              ],
+            )
 
-            //       style: TextStyle(
-            //           fontSize: 25.0,
-            //           fontWeight: FontWeight.w600,
-            //           fontFamily: 'Poppins',
-            //           color: Colors.white),
-            //     ),
-            //   ),
-            //   // color: Colors.deepPurple[100],
-            //   height: height + 85,
-            //   width: MediaQuery.of(context).size.width,
-            // ),
+          ),
+              // Background
+              child: Center(
+                child: Text(
+                  "Search",
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Poppins',
+                      color: Colors.white),
+                ),
+              ),
+              // color: Colors.deepPurple[100],
+              height: height + 85,
+              width: MediaQuery.of(context).size.width,
+            ),
+
             Positioned(
               // To take AppBar Size only
               top: 115.0,
@@ -52,7 +52,7 @@ class _SearchBarState extends State<SearchBar> {
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back, color: Colors.black87),
                   onPressed: () {
-                    // Navigator.pushNamed(context, '/');
+                    Navigator.pushNamed(context, '/');
                   },
                 ),
                 primary: false,
@@ -60,23 +60,24 @@ class _SearchBarState extends State<SearchBar> {
                     decoration: InputDecoration(
                         hintText: "Search",
                         border: InputBorder.none,
-                        hintStyle:
-                            TextStyle(color: Colors.grey, fontSize: 18))),
+                        hintStyle: TextStyle(color: Colors.grey,fontSize: 18))),
                 actions: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.search, color: Colors.black54),
+                    icon: Icon(Icons.search,color: Colors.black54),
                     onPressed: () {},
                   ),
+
                 ],
                 elevation: 10.0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(30),
-                    bottom: Radius.circular(30),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(30),
+                  bottom: Radius.circular(30),
                   ),
                 ),
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(top: 170),
               child: Container(
@@ -94,7 +95,8 @@ class _SearchBarState extends State<SearchBar> {
                     'toilet 1',
                     'Etc...'
                   ]
-                      .map((e) => Container(
+                      .map((e) =>
+                      Container(
                             margin: EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 8.0),
                             child: Opacity(
@@ -103,8 +105,9 @@ class _SearchBarState extends State<SearchBar> {
                                 color: Colors.white,
                                 onPressed: () {},
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
+                                    borderRadius: BorderRadius.circular(30),
+                                    ),
+
                                 child: Text(e),
                               ),
                             ),
@@ -113,7 +116,8 @@ class _SearchBarState extends State<SearchBar> {
                 ),
               ),
             ),
-            
+
+
           ],
         ),
       );
@@ -121,9 +125,12 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: _appBar(AppBar().preferredSize.height),
-      // body: DetailCard(),
+      appBar: _appBar(AppBar().preferredSize.height),
+      body: DetailCard(),
+
     );
   }
 
 }
+
+
