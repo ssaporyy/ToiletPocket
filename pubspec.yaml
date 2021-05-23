@@ -76,6 +76,18 @@ flutter:
       fonts:
         - asset: assets/fonts/Poppins-Regular.ttf
         - asset: assets/fonts/Poppins-Medium.ttf
-  
+
+    - family: Sukhumvit
+      fonts:
+        - asset: assets/fonts/SukhumvitSet-Light.ttf
+        - asset: assets/fonts/SukhumvitSet-Medium.ttf
+        - asset: assets/fonts/SukhumvitSet-SemiBold.ttf
+
+    - family: SF-Pro
+      fonts:
+        - asset: assets/fonts/AnyConv.com__SF-Pro-Display-Light.ttf
+        - asset: assets/fonts/AnyConv.com__SF-Pro-Display-Medium.ttf
+        - asset: assets/fonts/AnyConv.com__SF-Pro-Display-Regular.ttf
+        
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

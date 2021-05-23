@@ -1,5 +1,4 @@
 // import 'dart:async';
-import 'package:ToiletPocket/brand_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -48,13 +47,14 @@ class MapSampleState extends State<MapSample> {
       body: SizedBox.expand(
         child: Stack(children: <Widget>[
           GoogleMap(
+            padding: EdgeInsets.only(top: 54, right: 55),
             myLocationButtonEnabled: true,
             myLocationEnabled: true,
             zoomControlsEnabled: false,
             initialCameraPosition: CameraPosition(
-          target: LatLng(13.7650836, 100.5379664),
-          zoom: 16,
-        ),
+              target: LatLng(13.7650836, 100.5379664),
+              zoom: 16,
+            ),
             onMapCreated: (controller) => _googleMapController = controller,
           ),
 
@@ -76,9 +76,10 @@ class MapSampleState extends State<MapSample> {
             ),
           ),
 
-          //search bar
+          //new search bar
           Container(
             margin: EdgeInsets.only(top: 60.0, left: 15.0, right: 15.0),
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 1),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(30),
@@ -92,43 +93,90 @@ class MapSampleState extends State<MapSample> {
                         0.7,
                       ))
                 ]),
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      // Icon(
-                      //   OMIcons.search,
-                      //   color: Colors.blueAccent,
-                      // ),
-                      FlatButton.icon(
-                        onPressed: () {
-                          Navigator.pushNamed(context, 'third');
-                        },
-                        icon: Icon(OMIcons.search),
-                        label: Text('Search Destination'),
-                        textColor: Colors.black54,
-                      ),
-
-                      SizedBox(
-                        width: 10,
-                      ),
-                    ],
+            child: TextField(
+              // controller: _locationController,
+              textCapitalization: TextCapitalization.words,
+              textInputAction: TextInputAction.search,
+              decoration: InputDecoration(
+                hintText: 'ค้นหาห้องน้ำ',
+                /*'Search',*/
+                hintStyle: TextStyle(
+                    fontSize: 18.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.black54,
+                ),
+                border: InputBorder.none,
+                suffixIcon: IconButton(
+                  // onPressed: () => ,
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.account_circle,
+                    size: 35,
+                    color: Colors.black54,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Icon(
-                      Icons.account_circle,
-                      color: Colors.blueAccent,
-                      size: 35,
-                    ),
-                  ),
-                ],
+                ),
               ),
+              cursorColor: Colors.black87,
+              style: TextStyle(height: 1.2, fontSize: 20.0),
+              // onChanged: (value) => applicationBloc.searchPlaces(value),
+              // onTap: () => applicationBloc.clearSelectedLocation(),
             ),
           ),
+
+          // //search bar
+          // Container(
+          //   margin: EdgeInsets.only(top: 60.0, left: 15.0, right: 15.0),
+          //   decoration: BoxDecoration(
+          //       color: Colors.white,
+          //       borderRadius: BorderRadius.circular(30),
+          //       boxShadow: [
+          //         BoxShadow(
+          //             color: Colors.black12,
+          //             blurRadius: 5.0,
+          //             spreadRadius: 0.5,
+          //             offset: Offset(
+          //               0.7,
+          //               0.7,
+          //             ))
+          //       ]),
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(2.0),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: <Widget>[
+          //         Row(
+          //           children: [
+          //             // Icon(
+          //             //   OMIcons.search,
+          //             //   color: Colors.blueAccent,
+          //             // ),
+          //             FlatButton.icon(
+          //               onPressed: () {
+          //                 Navigator.pushNamed(context, 'third');
+          //               },
+          //               icon: Icon(OMIcons.search),
+          //               label: Text('Search Destination'),
+          //               textColor: Colors.black54,
+          //             ),
+
+          //             SizedBox(
+          //               width: 10,
+          //             ),
+          //           ],
+          //         ),
+          //         Padding(
+          //           padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+          //           child: Icon(
+          //             Icons.account_circle,
+          //             color: Colors.blueAccent,
+          //             size: 35,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ]),
       ),
     );
