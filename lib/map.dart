@@ -11,6 +11,60 @@ class MapSample extends StatefulWidget {
   State<MapSample> createState() => MapSampleState();
 }
 
+// Set<Marker> _markers = {};
+// BitmapDescriptor mapMarker;
+
+// @override
+// void initState() {
+//   super.initState();
+//   setCustomMarker();
+// }
+
+// void setCustomMarker() async {
+//   mapMarker = await BitmapDescriptor.fromAssetImage(
+//       ImageConfiguration(size: Size(55,55)), 'images/flush.png');
+// }
+
+// void _onMapCreated(GoogleMapController) {
+//   setState(() {
+//     _markers.add(
+//       Marker(
+//         markerId: MarkerId('id-1'),
+//         position: LatLng(13.649894, 100.498704),
+//         icon: mapMarker,
+//         infoWindow: InfoWindow(
+//           title: 'Toilet Packet',
+//           snippet: 'Address place',
+//         ),
+//       ),
+//     );
+//   });
+// }
+
+Marker mytoilet = Marker(
+  markerId: MarkerId('id-1'),
+  position: LatLng(13.7650836, 100.5379664),
+  icon: BitmapDescriptor.defaultMarkerWithHue(
+    BitmapDescriptor.hueCyan,
+  ),
+  infoWindow: InfoWindow(
+    title: 'Toilet Packet',
+    snippet: 'Address place',
+  ),
+);
+
+Marker mytoilet2 = Marker(
+  markerId: MarkerId('id-2'),
+  position: LatLng(13.757429, 100.502465),
+  icon: BitmapDescriptor.defaultMarkerWithHue(
+    BitmapDescriptor.hueViolet,
+  ),
+  infoWindow: InfoWindow(
+    title: 'Toilet Packet',
+    snippet: 'MyAddress place',
+  ),
+);
+
 Future<LocationData> getCurrentLocation() async {
   Location location = Location();
   try {
@@ -44,6 +98,8 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
+    // currentLocation = getCurrentLocation() as LocationData;
+
     return Scaffold(
       body: SizedBox.expand(
         child: Stack(children: <Widget>[
@@ -52,10 +108,13 @@ class MapSampleState extends State<MapSample> {
             myLocationEnabled: true,
             zoomControlsEnabled: false,
             initialCameraPosition: CameraPosition(
-          target: LatLng(13.7650836, 100.5379664),
-          zoom: 16,
-        ),
+              target: LatLng(13.7650836, 100.5379664),
+              // target: LatLng(currentLocation.latitude, currentLocation.longitude),
+              zoom: 16,
+            ),
             onMapCreated: (controller) => _googleMapController = controller,
+            markers: {mytoilet, mytoilet2},
+            // markers: _markers,
           ),
 
 //button current location
@@ -63,7 +122,7 @@ class MapSampleState extends State<MapSample> {
             color: Colors.transparent,
             margin: EdgeInsets.all(15),
             padding: const EdgeInsets.fromLTRB(
-                320 /*left*/, 110 /*top*/, 0 /*right*/, 0 /*bottom*/),
+                310 /*left*/, 110 /*top*/, 0 /*right*/, 0 /*bottom*/),
             child: FloatingActionButton(
               backgroundColor: Colors.white.withOpacity(0.8),
               //Theme.of(context).primaryColorLight,
@@ -99,19 +158,28 @@ class MapSampleState extends State<MapSample> {
                 children: <Widget>[
                   Row(
                     children: [
-                      // Icon(
-                      //   OMIcons.search,
-                      //   color: Colors.blueAccent,
-                      // ),
-                      FlatButton.icon(
-                        onPressed: () {
-                          Navigator.pushNamed(context, 'third');
-                        },
-                        icon: Icon(OMIcons.search),
-                        label: Text('Search Destination'),
-                        textColor: Colors.black54,
+                      Icon(
+                        OMIcons.search,
+                        color: Colors.blueAccent,
                       ),
-
+          
+                      // FlatButton.icon(
+                      //   onPressed: () {
+                      //     Navigator.pushNamed(context, 'third');
+                      //   },
+                      //   icon: Icon(OMIcons.search),
+                      //   label: Text('Search Destination'),
+                      //   textColor: Colors.black54,
+                      // ),
+          
+                      TextField(
+                        decoration: InputDecoration(
+                        hintText: "Search",
+                        border: InputBorder.none,
+                        hintStyle:
+                            TextStyle(color: Colors.grey, fontSize: 18))),
+          
+          
                       SizedBox(
                         width: 10,
                       ),
