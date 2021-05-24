@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 
@@ -31,18 +32,15 @@ class MapSample extends StatefulWidget {
 
 
 class MapSampleState extends State<MapSample> {
-  static const _intitialCameraPosition = CameraPosition(
-    target: LatLng(13.7650836, 100.5379664),
-    zoom: 16,
-    );
+  // static const _intitialCameraPosition = CameraPosition(
+  //   target: LatLng(13.7650836, 100.5379664),
+  //   zoom: 16,
+  //   );
 
     GoogleMapController _googleMapController;
     Position currentLocation;
 
-  
-  
-
-  // LocationData currentLocation;
+  //  LocationData currentLocation;
 
   // Future _goToMe() async {
   //   final GoogleMapController controller = await _googleMapController;
@@ -59,18 +57,6 @@ class MapSampleState extends State<MapSample> {
     super.dispose();
   }
 
-  
-//   void locatePosition() async{
-//   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-//  currentPosition = position;
-
-//   LatLng latLatPosition = LatLng(currentPosition.latitude, currentPosition.longitude);
-
-//   CameraPosition cameraPosition = new CameraPosition(target: latLatPosition, zoom:14);
-//   _googleMapController.animateCamera(
-//                 CameraUpdate.newCameraPosition(cameraPosition));
-
-// }
   @override
   Widget build(BuildContext context) {
     final applicationbloc = Provider.of<Applicationbloc>(context);
@@ -81,11 +67,10 @@ class MapSampleState extends State<MapSample> {
        : SizedBox.expand(
         child: Stack(children: <Widget>[
           GoogleMap(
-            padding: EdgeInsets.only(top: 54, right: 55),
+            padding: EdgeInsets.only(top: 54, right: 5, bottom:610,),
             myLocationButtonEnabled: true,
             myLocationEnabled: true,
             zoomControlsEnabled: false,
-            // initialCameraPosition: _intitialCameraPosition,
             initialCameraPosition:CameraPosition(
             target: LatLng(applicationbloc.currentLocation.latitude,applicationbloc.currentLocation.longitude),
             zoom: 16.0,
@@ -94,24 +79,24 @@ class MapSampleState extends State<MapSample> {
           ),
 
 //button current location
-          Container(
-            color: Colors.transparent,
-            margin: EdgeInsets.all(15),
-            padding: const EdgeInsets.fromLTRB(
-                320 /*left*/, 110 /*top*/, 0 /*right*/, 0 /*bottom*/),
-            child: FloatingActionButton(
-              backgroundColor: Colors.white.withOpacity(0.8),
-              //Theme.of(context).primaryColorLight,
-              foregroundColor: Colors.black,
-              // onPressed: _goToMe,
-              onPressed : () => _googleMapController.animateCamera(
-                CameraUpdate.newCameraPosition(_intitialCameraPosition)),
-              child: Icon(
-                Icons.my_location,
-                size: 20,
-              ),
-            ),
-          ),
+          // Container(
+          //   color: Colors.transparent,
+          //   margin: EdgeInsets.all(15),
+          //   padding: const EdgeInsets.fromLTRB(
+          //       320 /*left*/, 110 /*top*/, 0 /*right*/, 0 /*bottom*/),
+          //   child: FloatingActionButton(
+          //     backgroundColor: Colors.white.withOpacity(0.8),
+          //     //Theme.of(context).primaryColorLight,
+          //     foregroundColor: Colors.black,
+          //     onPressed: () => LatLng(applicationbloc.currentLocation.latitude,applicationbloc.currentLocation.longitude),
+          //     // onPressed : () => _googleMapController.animateCamera(
+          //     //   CameraUpdate.newCameraPosition(_intitialCameraPosition)),
+          //     child: Icon(
+          //       Icons.my_location,
+          //       size: 20,
+          //     ),
+          //   ),
+          // ),
 
           //new search bar
           Container(
