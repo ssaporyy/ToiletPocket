@@ -1,9 +1,14 @@
 // import 'dart:async';
+// import 'dart:html';
+
+import 'package:ToiletPocket/application_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:provider/provider.dart';
+
+
 // import 'package:location/location.dart';
 
 class MapSample extends StatefulWidget {
@@ -31,44 +36,11 @@ class MapSampleState extends State<MapSample> {
     zoom: 16,
     );
 
-  GoogleMapController _googleMapController;
-  Position position;
-  Widget _child;
+    GoogleMapController _googleMapController;
+    Position currentLocation;
 
-
-  // Future<void> getLocation() async {
-  //   PermissionStatus permission = await PermissionHandler()
-  //       .checkPermissionStatus(PermissionGroup.location);
-
-  //   if (permission == PermissionStatus.denied) {
-  //     await PermissionHandler()
-  //         .requestPermissions([PermissionGroup.locationAlways]);
-  //   }
-
-  //   var geolocator = Geolocator();
-
-  //   GeolocationStatus geolocationStatus =
-  //       await geolocator.checkGeolocationPermissionStatus();
-
-  //   switch (geolocationStatus) {
-  //     case GeolocationStatus.denied:
-  //       showToast('denied');
-  //       break;
-  //     case GeolocationStatus.disabled:
-  //       showToast('disabled');
-  //       break;
-  //     case GeolocationStatus.restricted:
-  //       showToast('restricted');
-  //       break;
-  //     case GeolocationStatus.unknown:
-  //       showToast('unknown');
-  //       break;
-  //     case GeolocationStatus.granted:
-  //       showToast('Access granted');
-  //       _getCurrentLocation();
-  //   }
-  // }
-
+  
+  
 
   // LocationData currentLocation;
 
@@ -81,52 +53,43 @@ class MapSampleState extends State<MapSample> {
   //   )));
   // }
 
-  // @override
-  // void dispose() {
-    // _googleMapController.dispose();
-    // super.dispose();
-  // }
+  @override
+  void dispose() {
+    _googleMapController.dispose();
+    super.dispose();
+  }
 
-  // void locatePosition() async{
-  // Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  // currentPosition = position;
+  
+//   void locatePosition() async{
+//   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+//  currentPosition = position;
 
-  // LatLng latLatPosition = LatLng(position.latitude, position.longitude);
+//   LatLng latLatPosition = LatLng(currentPosition.latitude, currentPosition.longitude);
 
-  // CameraPosition cameraPosition = new CameraPosition(target: latLatPosition, zoom:14);
-  // _googleMapController.animateCamera(
-                // CameraUpdate.newCameraPosition(cameraPosition));
-
+//   CameraPosition cameraPosition = new CameraPosition(target: latLatPosition, zoom:14);
+//   _googleMapController.animateCamera(
+//                 CameraUpdate.newCameraPosition(cameraPosition));
 
 // }
-
-// @override
-//   void initState() {
-//     getLocation();
-//     super.initState();
-//   }
-//   void _getCurrentLocation() async{
-//     Position res = await Geolocator().getCurrentPosition();
-//     setState(() {
-//       position = res;
-//       _child = _mapWidget();
-//     });
-//   }
   @override
   Widget build(BuildContext context) {
+    final applicationbloc = Provider.of<Applicationbloc>(context);
+
     return Scaffold(
-      body: SizedBox.expand(
+      body:  (applicationbloc.currentLocation == null)
+      ? Center(child: CircularProgressIndicator(),)
+       : SizedBox.expand(
         child: Stack(children: <Widget>[
           GoogleMap(
             padding: EdgeInsets.only(top: 54, right: 55),
             myLocationButtonEnabled: true,
             myLocationEnabled: true,
             zoomControlsEnabled: false,
-            
-      //       initialCameraPosition:CameraPosition(
-      //   target: LatLng(position.latitude,position.longitude),
-      //   zoom: 12.0,
-      // ),
+            // initialCameraPosition: _intitialCameraPosition,
+            initialCameraPosition:CameraPosition(
+            target: LatLng(applicationbloc.currentLocation.latitude,applicationbloc.currentLocation.longitude),
+            zoom: 16.0,
+         ),
             onMapCreated: (controller) => _googleMapController = controller,
           ),
 
@@ -252,7 +215,7 @@ class MapSampleState extends State<MapSample> {
           //   ),
           // ),
         ]),
-      ),
+      )
     );
   }
 }

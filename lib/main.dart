@@ -1,6 +1,8 @@
+import 'package:ToiletPocket/application_bloc.dart';
 import 'package:ToiletPocket/searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:ToiletPocket/map.dart';
+import 'package:provider/provider.dart';
 
 
 void main() {
@@ -11,8 +13,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Toilet Pocket',
+    return ChangeNotifierProvider(
+      create: (context) => Applicationbloc(),
+      child: MaterialApp(
+        title: 'Toilet Pocket',
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
       initialRoute: '/',
@@ -23,6 +27,8 @@ class MyApp extends StatelessWidget {
         // '/second': (context) => (),
         'third': (context) => SearchBar(),
       },
+      ),
+      
     );
   }
 }
