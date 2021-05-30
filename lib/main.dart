@@ -6,11 +6,12 @@ import 'package:ToiletPocket/map.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
-     home: FirstScreen(),
-    ),
-  );
+  // runApp(
+  //   MaterialApp(
+  //    home: FirstScreen(),
+  //   ),
+  // );
+    runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,12 +24,13 @@ class MyApp extends StatelessWidget {
         title: 'Toilet Pocket',
         // Start the app with the "/" named route. In this case, the app starts
         // on the FirstScreen widget.
-        // initialRoute: '/',
+        initialRoute: '/one',
         routes: {
         //   // When navigating to the "/" route, build the FirstScreen widget.
-          '/second': (context) => MapSample(),
+          // '/': (context) => MapSample(),
+          '/one': (context) => FirstScreen(),
         //   // When navigating to the "/second" route, build the SecondScreen widget.
-        //   // '/second': (context) => (),
+          '//': (context) => HomePage(),
         //   '/third': (context) => SearchBar(),
         },
       ),
@@ -87,7 +89,7 @@ class FirstScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   // Navigate to the second screen using a named route.
-                  Navigator.pushNamed(context, '/second');
+                  Navigator.pushNamed(context, '//');
                 }, 
               ),
             ),

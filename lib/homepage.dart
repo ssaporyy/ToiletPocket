@@ -165,7 +165,9 @@ class HomePageState extends State<HomePage> {
           border: InputBorder.none,
           suffixIcon: IconButton(
             // onPressed: () => ,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/one');
+            },
             icon: Icon(
               Icons.account_circle,
               size: 35,
