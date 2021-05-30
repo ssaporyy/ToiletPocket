@@ -2,6 +2,7 @@
 // import 'dart:html';
 
 import 'package:ToiletPocket/application_bloc.dart';
+import 'package:ToiletPocket/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -57,6 +58,7 @@ class MapSampleState extends State<MapSample> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     final applicationbloc = Provider.of<Applicationbloc>(context);
@@ -66,6 +68,7 @@ class MapSampleState extends State<MapSample> {
       ? Center(child: CircularProgressIndicator(),)
        : SizedBox.expand(
         child: Stack(children: <Widget>[
+
           GoogleMap(
             padding: EdgeInsets.only(top: 54, right: 5, bottom:610,),
             myLocationButtonEnabled: true,
@@ -100,7 +103,7 @@ class MapSampleState extends State<MapSample> {
 
           //new search bar
           Container(
-            margin: EdgeInsets.only(top: 60.0, left: 15.0, right: 15.0),
+            margin: EdgeInsets.only(top: 100.0, left: 15.0, right: 15.0),
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 1),
             decoration: BoxDecoration(
                 color: Colors.white,

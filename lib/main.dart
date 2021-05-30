@@ -1,4 +1,5 @@
 import 'package:ToiletPocket/application_bloc.dart';
+import 'package:ToiletPocket/homepage.dart';
 import 'package:ToiletPocket/searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:ToiletPocket/map.dart';
@@ -19,13 +20,15 @@ class MyApp extends StatelessWidget {
         title: 'Toilet Pocket',
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
+      // home: HomePage(),
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => MapSample(),
+        // '/': (context) => MapSample(),
+        '/': (context) => HomePage(),
         // When navigating to the "/second" route, build the SecondScreen widget.
         // '/second': (context) => (),
-        'third': (context) => SearchBar(),
+        // 'third': (context) => SearchBar(),
       },
       ),
       
