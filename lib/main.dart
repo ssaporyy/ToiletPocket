@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:ToiletPocket/map.dart';
 import 'package:provider/provider.dart';
 
-
 void main() {
-  runApp(MyApp());
+  runApp(
+    MaterialApp(
+     home: FirstScreen(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -18,20 +21,17 @@ class MyApp extends StatelessWidget {
       create: (context) => Applicationbloc(),
       child: MaterialApp(
         title: 'Toilet Pocket',
-      // Start the app with the "/" named route. In this case, the app starts
-      // on the FirstScreen widget.
-      // home: HomePage(),
-      initialRoute: '/',
-      routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        // '/': (context) => MapSample(),
-        '/': (context) => HomePage(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        // '/second': (context) => (),
-        // 'third': (context) => SearchBar(),
-      },
+        // Start the app with the "/" named route. In this case, the app starts
+        // on the FirstScreen widget.
+        // initialRoute: '/',
+        routes: {
+        //   // When navigating to the "/" route, build the FirstScreen widget.
+          '/second': (context) => MapSample(),
+        //   // When navigating to the "/second" route, build the SecondScreen widget.
+        //   // '/second': (context) => (),
+        //   '/third': (context) => SearchBar(),
+        },
       ),
-      
     );
   }
 }
@@ -40,19 +40,60 @@ class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: Text('Login'),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/welcome.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ListView(
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 100, top: 150),
+              child: Text(
+                'ยินดีต้อนรับ',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                  color: Colors.black,
+                  fontSize: 40,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 100, top: 0),
+              child: Text(
+                'Toilet Pocket',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                  color: Colors.black,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            Container(
+              width: 30,
+              height: 40,
+              margin: EdgeInsets.only(left: 100, right: 150),
+              child: ElevatedButton(
+                // Within the `FirstScreen` widget
+                child: Text(
+                  'เริ่มต้น',
+                  style: TextStyle(
+                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                  ),
+                ),
+                onPressed: () {
+                  // Navigate to the second screen using a named route.
+                  Navigator.pushNamed(context, '/second');
+                }, 
+              ),
+            ),
+          ],
+        ),
       ),
-      // body: Center(
-      //   child: ElevatedButton(
-      //     // Within the `FirstScreen` widget
-      //     onPressed: () {
-      //       // Navigate to the second screen using a named route.
-      //       Navigator.pushNamed(context, '/second');
-      //     },
-      //     child: Text('Launch screen'),
-      //   ),
-      // ),
     );
   }
 }
