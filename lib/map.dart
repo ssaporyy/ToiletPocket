@@ -2,12 +2,12 @@
 // import 'dart:html';
 
 import 'package:ToiletPocket/application_bloc.dart';
-import 'package:ToiletPocket/homepage.dart';
+// import 'package:toiletpocket/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 
