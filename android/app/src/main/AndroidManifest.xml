@@ -5,10 +5,19 @@
          In most cases you can leave this as-is, but you if you want to provide
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="ToiletPocket"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        
+        android:usesCleartextTraffic="true"
+        >
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -33,6 +42,9 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+            <!-- <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAvRknAjBrBfPCXrBTeNYJ8j8g6Fq32frQ"
+            /> -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -43,5 +55,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+            <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno"
+            />
+            
     </application>
 </manifest>
+
+
