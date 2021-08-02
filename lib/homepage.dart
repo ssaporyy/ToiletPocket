@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ToiletPocket/application_bloc.dart';
+import 'package:ToiletPocket/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -27,6 +28,8 @@ class HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
   }
+
+
 
   double zoomVal = 5.0;
 
@@ -120,8 +123,9 @@ class HomePageState extends State<HomePage> {
       body: Stack(
         children: <Widget>[
           _buildGoogleMap(context),
-          search(),  
-          //ปุ่ม zoom เข้า-ออก        
+          // mylocation(),
+          search(),
+          ////ปุ่ม zoom เข้า-ออก
           // _zoomminusfunction(),
           // _zoomplusfunction(),
           _buildContainer(),
@@ -133,52 +137,58 @@ class HomePageState extends State<HomePage> {
   Widget search() {
     return
         //new search bar
-    Container(
-      margin: EdgeInsets.only(top: 60.0, left: 27.0, right: 27.0),
-      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 1),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black12,
-                blurRadius: 5.0,
-                spreadRadius: 0.5,
-                offset: Offset(
-                  0.7,
-                  0.7,
-                ))
-          ]),
-      child: TextField(
-        // controller: _locationController,
-        textCapitalization: TextCapitalization.words,
-        textInputAction: TextInputAction.search,
-        decoration: InputDecoration(
-          hintText: 'ค้นหาห้องน้ำ',
-          /*'Search',*/
-          hintStyle:
-              TextStyle(fontSize: 18.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
-          icon: Icon(
-            Icons.search,
-            color: Colors.black54,
-          ),
-          border: InputBorder.none,
-          suffixIcon: IconButton(
-            // onPressed: () => ,
-            onPressed: () {
-              Navigator.pushNamed(context, '/one');
-            },
+        Padding(
+      padding: const EdgeInsets.only(top: 63, left: 25, right: 25),
+      child: Container(
+        // width: MediaQuery.of(context).size.width +50,
+        // height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        // margin: EdgeInsets.only(top: 80.0, left: 40.0, right: 40.0),
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 5.0,
+                  spreadRadius: 0.5,
+                  offset: Offset(
+                    0.7,
+                    0.7,
+                  ))
+            ]),
+        child: TextField(
+          // controller: _locationController,
+          textCapitalization: TextCapitalization.words,
+          textInputAction: TextInputAction.search,
+          decoration: InputDecoration(
+            hintText: 'ค้นหาห้องน้ำ',
+            /*'Search',*/
+            hintStyle:
+                TextStyle(fontSize: 13.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
             icon: Icon(
-              Icons.account_circle,
-              size: 35,
+              Icons.search,
               color: Colors.black54,
             ),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              // onPressed: () => ,
+              onPressed: () {
+                Navigator.pushNamed(context, '/four');
+              },
+              icon: Icon(
+                Icons.account_circle,
+                size: 30,
+                color: Colors.black54,
+              ),
+            ),
           ),
+          // cursorColor: Colors.black87,
+          // style: TextStyle(height: 2.0, fontSize: 20.0),
+          // onChanged: (value) => applicationBloc.searchPlaces(value),
+          // onTap: () => applicationBloc.clearSelectedLocation(),
         ),
-        cursorColor: Colors.black87,
-        style: TextStyle(height: 1.2, fontSize: 20.0),
-        // onChanged: (value) => applicationBloc.searchPlaces(value),
-        // onTap: () => applicationBloc.clearSelectedLocation(),
       ),
     );
   }
@@ -208,25 +218,26 @@ class HomePageState extends State<HomePage> {
   //   );
   // }
 
-  Future<void> _minus(double zoomVal) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(40.712776, -74.005974), zoom: zoomVal)));
-  }
+  // Future<void> _minus(double zoomVal) async {
+  //   final GoogleMapController controller = await _controller.future;
+  //   controller.animateCamera(CameraUpdate.newCameraPosition(
+  //       CameraPosition(target: LatLng(40.712776, -74.005974), zoom: zoomVal)));
+  // }
 
-  Future<void> _plus(double zoomVal) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(40.712776, -74.005974), zoom: zoomVal)));
-  }
+  // Future<void> _plus(double zoomVal) async {
+  //   final GoogleMapController controller = await _controller.future;
+  //   controller.animateCamera(CameraUpdate.newCameraPosition(
+  //       CameraPosition(target: LatLng(40.712776, -74.005974), zoom: zoomVal)));
+  // }
 
   Widget _buildContainer() {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 20.0),
-        height: 180.0,
+        margin: EdgeInsets.symmetric(vertical: 18.0),
+        height: 250.0,
         child: ListView(
+          shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           children: <Widget>[
             SizedBox(width: 10.0),
@@ -236,7 +247,7 @@ class HomePageState extends State<HomePage> {
                   "https://lh5.googleusercontent.com/p/AF1QipORp6yyQOYLlycgjzYCXOgNjykKvfFlPrkTHPxo=w408-h272-k-no",
                   13.65004,
                   100.49449,
-                  "มหาวิทยาลัยเทคโนโลยี\nพระจอมเกล้าธนบุรี"),
+                  "มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี"),
             ),
             SizedBox(width: 10.0),
             Padding(
@@ -274,8 +285,6 @@ class HomePageState extends State<HomePage> {
                   -73.999619,
                   "Blue Hill"),
             ),
-
-
           ],
         ),
       ),
@@ -285,38 +294,180 @@ class HomePageState extends State<HomePage> {
   Widget _boxes(String _image, double lat, double long, String restaurantName) {
     return GestureDetector(
       onTap: () {
-        _gotoLocation(lat, long);
+        // _gotoLocation(lat, long);
+        Navigator.pushNamed(context, '/third');
       },
       child: Container(
         child: new FittedBox(
+          fit: BoxFit.cover,
           child: Material(
               color: Colors.white,
               elevation: 10.0,
               borderRadius: BorderRadius.circular(24.0),
               shadowColor: Color(0x802196F3),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    width: 400,
-                    height: 330,
+                    width: 850,
+                    height: 400,
+                    // height: MediaQuery.of(context).size.width + 5,
+                    // width: MediaQuery.of(context).size.width / 3,
                     child: ClipRRect(
                       borderRadius: new BorderRadius.only(
-                          topRight: Radius.circular(15.0),
-                          topLeft: Radius.circular(15.0),
-                          bottomRight: Radius.circular(0.0),
-                          bottomLeft: Radius.circular(0.0),
-                        ),
+                        topRight: Radius.circular(15.0),
+                        topLeft: Radius.circular(15.0),
+                        bottomRight: Radius.circular(0.0),
+                        bottomLeft: Radius.circular(0.0),
+                      ),
                       child: Image(
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                         image: NetworkImage(_image),
                       ),
                     ),
                   ),
                   Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: myDetailsContainer1(restaurantName),
+                    width: 800,
+                    height: 450,
+                    // height: MediaQuery.of(context).size.width + 5,
+                    padding: const EdgeInsets.only(
+                        bottom: 40, top: 30, left: 20, right: 20),
+                    margin: EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: myDetailsContainer1(restaurantName),
+                        ),
+                        Container(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 90,
+                                width: 240,
+                                child: RaisedButton(
+
+                                  color: ToiletColors.colorButton,
+                                  onPressed: () {
+                                    //กดไปหน้า นำทาง
+                                    _gotoLocation(lat, long);
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(15),
+                                      bottom: Radius.circular(15),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.directions,
+                                        color: ToiletColors.colorText,
+                                        size: 35,
+                                      ),
+                                      SizedBox(width: 15.0),
+                                      Text(
+                                        'เส้นทาง',
+                                        style: TextStyle(
+                                          color: ToiletColors.colorText,
+                                          fontSize: 30.0,
+                                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                          // fontWeight: FontWeight.normal
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  elevation: 1,
+                                  padding:
+                                      new EdgeInsets.fromLTRB(28, 7, 28, 7),
+                                ),
+                              ),
+                              // SizedBox(width: 50.0),
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 85.0,
+                                      height: 80.0,
+                                      child: RaisedButton(
+                                        color: ToiletColors.colorButton,
+                                        onPressed: () {},
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(30),
+                                            bottom: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.smoking_rooms_rounded,
+                                          color: ToiletColors.colorText,
+                                          size: 35,
+                                        ),
+                                        elevation: 1,
+                                        padding:
+                                            new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                      ),
+                                    ),
+                                    SizedBox(width: 15.0),
+                                    Container(
+                                      width: 85.0,
+                                      height: 80.0,
+                                      child: RaisedButton(
+                                        color: ToiletColors.colorButton,
+                                        onPressed: () {},
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(30),
+                                            bottom: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.accessible,
+                                          color: ToiletColors.colorText,
+                                          size: 35,
+                                        ),
+                                        elevation: 1,
+                                        padding:
+                                            new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                      ),
+                                    ),
+                                    SizedBox(width: 15.0),
+                                    Container(
+                                      width: 85.0,
+                                      height: 80.0,
+                                      child: RaisedButton(
+                                        color: ToiletColors.colorButton,
+                                        onPressed: () {},
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(30),
+                                            bottom: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.wc,
+                                          color: ToiletColors.colorText,
+                                          size: 35,
+                                        ),
+                                        elevation: 1,
+                                        padding:
+                                            new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -327,121 +478,138 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget myDetailsContainer1(String restaurantName) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: Container(
-              child: Text(
+    return Container(
+      alignment: Alignment.topLeft,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
             restaurantName,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 color: Color(0xff6200ee),
-                fontSize: 30.0,
+                fontSize: 40.0,
                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                 fontWeight: FontWeight.bold),
-          )),
-        ),
-        SizedBox(height: 13.0),
-        Container(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-                child: Text(
-              "4.1",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 20.0,fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+          ),
+          SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                  child: Text(
+                "4.1",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 40.0,
+                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                ),
+              )),
+              // SizedBox(width: 10.0),
+              Container(
+                child: Icon(
+                  OMIcons.star,
+                  color: Colors.amber,
+                  size: 35.0,
+                ),
               ),
-            )),
-            Container(
-              child: Icon(
-                OMIcons.star,
-                color: Colors.amber,
-                size: 18.0,
+              // SizedBox(width: 8.0),
+              Container(
+                child: Icon(
+                  OMIcons.star,
+                  color: Colors.amber,
+                  size: 35.0,
+                ),
               ),
+              // SizedBox(width: 8.0),
+              Container(
+                child: Icon(
+                  OMIcons.star,
+                  color: Colors.amber,
+                  size: 35.0,
+                ),
+              ),
+              // SizedBox(width: 8.0),
+              Container(
+                child: Icon(
+                  OMIcons.star,
+                  color: Colors.amber,
+                  size: 35.0,
+                ),
+              ),
+              // SizedBox(width: 8.0),
+              Container(
+                child: Icon(
+                  OMIcons.starHalf,
+                  color: Colors.amber,
+                  size: 35.0,
+                ),
+              ),
+              // SizedBox(width: 8.0),
+              Container(
+                  child: Text(
+                "(946)",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 30.0,
+                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                ),
+              )),
+            ],
+          ),
+          // SizedBox(height: 5.0),
+          Row(
+            children: [
+              Container(
+                  child: Text(
+                "Kmutt \u00B7 ",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 35.0,
+                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                ),
+              )),
+              Container(child: Icon(OMIcons.directionsCar)),
+              Container(
+                  child: Text(
+                "\u00B7 1.6 mi",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 30.0,
+                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                ),
+              )),
+            ],
+          ),
+          // SizedBox(height: 5.0),
+          Container(
+            child: new Row(
+              children: <Widget>[
+                Text(
+                  "Closed \u00B7 Opens 17:00 Thu",
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 35.0,
+                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                      fontWeight: FontWeight.normal),
+                ),
+                SizedBox(width: 50.0),
+                Text(
+                  "500 เมตร",
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 35.0,
+                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                      fontWeight: FontWeight.normal),
+                ),
+              ],
             ),
-            Container(
-              child: Icon(
-                OMIcons.star,
-                color: Colors.amber,
-                size: 18.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                OMIcons.star,
-                color: Colors.amber,
-                size: 18.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                OMIcons.star,
-                color: Colors.amber,
-                size: 18.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                OMIcons.starHalf,
-                color: Colors.amber,
-                size: 18.0,
-              ),
-            ),
-            Container(
-                child: Text(
-              "(946)",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 20.0,fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-              ),
-            )),
-          ],
-        )),
-        SizedBox(height: 9.0),
-
-        Row(
-          children: [
-            Container(
-                child: Text(
-              "Kmutt \u00B7 ",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 20.0,
-                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-              ),
-            )
-            ),
-            Container(
-                child: Icon(OMIcons.directionsCar)
-            ),
-            Container(
-                child: Text(
-              "\u00B7 1.6 mi",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 20.0,
-                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-              ),
-            )
-            ),
-          ],
-        ),
-
-
-        SizedBox(height: 6.0),
-        Container(
-            child: Text(
-          "Closed \u00B7 Opens 17:00 Thu",
-          style: TextStyle(
-              color: Colors.black54,
-              fontSize: 20.0,
-              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-              fontWeight: FontWeight.bold),
-        )),
-      ],
+          ),
+          // SizedBox(height: 5.0),
+        ],
+      ),
     );
   }
 
@@ -452,33 +620,41 @@ class HomePageState extends State<HomePage> {
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: GoogleMap(
-        
         // จากหน้า map
-        padding: EdgeInsets.only(
-          top: 110,
-          right: 20,
-          bottom: 189,
-        ),
-        myLocationButtonEnabled: true,
-        myLocationEnabled: true,
-        zoomControlsEnabled: false,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(applicationbloc.currentLocation.latitude,
-              applicationbloc.currentLocation.longitude),
-          zoom: 16.0,
-        ),
-        
-        // onMapCreated: (controller) => _googleMapController = controller,
+        // padding: EdgeInsets.only(
+        //   top: 120,
+        //   right: 20,
+        //   bottom: 189,
+        // ),
 
-        //new
+                //new
         mapType: MapType.normal,
         // initialCameraPosition:
         //     CameraPosition(target: LatLng(40.712776, -74.005974), zoom: 12),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
+        // onMapCreated: (controller) => _googleMapController = controller,
+
+        initialCameraPosition: CameraPosition(
+          target: LatLng(applicationbloc.currentLocation.latitude,
+              applicationbloc.currentLocation.longitude),
+          zoom: 16.0,
+        ),
+        myLocationButtonEnabled: true,
+        myLocationEnabled: true,
+        zoomControlsEnabled: false,
+
+        padding: EdgeInsets.only(
+          top: 120,
+          right: 20,
+          bottom: 189,
+        ),
 
 
+
+
+        //marker ของแต่ละ location ที่ปักไว้
         markers: {
           newyork1Marker,
           newyork2Marker,
@@ -491,6 +667,38 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  // Widget mylocation() {
+  //   final applicationbloc = Provider.of<Applicationbloc>(context);
+
+  //   //button current location
+  //   return Container(
+  //     color: Colors.transparent,
+  //     margin: EdgeInsets.all(15),
+  //     padding:
+  //         //  const EdgeInsets.fromLTRB(
+  //         //     320 /*left*/, 110 /*top*/, 0 /*right*/, 0 /*bottom*/),
+  //         EdgeInsets.only(
+  //       top: 120,
+  //       right: 20,
+  //       left: 300,
+  //       bottom: 189,
+  //     ),
+  //     child: FloatingActionButton(
+  //       backgroundColor: Colors.white.withOpacity(0.8),
+  //       //Theme.of(context).primaryColorLight,
+  //       foregroundColor: Colors.black,
+  //       onPressed: () => LatLng(applicationbloc.currentLocation.latitude,
+  //           applicationbloc.currentLocation.longitude),
+  //       // onPressed : () => _googleMapController.animateCamera(
+  //       //   CameraUpdate.newCameraPosition(_intitialCameraPosition)),
+  //       child: Icon(
+  //         Icons.my_location,
+  //         size: 20,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<void> _gotoLocation(double lat, double long) async {
     final GoogleMapController controller = await _controller.future;
@@ -505,7 +713,7 @@ class HomePageState extends State<HomePage> {
 
 Marker kmuttMarker = Marker(
   markerId: MarkerId('Kumtt'),
-  position: LatLng(13.65004,100.49449),
+  position: LatLng(13.65004, 100.49449),
   infoWindow: InfoWindow(title: 'มหาวิทยาลัยเทคโนโลยี\nพระจอมเกล้าธนบุรี'),
   icon: BitmapDescriptor.defaultMarkerWithHue(
     BitmapDescriptor.hueViolet,

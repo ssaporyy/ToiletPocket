@@ -25,7 +25,13 @@ dependencies:
     sdk: flutter
   google_maps_flutter: ^0.5.28+1
   location: ^3.0.0
-
+  
+  firebase_auth: ^0.18.3
+  google_sign_in: ^4.5.6
+  # firebase_storage: ^10.0.1
+  # firebase_auth: ^3.0.1
+  # cloud_firestore: ^2.4.0
+  # google_sign_in: ^5.0.5
 
   cupertino_icons: ^1.0.0
   http: ^0.12.2
@@ -40,8 +46,17 @@ dependencies:
   flutter_polyline_points: ^0.2.4
   permission_handler: ^5.1.0+2
   fluttertoast: ^8.0.7
-  provider: ^5.0.0
+  # provider: ^5.0.0
+  provider: ^4.3.2+2
   google_place: ^0.3.3
+
+  carousel_slider: ^3.0.0
+  flutter_rating_bar: ^4.0.0
+  smooth_star_rating: ^1.1.1
+
+  multi_image_picker: ^4.8.1
+  
+  rive: ^0.7.16
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +78,12 @@ flutter:
     - images/mmm.png
     - images/flush.png
     - images/welcome.png
+    - images/star.png
+    - images/login.riv
+    - images/signin.riv
+    - images/google.png
+    - images/Profile.png
+    - images/toiletPlus.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
