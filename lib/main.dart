@@ -1,18 +1,9 @@
-import 'package:ToiletPocket/addImage.dart';
-import 'package:ToiletPocket/addToiletDetail.dart';
+
 import 'package:ToiletPocket/application_bloc.dart';
-import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/customRadio.dart';
-import 'package:ToiletPocket/customRadio2.dart';
 import 'package:ToiletPocket/firstScreen.dart';
 import 'package:ToiletPocket/homepage.dart';
 import 'package:ToiletPocket/profile.dart';
-import 'package:ToiletPocket/provider/google_sign_in.dart';
-import 'package:ToiletPocket/showUp.dart';
-import 'package:ToiletPocket/signIn.dart';
-import 'package:ToiletPocket/time.dart';
 import 'package:ToiletPocket/toiletdetail.dart';
-import 'package:rive/rive.dart';
 // import 'package:toiletpocket/searchbar.dart';
 import 'package:flutter/material.dart';
 // import 'package:toiletpocket/map.dart';
