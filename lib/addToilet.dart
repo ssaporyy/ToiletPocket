@@ -141,6 +141,7 @@ Widget add(BuildContext context) {
                     side: BorderSide(color: ToiletColors.colorButton2)),
                 onPressed: () {
                   //ไปหน้าใส่รายละเอียด
+                  Navigator.pushNamed(context, '/six');
                 },
                 padding: EdgeInsets.all(10.0),
                 color: ToiletColors.colorButton2,

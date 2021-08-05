@@ -1,9 +1,15 @@
 
+// import 'package:ToiletPocket/addToilet.dart';
+import 'package:ToiletPocket/addToilet.dart';
+import 'package:ToiletPocket/addToiletDetail.dart';
 import 'package:ToiletPocket/application_bloc.dart';
 import 'package:ToiletPocket/firstScreen.dart';
 import 'package:ToiletPocket/homepage.dart';
 import 'package:ToiletPocket/profile.dart';
 import 'package:ToiletPocket/toiletdetail.dart';
+// import 'package:ToiletPocket/homepage.dart';
+// import 'package:ToiletPocket/profile.dart';
+// import 'package:ToiletPocket/toiletdetail.dart';
 // import 'package:toiletpocket/searchbar.dart';
 import 'package:flutter/material.dart';
 // import 'package:toiletpocket/map.dart';
@@ -53,6 +59,9 @@ class MyApp extends StatelessWidget {
           '/two': (context) => HomePage(),
           '/third': (context) => ToiletDetail(),
           '/four': (context) => Profile(),
+          '/five': (context) => addToilet(),
+          '/six': (context) => AddToiletDetail(),
+
 
         },
       ),

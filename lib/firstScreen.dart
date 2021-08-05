@@ -1,9 +1,9 @@
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/profile.dart';
 import 'package:ToiletPocket/showUp.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive/rive.dart';
 
 class FirstScreen extends StatefulWidget {
