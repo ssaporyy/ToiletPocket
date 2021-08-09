@@ -1,5 +1,5 @@
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/firstScreen.dart';
+import 'package:ToiletPocket/screen/firstScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';

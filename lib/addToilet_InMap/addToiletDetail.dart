@@ -1,9 +1,9 @@
-import 'package:ToiletPocket/addImage.dart';
+import 'package:ToiletPocket/addToilet_InMap/addImage.dart';
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/customRadio.dart';
-import 'package:ToiletPocket/customRadio2.dart';
+import 'package:ToiletPocket/addToilet_InMap/customRadio.dart';
+import 'package:ToiletPocket/addToilet_InMap/iconSelect.dart';
 import 'package:ToiletPocket/test.dart';
-import 'package:ToiletPocket/time.dart';
+import 'package:ToiletPocket/addToilet_InMap/time.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -198,7 +198,7 @@ Widget info(BuildContext context) {
           color: ToiletColors.colorPurple,
           size: 29.0,
         ),
-        title: Container(height: 100, child: SelectMulti()),
+        title: Container(height: 100, child: SelectIcon()),
       ));
 }
 

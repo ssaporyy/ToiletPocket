@@ -1,12 +1,13 @@
 
 // import 'package:ToiletPocket/addToilet.dart';
-import 'package:ToiletPocket/addToilet.dart';
-import 'package:ToiletPocket/addToiletDetail.dart';
-import 'package:ToiletPocket/application_bloc.dart';
-import 'package:ToiletPocket/firstScreen.dart';
-import 'package:ToiletPocket/homepage.dart';
-import 'package:ToiletPocket/profile.dart';
-import 'package:ToiletPocket/toiletdetail.dart';
+
+import 'package:ToiletPocket/Show_toiletDetail_review/toiletdetail.dart';
+import 'package:ToiletPocket/addToilet_InMap/addToilet.dart';
+import 'package:ToiletPocket/addToilet_InMap/addToiletDetail.dart';
+import 'package:ToiletPocket/blocs/application_bloc.dart';
+import 'package:ToiletPocket/screen/firstScreen.dart';
+import 'package:ToiletPocket/screen/homepage.dart';
+import 'package:ToiletPocket/screen/profile.dart';
 // import 'package:ToiletPocket/homepage.dart';
 // import 'package:ToiletPocket/profile.dart';
 // import 'package:ToiletPocket/toiletdetail.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
         // home: MyHomePage(),
         // home: addImage(),
         // home: HomePage(),
-        initialRoute: '/one',
+        initialRoute: '/third',
         routes: {
           //   // When navigating to the "/" route, build the FirstScreen widget.
           // '/': (context) => MapSample(),

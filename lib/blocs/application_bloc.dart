@@ -1,4 +1,4 @@
-import 'package:ToiletPocket/geolocator_service.dart';
+import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 

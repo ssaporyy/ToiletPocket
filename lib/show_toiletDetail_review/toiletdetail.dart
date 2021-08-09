@@ -1,6 +1,6 @@
-import 'package:ToiletPocket/CarouselWithDotsPage.dart';
+import 'package:ToiletPocket/Show_toiletDetail_review/CarouselWithDotsPage.dart';
+import 'package:ToiletPocket/Show_toiletDetail_review/review.dart';
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/review.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

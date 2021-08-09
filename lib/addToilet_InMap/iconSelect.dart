@@ -167,15 +167,15 @@
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
-class SelectMulti extends StatefulWidget {
+class SelectIcon extends StatefulWidget {
   //
   final String title = 'Wrap Widget & Chips';
 
   @override
-  State<StatefulWidget> createState() => _SelectMultiState();
+  State<StatefulWidget> createState() => _SelectIconState();
 }
 
-class _SelectMultiState extends State<SelectMulti> {
+class _SelectIconState extends State<SelectIcon> {
   List<Company> _companies;
   List<String> _filters;
 

@@ -1,11 +1,15 @@
 import 'dart:async';
-import 'package:ToiletPocket/application_bloc.dart';
+import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+import 'package:ToiletPocket/search/address_search.dart';
+import 'package:ToiletPocket/search/place_service.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -28,8 +32,6 @@ class HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
   }
-
-
 
   double zoomVal = 5.0;
 
@@ -135,6 +137,18 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget search() {
+    final _controller = TextEditingController();
+    String _streetNumber = '';
+    String _street = '';
+    String _city = '';
+    String _zipCode = '';
+
+    @override
+    void dispose() {
+      _controller.dispose();
+      super.dispose();
+    }
+
     return
         //new search bar
         Padding(
@@ -158,37 +172,85 @@ class HomePageState extends State<HomePage> {
                     0.7,
                   ))
             ]),
-        child: TextField(
-          // controller: _locationController,
-          textCapitalization: TextCapitalization.words,
-          textInputAction: TextInputAction.search,
-          decoration: InputDecoration(
-            hintText: 'ค้นหาห้องน้ำ',
-            /*'Search',*/
-            hintStyle:
-                TextStyle(fontSize: 13.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
-            icon: Icon(
-              Icons.search,
-              color: Colors.black54,
-            ),
-            border: InputBorder.none,
-            suffixIcon: IconButton(
-              // onPressed: () => ,
-              onPressed: () {
-                Navigator.pushNamed(context, '/four');
-              },
+        child:
+            // TextField(
+            //   // controller: _locationController,
+            //   textCapitalization: TextCapitalization.words,
+            //   textInputAction: TextInputAction.search,
+            //   decoration: InputDecoration(
+            //     hintText: 'ค้นหาห้องน้ำ',
+            //     /*'Search',*/
+            //     hintStyle:
+            //         TextStyle(fontSize: 13.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
+            //     icon: Icon(
+            //       Icons.search,
+            //       color: Colors.black54,
+            //     ),
+            //     border: InputBorder.none,
+            //     suffixIcon: IconButton(
+            //       // onPressed: () => ,
+            //       onPressed: () {
+            //         Navigator.pushNamed(context, '/four');
+            //       },
+            //       icon: Icon(
+            //         Icons.account_circle,
+            //         size: 30,
+            //         color: Colors.black54,
+            //       ),
+            //     ),
+            //   ),
+            //   // cursorColor: Colors.black87,
+            //   // style: TextStyle(height: 2.0, fontSize: 20.0),
+            //   // onChanged: (value) => applicationBloc.searchPlaces(value),
+            //   // onTap: () => applicationBloc.clearSelectedLocation(),
+            // ),
+              TextField(
+            controller: _controller,
+            readOnly: true,
+            style: TextStyle(fontSize: 18.0, fontFamily: 'Sukhumvit'),
+            onTap: () async {
+              // generate a new token here
+              final sessionToken = Uuid().v4();
+              final Suggestion result = await showSearch(
+                context: context,
+                delegate: AddressSearch(sessionToken),
+              );
+              // This will change the text displayed in the TextField
+              if (result != null) {
+                final placeDetails = await PlaceApiProvider(sessionToken)
+                    .getPlaceDetailFromId(result.placeId);
+                setState(() {
+                  _controller.text = result.description;
+                  _streetNumber = placeDetails.streetNumber;
+                  _street = placeDetails.street;
+                  _city = placeDetails.city;
+                  _zipCode = placeDetails.zipCode;
+                });
+              }
+            },
+            decoration: InputDecoration(
+              hintText: 'ค้นหาห้องน้ำ',
+              /*'Search',*/
+              hintStyle: TextStyle(
+                  fontSize: 15.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
               icon: Icon(
-                Icons.account_circle,
-                size: 30,
+                Icons.search,
                 color: Colors.black54,
+              ),
+              border: InputBorder.none,
+              suffixIcon: IconButton(
+                // onPressed: () => ,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/four');
+                },
+                icon: Icon(
+                  Icons.account_circle,
+                  size: 30,
+                  color: Colors.black54,
+                ),
               ),
             ),
           ),
-          // cursorColor: Colors.black87,
-          // style: TextStyle(height: 2.0, fontSize: 20.0),
-          // onChanged: (value) => applicationBloc.searchPlaces(value),
-          // onTap: () => applicationBloc.clearSelectedLocation(),
-        ),
       ),
     );
   }
@@ -349,7 +411,6 @@ class HomePageState extends State<HomePage> {
                                 height: 90,
                                 width: 240,
                                 child: RaisedButton(
-
                                   color: ToiletColors.colorButton,
                                   onPressed: () {
                                     //กดไปหน้า นำทาง
@@ -627,7 +688,7 @@ class HomePageState extends State<HomePage> {
         //   bottom: 189,
         // ),
 
-                //new
+        //new
         mapType: MapType.normal,
         // initialCameraPosition:
         //     CameraPosition(target: LatLng(40.712776, -74.005974), zoom: 12),
@@ -650,9 +711,6 @@ class HomePageState extends State<HomePage> {
           right: 20,
           bottom: 189,
         ),
-
-
-
 
         //marker ของแต่ละ location ที่ปักไว้
         markers: {

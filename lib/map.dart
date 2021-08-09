@@ -1,7 +1,7 @@
 // import 'dart:async';
 // import 'dart:html';
 
-import 'package:ToiletPocket/application_bloc.dart';
+import 'package:ToiletPocket/blocs/application_bloc.dart';
 // import 'package:toiletpocket/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
