@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart';
+import 'package:ToiletPocket/models/place_search.dart';
+import 'package:http/http.dart' /*as http*/;
+
+import 'dart:convert' as convert;
 
 class Place {
   String streetNumber;
@@ -46,14 +49,16 @@ class PlaceApiProvider {
   // static final String androidKey = 'YOUR_API_KEY_HERE';
   // static final String iosKey = 'YOUR_API_KEY_HERE';
   final apiKey = Platform.isAndroid ? androidKey : iosKey;
+
   //https://maps.googleapis.com/maps/api/place/autocomplete/json?input=bangkok&types=(cities)&language=TH&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno
   //https://maps.googleapis.com/maps/api/place/textsearch/json?query=toilet+in+Bangkok&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno
   //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=13.736717,%20100.523186&rankby=distance&type=university&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno
 
+
   Future<List<Suggestion>> fetchSuggestions(String input, String lang) async {
     final request =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=address&language=$lang&components=country:TH&key=$apiKey&sessiontoken=$sessionToken';
-        // 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=address&language=$lang&components=country:th&key=$apiKey&sessiontoken=$sessionToken';
+    // 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=address&language=$lang&components=country:th&key=$apiKey&sessiontoken=$sessionToken';
     final response = await client.get(request);
 
     if (response.statusCode == 200) {

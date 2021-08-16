@@ -1,193 +1,78 @@
 import 'dart:async';
-import 'package:ToiletPocket/blocs/application_bloc.dart';
+
 import 'package:ToiletPocket/blocs/application_bloc2.dart';
 import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/models/place.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
-import 'package:ToiletPocket/search/address_search.dart';
-import 'package:ToiletPocket/search/place_service.dart';
 
-class HomePage extends StatefulWidget {
+class Homeonescreen extends StatefulWidget {
+  Homeonescreen({Key key}) : super(key: key);
+
   @override
-  HomePageState createState() => HomePageState();
+  _HomeonescreenState createState() => _HomeonescreenState();
 }
 
-class HomePageState extends State<HomePage> {
+class _HomeonescreenState extends State<Homeonescreen> {
   Completer<GoogleMapController> _mapController = Completer();
-    final _locationController = TextEditingController();
+  StreamSubscription locationSubscription;
+  StreamSubscription boundsSubscription;
+  final _locationController = TextEditingController();
 
+  @override
+  void initState() {
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
 
-  GoogleMapController controller;
-  Position currentLocation;
+    //Listen for selected Location
+    locationSubscription =
+        applicationBloc.selectedLocation.stream.listen((place) {
+      if (place != null) {
+        _locationController.text = place.name;
+        _goToPlace(place);
+      } else
+        _locationController.text = "";
+    });
+
+    applicationBloc.bounds.stream.listen((bounds) async {
+      final GoogleMapController controller = await _mapController.future;
+      controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
-    controller.dispose();
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
+    applicationBloc.dispose();
+    _locationController.dispose();
+    locationSubscription.cancel();
+    boundsSubscription.cancel();
     super.dispose();
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  double zoomVal = 5.0;
-
-//new -------------------------------------------------------
-  // Completer<GoogleMapController> _mapController = Completer();
-  //   // Completer<GoogleMapController> _mapController = Completer();
-  // StreamSubscription locationSubscription;
-  // StreamSubscription boundsSubscription;
-  // final _locationController = TextEditingController();
-
-
-  // @override
-  // void initState() {
-  //   final applicationBloc =
-  //       Provider.of<ApplicationBloc2>(context, listen: false);
-
-
-  //   //Listen for selected Location
-  //   locationSubscription = applicationBloc.selectedLocation.stream.listen((place) {
-  //     if (place != null) {
-  //       _locationController.text = place.name;
-  //       // _goToPlace(place);
-  //     } else
-  //       _locationController.text = "";
-  //   });
-
-  //   applicationBloc.bounds.stream.listen((bounds) async {
-  //     final GoogleMapController controller = await _mapController.future;
-  //     controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
-  //   });
-  //   super.initState();
-  // }
-
-
-
-  // @override
-  // void dispose() {
-  //   final applicationBloc =
-  //       Provider.of<ApplicationBloc2>(context, listen: false);
-  //   applicationBloc.dispose();
-  //   _locationController.dispose();
-  //   locationSubscription.cancel();
-  //   boundsSubscription.cancel();
-  //   super.dispose();
-  // }
-
-  //new -------------------------------------------------------
-
-  // _appBar(height) => PreferredSize(
-  //       preferredSize: Size(
-  //         MediaQuery.of(context).size.width, height + 180, ),
-  //       child: Stack(
-  //         children: <Widget>[
-
-  //           //new search bar
-  //           Container(
-  //             margin: EdgeInsets.only(top: 100.0, left: 15.0, right: 15.0),
-  //             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 1),
-  //             decoration: BoxDecoration(
-  //                 color: Colors.black12,
-  //                 borderRadius: BorderRadius.circular(30),
-  //                 boxShadow: [
-  //                   BoxShadow(
-  //                       color: Colors.black12,
-  //                       blurRadius: 5.0,
-  //                       spreadRadius: 0.5,
-  //                       offset: Offset(
-  //                         0.7,
-  //                         0.7,
-  //                       ))
-  //                 ]),
-  //             child: TextField(
-  //               // controller: _locationController,
-  //               textCapitalization: TextCapitalization.words,
-  //               textInputAction: TextInputAction.search,
-  //               decoration: InputDecoration(
-  //                 hintText: 'ค้นหาห้องน้ำ',
-  //                 /*'Search',*/
-  //                 hintStyle: TextStyle(
-  //                     fontSize: 18.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
-  //                 icon: Icon(
-  //                   Icons.search,
-  //                   color: Colors.black54,
-  //                 ),
-  //                 border: InputBorder.none,
-  //                 suffixIcon: IconButton(
-  //                   // onPressed: () => ,
-  //                   onPressed: () {},
-  //                   icon: Icon(
-  //                     Icons.account_circle,
-  //                     size: 35,
-  //                     color: Colors.black54,
-  //                   ),
-  //                 ),
-  //               ),
-  //               cursorColor: Colors.black87,
-  //               style: TextStyle(height: 1.2, fontSize: 20.0),
-  //               // onChanged: (value) => applicationBloc.searchPlaces(value),
-  //               // onTap: () => applicationBloc.clearSelectedLocation(),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-
-  //     );
-
-  @override
   Widget build(BuildContext context) {
-
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
     return Scaffold(
-      // appBar: AppBar(
-      //   leading: IconButton(
-      //       icon: Icon(FontAwesomeIcons.arrowLeft),
-      //       onPressed: () {
-      //         //
-      //       }),
-      //   title: Text("New York"),
-      //   actions: <Widget>[
-      //     IconButton(
-      //         icon: Icon(FontAwesomeIcons.search),
-      //         onPressed: () {
-      //           //
-      //         }),
-      //   ],
-      // ),
-
-      // appBar: _appBar(AppBar().preferredSize.height,),
-
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   iconTheme: IconThemeData(color: Colors.white),
-      //   elevation: 0.0,
-      //   brightness: Brightness.dark,
-      // ),
-      // extendBodyBehindAppBar: true,
-
-      body: Stack(
-        children: <Widget>[
-          _buildGoogleMap(context),
-          // mylocation(),
-
-          search(),
-          
-          ////ปุ่ม zoom เข้า-ออก
-          // _zoomminusfunction(),
-          // _zoomplusfunction(),
-          _buildContainer(),
-        ],
-      ),
+      body: (applicationBloc.currentLocation == null)
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Stack(
+              children: [
+                maps(),
+                _buildContainer(),
+                Positioned(top: 50, left: 20, right: 20, child: search()),
+              ],
+            ),
     );
   }
 
-  
   Widget search() {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
 
@@ -195,7 +80,7 @@ class HomePageState extends State<HomePage> {
       children: [
         Padding(
           //old
-          padding: const EdgeInsets.only(top: 50.0),
+          padding: const EdgeInsets.only(top: 8.0),
           // padding: const EdgeInsets.all(8.0),
           //new
           child: Container(
@@ -270,186 +155,128 @@ class HomePageState extends State<HomePage> {
                         0.7,
                       ))
                 ]),
-            child: ListView.builder(
-                itemCount: applicationBloc.searchResults.length,
-                padding: EdgeInsets.all(10),
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      applicationBloc
-                          // .searchResults[index].name,
-                          .searchResults[index]
-                          .description,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onTap: () {
-                      applicationBloc.setSelectedLocation(
-                          applicationBloc.searchResults[index].placeId);
-                    },
-                  );
-                }),
+            child: ListView.separated(
+              itemCount: applicationBloc.searchResults.length,
+              padding: EdgeInsets.all(10),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    applicationBloc
+                        // .searchResults[index].name,
+                        .searchResults[index]
+                        .description,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: () {
+                    applicationBloc.setSelectedLocation(
+                        applicationBloc.searchResults[index].placeId);
+                  },
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+            ),
           )
       ],
     );
   }
 
-  // Widget search() {
-  //   final _controller = TextEditingController();
-  //   String _streetNumber = '';
-  //   String _street = '';
-  //   String _city = '';
-  //   String _zipCode = '';
+  Widget load() {
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
+    final icons = [Icons.place];
 
-  //   @override
-  //   void dispose() {
-  //     _controller.dispose();
-  //     super.dispose();
-  //   }
-  //   final applicationBloc = Provider.of<ApplicationBloc>(context);
+    return Stack(
+      children: [
+        if (applicationBloc.searchResults != null &&
+            applicationBloc.searchResults.length != 0)
+          Container(
+              height: 300.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  // .withOpacity(.6),
+                  // backgroundBlendMode: BlendMode.darken
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 5.0,
+                        spreadRadius: 0.5,
+                        offset: Offset(
+                          0.7,
+                          0.7,
+                        ))
+                  ])),
+        if (applicationBloc.searchResults != null)
+          Container(
+            height: 300.0,
+            child: ListView.separated(
+              itemCount: applicationBloc.searchResults.length,
+              padding: EdgeInsets.all(10),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  // leading: Icon(Icons.location_city,color: Colors.black,),
+                  leading: Icon(icons[index]),
+                  title: Text(
+                    applicationBloc
+                        // .searchResults[index].name,
+                        .searchResults[index]
+                        .description,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: () {
+                    applicationBloc.setSelectedLocation(
+                        applicationBloc.searchResults[index].placeId);
+                  },
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+            ),
+          )
+      ],
+    );
+  }
 
-  //   return
-  //       //new search bar
-  //       Padding(
-  //     padding: const EdgeInsets.only(top: 63, left: 25, right: 25),
-  //     child: Container(
-  //       // width: MediaQuery.of(context).size.width +50,
-  //       // height: MediaQuery.of(context).size.height,
-  //       width: MediaQuery.of(context).size.width,
-  //       // margin: EdgeInsets.only(top: 80.0, left: 40.0, right: 40.0),
-  //       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-  //       decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.circular(30),
-  //           boxShadow: [
-  //             BoxShadow(
-  //                 color: Colors.black12,
-  //                 blurRadius: 5.0,
-  //                 spreadRadius: 0.5,
-  //                 offset: Offset(
-  //                   0.7,
-  //                   0.7,
-  //                 ))
-  //           ]),
-  //       child:
-        
-  //           // TextField(
-  //           //   // controller: _locationController,
-  //           //   textCapitalization: TextCapitalization.words,
-  //           //   textInputAction: TextInputAction.search,
-  //           //   decoration: InputDecoration(
-  //           //     hintText: 'ค้นหาห้องน้ำ',
-  //           //     /*'Search',*/
-  //           //     hintStyle:
-  //           //         TextStyle(fontSize: 13.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
-  //           //     icon: Icon(
-  //           //       Icons.search,
-  //           //       color: Colors.black54,
-  //           //     ),
-  //           //     border: InputBorder.none,
-  //           //     suffixIcon: IconButton(
-  //           //       // onPressed: () => ,
-  //           //       onPressed: () {
-  //           //         Navigator.pushNamed(context, '/four');
-  //           //       },
-  //           //       icon: Icon(
-  //           //         Icons.account_circle,
-  //           //         size: 30,
-  //           //         color: Colors.black54,
-  //           //       ),
-  //           //     ),
-  //           //   ),
-  //           //   // cursorColor: Colors.black87,
-  //           //   // style: TextStyle(height: 2.0, fontSize: 20.0),
-  //           //   // onChanged: (value) => applicationBloc.searchPlaces(value),
-  //           //   // onTap: () => applicationBloc.clearSelectedLocation(),
-  //           // ),
-  //           TextField(
-  //         controller: _controller,
-  //         readOnly: true,
-  //         style: TextStyle(fontSize: 18.0, fontFamily: 'Sukhumvit'),
-  //         onTap: () async {
-  //           // generate a new token here
-  //           final sessionToken = Uuid().v4();
-  //           final Suggestion result = await showSearch(
-  //             context: context,
-  //             delegate: AddressSearch(sessionToken),
-  //           );
-  //           // This will change the text displayed in the TextField
-  //           if (result != null) {
-  //             final placeDetails = await PlaceApiProvider(sessionToken)
-  //                 .getPlaceDetailFromId(result.placeId);
-  //             setState(() {
-  //               _controller.text = result.description;
-  //               _streetNumber = placeDetails.streetNumber;
-  //               _street = placeDetails.street;
-  //               _city = placeDetails.city;
-  //               _zipCode = placeDetails.zipCode;
-  //             });
-  //           }
-  //         },
-  //         decoration: InputDecoration(
-  //           hintText: 'ค้นหาห้องน้ำ',
-  //           /*'Search',*/
-  //           hintStyle:
-  //               TextStyle(fontSize: 15.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
-  //           icon: Icon(
-  //             Icons.search,
-  //             color: Colors.black54,
-  //           ),
-  //           border: InputBorder.none,
-  //           suffixIcon: IconButton(
-  //             // onPressed: () => ,
-  //             onPressed: () {
-  //               Navigator.pushNamed(context, '/four');
-  //             },
-  //             icon: Icon(
-  //               Icons.account_circle,
-  //               size: 30,
-  //               color: Colors.black54,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget maps() {
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
 
-//ปุ่ม zoom เข้า-ออก
-  // Widget _zoomminusfunction() {
-  //   return Align(
-  //     alignment: Alignment.topLeft,
-  //     child: IconButton(
-  //         icon: Icon(OMIcons.zoomIn, color: Color(0xff6200ee)),
-  //         onPressed: () {
-  //           zoomVal--;
-  //           _minus(zoomVal);
-  //         }),
-  //   );
-  // }
+    return Stack(children: [
+      Container(
+        // height: 600.0,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: GoogleMap(
+          mapType: MapType.normal,
+          padding: EdgeInsets.only(top: 100),
+          myLocationEnabled: true,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(applicationBloc.currentLocation.latitude,
+                applicationBloc.currentLocation.longitude),
+            zoom: 14,
+          ),
+          onMapCreated: (GoogleMapController controller) {
+            _mapController.complete(controller);
+          },
+          markers: Set<Marker>.of(applicationBloc.markers),
+        ),
+      ),
+    ]);
+  }
 
-  // Widget _zoomplusfunction() {
-  //   return Align(
-  //     alignment: Alignment.topRight,
-  //     child: IconButton(
-  //         icon: Icon(OMIcons.zoomOut, color: Color(0xff6200ee)),
-  //         onPressed: () {
-  //           zoomVal++;
-  //           _plus(zoomVal);
-  //         }),
-  //   );
-  // }
-
-  // Future<void> _minus(double zoomVal) async {
-  //   final GoogleMapController controller = await _controller.future;
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(
-  //       CameraPosition(target: LatLng(40.712776, -74.005974), zoom: zoomVal)));
-  // }
-
-  // Future<void> _plus(double zoomVal) async {
-  //   final GoogleMapController controller = await _controller.future;
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(
-  //       CameraPosition(target: LatLng(40.712776, -74.005974), zoom: zoomVal)));
-  // }
+  Future<void> _goToPlace(Place place) async {
+    final GoogleMapController controller = await _mapController.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(
+                place.geometry.location.lat, place.geometry.location.lng),
+            zoom: 14.0),
+      ),
+    );
+  }
 
   Widget _buildContainer() {
     return Align(
@@ -516,7 +343,7 @@ class HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () {
         // _gotoLocation(lat, long);
-        Navigator.pushNamed(context, '/third');
+        // Navigator.pushNamed(context, '/third');
       },
       child: Container(
         child: new FittedBox(
@@ -832,92 +659,6 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  Widget _buildGoogleMap(BuildContext context) {
-    final applicationbloc = Provider.of<ApplicationBloc>(context);
-
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: GoogleMap(
-        // จากหน้า map
-        // padding: EdgeInsets.only(
-        //   top: 120,
-        //   right: 20,
-        //   bottom: 189,
-        // ),
-
-        //new
-        mapType: MapType.normal,
-        // initialCameraPosition:
-        //     CameraPosition(target: LatLng(40.712776, -74.005974), zoom: 12),
-        onMapCreated: (GoogleMapController controller) {
-          _mapController.complete(controller);
-          //old --------------------------------------
-          // _controller.complete(controller);
-        },
-        // onMapCreated: (controller) => _googleMapController = controller,
-
-        initialCameraPosition: CameraPosition(
-          target: LatLng(applicationbloc.currentLocation.latitude,
-              applicationbloc.currentLocation.longitude),
-          zoom: 16.0,
-        ),
-        myLocationButtonEnabled: true,
-        myLocationEnabled: true,
-        zoomControlsEnabled: false,
-
-        padding: EdgeInsets.only(
-          top: 120,
-          right: 20,
-          bottom: 189,
-        ),
-
-        //marker ของแต่ละ location ที่ปักไว้
-        markers: {
-          newyork1Marker,
-          newyork2Marker,
-          newyork3Marker,
-          gramercyMarker,
-          bernardinMarker,
-          kmuttMarker,
-          blueMarker
-        },
-      ),
-    );
-  }
-
-  // Widget mylocation() {
-  //   final applicationbloc = Provider.of<Applicationbloc>(context);
-
-  //   //button current location
-  //   return Container(
-  //     color: Colors.transparent,
-  //     margin: EdgeInsets.all(15),
-  //     padding:
-  //         //  const EdgeInsets.fromLTRB(
-  //         //     320 /*left*/, 110 /*top*/, 0 /*right*/, 0 /*bottom*/),
-  //         EdgeInsets.only(
-  //       top: 120,
-  //       right: 20,
-  //       left: 300,
-  //       bottom: 189,
-  //     ),
-  //     child: FloatingActionButton(
-  //       backgroundColor: Colors.white.withOpacity(0.8),
-  //       //Theme.of(context).primaryColorLight,
-  //       foregroundColor: Colors.black,
-  //       onPressed: () => LatLng(applicationbloc.currentLocation.latitude,
-  //           applicationbloc.currentLocation.longitude),
-  //       // onPressed : () => _googleMapController.animateCamera(
-  //       //   CameraUpdate.newCameraPosition(_intitialCameraPosition)),
-  //       child: Icon(
-  //         Icons.my_location,
-  //         size: 20,
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Future<void> _gotoLocation(double lat, double long) async {
     final GoogleMapController controller = await _mapController.future;

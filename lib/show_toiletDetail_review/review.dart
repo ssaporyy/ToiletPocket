@@ -14,8 +14,8 @@ Widget rate(BuildContext context) {
           Container(
             child: Column(children: [
               Image(
-                width: 35,
-                height: 35,
+                width: 30,
+                height: 30,
                 image: AssetImage('images/star.png'),
               ),
               Text(
@@ -126,7 +126,7 @@ Widget comment(BuildContext context) {
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(
                           'https://cdn.readawrite.com/articles/1821/1820201/thumbnail/large.gif?3'),
-                      radius: 30,
+                      radius: 22,
                     ),
                   ),
                 ),
