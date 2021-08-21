@@ -1,8 +1,10 @@
 import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:ToiletPocket/screen/profile.dart';
 import 'package:ToiletPocket/screen/showUp.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive/rive.dart';
 
@@ -138,6 +140,9 @@ class FirstScreenState extends State<FirstScreen> {
                 color: Colors.transparent,
                 child: ElevatedButton.icon(
                   onPressed: () {
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
+                    provider.login();
                     //กดแล้ว login บัญชี google
                     // googleSignIn.signOut();
                   },

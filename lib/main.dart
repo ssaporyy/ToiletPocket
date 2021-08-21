@@ -16,8 +16,10 @@ import 'package:ToiletPocket/screen/search.dart';
 // import 'package:ToiletPocket/toiletdetail.dart';
 // import 'package:toiletpocket/searchbar.dart';
 import 'package:flutter/material.dart';
-// import 'package:toiletpocket/map.dart';
+import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:provider/provider.dart';
+// import 'package:toiletpocket/map.dart';
+
 
 void main() {
   // runApp(
@@ -33,18 +35,27 @@ void main() {
   runApp(MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ApplicationBloc(),
+    return MultiProvider(
+      providers: [
+      ChangeNotifierProvider<GoogleSignInProvider>(
+        create: (_) => GoogleSignInProvider(),
+      ),
+      ChangeNotifierProvider<ApplicationBloc>(
+        create: (_) => ApplicationBloc() ,
+      ),
+  ],
+      // create: (context) => ApplicationBloc(),
       child: MaterialApp(
         title: 'Toilet Pocket',
         // Start the app with the "/" named route. In this case, the app starts
         // on the FirstScreen widget.
 
-        initialRoute: '/two',
+        initialRoute: '/one',
         routes: {
           //   // When navigating to the "/" route, build the FirstScreen widget.
           '/one': (context) => FirstScreen(),
