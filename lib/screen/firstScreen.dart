@@ -140,9 +140,9 @@ class FirstScreenState extends State<FirstScreen> {
                 color: Colors.transparent,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    final provider = Provider.of<GoogleSignInProvider>(context,
-                        listen: false);
-                    provider.login();
+                    // final provider = Provider.of<GoogleSignInProvider>(context,
+                    //     listen: false);
+                    // provider.login();
                     //กดแล้ว login บัญชี google
                     // googleSignIn.signOut();
                   },
