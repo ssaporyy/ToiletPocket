@@ -253,9 +253,11 @@ class _HomeonescreenState extends State<Homeonescreen> {
           padding: EdgeInsets.only(top: 100),
           myLocationEnabled: true,
           initialCameraPosition: CameraPosition(
+            zoom: 16,
+            tilt: 50,
+            // bearing: 30,
             target: LatLng(applicationBloc.currentLocation.latitude,
                 applicationBloc.currentLocation.longitude),
-            zoom: 14,
           ),
           onMapCreated: (GoogleMapController controller) {
             _mapController.complete(controller);
