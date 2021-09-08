@@ -177,7 +177,8 @@ class _addImageState extends State<addImage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Row(
+        body: 
+        Row(
           children: <Widget>[
             Container(
               // padding: EdgeInsets.only(top: 36),

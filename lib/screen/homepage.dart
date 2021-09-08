@@ -1,201 +1,311 @@
 import 'dart:async';
+
+
 import 'package:ToiletPocket/blocs/application_bloc.dart';
-import 'package:ToiletPocket/blocs/application_bloc2.dart';
-import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/models/place_response.dart';
+import 'package:ToiletPocket/models/places.dart';
+import 'package:ToiletPocket/models/result.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
-
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
-import 'package:ToiletPocket/search/address_search.dart';
-import 'package:ToiletPocket/search/place_service.dart';
+import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/models/place.dart';
+import 'package:ToiletPocket/services/geolocator_service.dart';
+import 'package:ToiletPocket/services/marker_service.dart';
+
+//
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:ToiletPocket/models/error.dart';
+
 
 class HomePage extends StatefulWidget {
+  HomePage({Key key}) : super(key: key);
+
   @override
-  HomePageState createState() => HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
   Completer<GoogleMapController> _mapController = Completer();
-    final _locationController = TextEditingController();
-
-
-  GoogleMapController controller;
-  Position currentLocation;
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  StreamSubscription locationSubscription;
+  StreamSubscription boundsSubscription;
+  final _locationController = TextEditingController();
 
   @override
   void initState() {
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
+
+    //Listen for selected Location
+    locationSubscription =
+        applicationBloc.selectedLocation.stream.listen((place) {
+      if (place != null) {
+        _locationController.text = place.name;
+        _goToPlace(place);
+      } else
+        _locationController.text = "";
+    });
+
+    applicationBloc.bounds.stream.listen((bounds) async {
+      final GoogleMapController controller = await _mapController.future;
+      controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+    });
     super.initState();
+    //new
+    setCustomMapPin();
   }
 
-  double zoomVal = 5.0;
-
-//new -------------------------------------------------------
-  // Completer<GoogleMapController> _mapController = Completer();
-  //   // Completer<GoogleMapController> _mapController = Completer();
-  // StreamSubscription locationSubscription;
-  // StreamSubscription boundsSubscription;
-  // final _locationController = TextEditingController();
-
-
-  // @override
-  // void initState() {
-  //   final applicationBloc =
-  //       Provider.of<ApplicationBloc2>(context, listen: false);
-
-
-  //   //Listen for selected Location
-  //   locationSubscription = applicationBloc.selectedLocation.stream.listen((place) {
-  //     if (place != null) {
-  //       _locationController.text = place.name;
-  //       // _goToPlace(place);
-  //     } else
-  //       _locationController.text = "";
-  //   });
-
-  //   applicationBloc.bounds.stream.listen((bounds) async {
-  //     final GoogleMapController controller = await _mapController.future;
-  //     controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
-  //   });
-  //   super.initState();
-  // }
-
-
-
-  // @override
-  // void dispose() {
-  //   final applicationBloc =
-  //       Provider.of<ApplicationBloc2>(context, listen: false);
-  //   applicationBloc.dispose();
-  //   _locationController.dispose();
-  //   locationSubscription.cancel();
-  //   boundsSubscription.cancel();
-  //   super.dispose();
-  // }
-
-  //new -------------------------------------------------------
-
-  // _appBar(height) => PreferredSize(
-  //       preferredSize: Size(
-  //         MediaQuery.of(context).size.width, height + 180, ),
-  //       child: Stack(
-  //         children: <Widget>[
-
-  //           //new search bar
-  //           Container(
-  //             margin: EdgeInsets.only(top: 100.0, left: 15.0, right: 15.0),
-  //             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 1),
-  //             decoration: BoxDecoration(
-  //                 color: Colors.black12,
-  //                 borderRadius: BorderRadius.circular(30),
-  //                 boxShadow: [
-  //                   BoxShadow(
-  //                       color: Colors.black12,
-  //                       blurRadius: 5.0,
-  //                       spreadRadius: 0.5,
-  //                       offset: Offset(
-  //                         0.7,
-  //                         0.7,
-  //                       ))
-  //                 ]),
-  //             child: TextField(
-  //               // controller: _locationController,
-  //               textCapitalization: TextCapitalization.words,
-  //               textInputAction: TextInputAction.search,
-  //               decoration: InputDecoration(
-  //                 hintText: 'ค้นหาห้องน้ำ',
-  //                 /*'Search',*/
-  //                 hintStyle: TextStyle(
-  //                     fontSize: 18.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
-  //                 icon: Icon(
-  //                   Icons.search,
-  //                   color: Colors.black54,
-  //                 ),
-  //                 border: InputBorder.none,
-  //                 suffixIcon: IconButton(
-  //                   // onPressed: () => ,
-  //                   onPressed: () {},
-  //                   icon: Icon(
-  //                     Icons.account_circle,
-  //                     size: 35,
-  //                     color: Colors.black54,
-  //                   ),
-  //                 ),
-  //               ),
-  //               cursorColor: Colors.black87,
-  //               style: TextStyle(height: 1.2, fontSize: 20.0),
-  //               // onChanged: (value) => applicationBloc.searchPlaces(value),
-  //               // onTap: () => applicationBloc.clearSelectedLocation(),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-
-  //     );
+  //new
+  BitmapDescriptor pinLocationIcon;
+  Error error;
+  List<Result> places;
+  bool searching = true;
+  String keyword;
+  List<Marker> markers = <Marker>[];
+  static const String baseUrl =
+      "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
+  static const String _API_KEY = 'AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno';
+  double lat;
+  double lng;
+  // static double latitude = 13.736717;
+  // static double longitude = 100.523186;
+//new
+  void setCustomMapPin() async {
+    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(10, 10)), 'assets/Icon-flush.png');
+  }
 
   @override
-  Widget build(BuildContext context) {
+  void dispose() {
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
+    applicationBloc.dispose();
+    _locationController.dispose();
+    locationSubscription.cancel();
+    boundsSubscription.cancel();
+    super.dispose();
+  }
 
-    return Scaffold(
-      // appBar: AppBar(
-      //   leading: IconButton(
-      //       icon: Icon(FontAwesomeIcons.arrowLeft),
-      //       onPressed: () {
-      //         //
-      //       }),
-      //   title: Text("New York"),
-      //   actions: <Widget>[
-      //     IconButton(
-      //         icon: Icon(FontAwesomeIcons.search),
-      //         onPressed: () {
-      //           //
-      //         }),
-      //   ],
-      // ),
-
-      // appBar: _appBar(AppBar().preferredSize.height,),
-
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   iconTheme: IconThemeData(color: Colors.white),
-      //   elevation: 0.0,
-      //   brightness: Brightness.dark,
-      // ),
-      // extendBodyBehindAppBar: true,
-
-      body: Stack(
-        children: <Widget>[
-          _buildGoogleMap(context),
-          // mylocation(),
-
-          search(),
-          
-          ////ปุ่ม zoom เข้า-ออก
-          // _zoomminusfunction(),
-          // _zoomplusfunction(),
-          _buildContainer(),
-        ],
+  Future<void> _goToPlace(Place place) async {
+    final GoogleMapController controller = await _mapController.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(
+                place.geometry.location.lat, place.geometry.location.lng),
+            zoom: 14.0),
       ),
     );
   }
 
-  
+  @override
+  Widget build(BuildContext context) {
+    final currentPosition = Provider.of<Position>(context);
+    final placesProvider = Provider.of<Future<List<Places>>>(context);
+    final geoService = GeoLocatorService();
+    final markerService = MarkerService();
+    //new
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
+
+    return FutureProvider(
+      create: (context) => placesProvider,
+      child: Scaffold(
+        body: (applicationBloc.currentLocation != null)
+            // ? Consumer<List<Result>>(
+            ? Consumer<List<Places>>(
+                builder: (_, places, __) {
+                  var markers = (places != null)
+                      ? applicationBloc.markerService.getMarkers(places)
+                      : List<Marker>();
+                  return (places != null)
+                      ? Stack(
+                          children: [
+                            // Maps(),
+                            Container(
+                              // height: MediaQuery.of(context).size.height / 2,
+                              // height: 500,
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                              child: GoogleMap(
+                                initialCameraPosition: CameraPosition(
+                                    target: LatLng(
+                                        applicationBloc
+                                            .currentLocation.latitude,
+                                        applicationBloc
+                                            .currentLocation.longitude),
+                                    zoom: 13.0),
+                                zoomGesturesEnabled: true,
+                                onMapCreated: (GoogleMapController controller) {
+                                  _mapController.complete(controller);
+                                },
+                                markers: Set<Marker>.of(markers),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 20),
+                                margin: EdgeInsets.symmetric(vertical: 18.0),
+                                height: 250.0,
+                                child: (places.length > 0)
+                                    ? ListView.builder(
+                                        //ตั้งให้แสดงขึ้นมา 5 ที่โดยไม่ได้กำหนดระยะทาง
+                                        itemCount: places.length = 5,
+                                        // itemCount: places.length,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          return FutureProvider(
+                                            create: (context) =>
+                                                geoService.getDistance(
+                                                    applicationBloc
+                                                        .currentLocation
+                                                        .latitude,
+                                                    applicationBloc
+                                                        .currentLocation
+                                                        .longitude,
+                                                    places[index]
+                                                        .geometry
+                                                        .location
+                                                        .lat,
+                                                    places[index]
+                                                        .geometry
+                                                        .location
+                                                        .lng),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: _boxes(
+                                                // "${places[index].photos}",
+                                                "",
+                                                // "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+                                                applicationBloc
+                                                    .currentLocation.latitude,
+                                                applicationBloc
+                                                    .currentLocation.longitude,
+                                                "${places[index].name}",
+                                                // "${places[index].name}",
+                                                /*score*/ places[index]
+                                                    .userRatingsTotal,
+                                                /*rating*/ places[index],
+                                                /*address*/ places[index]
+                                                    .vicinity,
+                                                /**test */ '',
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : Center(
+                                        child: Text('No Parking Found Nearby'),
+                                      ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 65,
+                              left: 20,
+                              right: 20,
+                              child: search(),
+                            ),
+
+                            // Align(
+                            //   alignment: Alignment.bottomRight,
+                            //   child: Padding(
+                            //     padding: EdgeInsets.all(10),
+                            //     child: FloatingActionButton.extended(
+                            //       onPressed: () {
+                            //         searchNearby(applicationBloc.selectedLocationStatic.geometry.location.lat, applicationBloc.selectedLocationStatic.geometry.location.lng);
+                            //       },
+                            //       label: Text('Places Nearby'),
+                            //       icon: Icon(Icons.place),
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        )
+                      : Center(child: CircularProgressIndicator());
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
+      ),
+    );
+  }
+
+//เครื่องหมายนำทางเด้งไปแอพ maps
+  // void _launchMapsUrl(double lat, double lng) async {
+  //   final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$lng';
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
+
+  void searchNearby(double lat, double lng) async {
+    setState(() {
+      markers.clear();
+    });
+    String url =
+        '$baseUrl?key=$_API_KEY&location=$lat,$lng&radius=1500&keyword=toilets';
+    print(url);
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      _handleResponse(data);
+    } else {
+      throw Exception('An error occurred getting places nearby');
+    }
+
+    // make sure to hide searching
+    setState(() {
+      searching = false;
+    });
+  }
+
+  void _handleResponse(data) {
+    // bad api key or otherwise
+    if (data['status'] == "REQUEST_DENIED") {
+      setState(() {
+        error = Error.fromJson(data);
+      });
+      // success
+    } else if (data['status'] == "OK") {
+      setState(() {
+        places = PlaceResponse.parseResults(data['results']);
+        for (int i = 0; i < places.length; i++) {
+          markers.add(
+            Marker(
+              markerId: MarkerId(places[i].placeId),
+              // icon: BitmapDescriptor.defaultMarkerWithHue(198.0),
+              icon: pinLocationIcon,
+              position: LatLng(places[i].geometry.location.lat,
+                  places[i].geometry.location.lng),
+              infoWindow: InfoWindow(
+                  title: places[i].name, snippet: places[i].vicinity),
+              onTap: () {},
+            ),
+          );
+        }
+      });
+    } else {
+      print(data);
+    }
+  }
+
   Widget search() {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
+    // var txt = TextEditingController();
 
     return Column(
       children: [
         Padding(
           //old
-          padding: const EdgeInsets.only(top: 50.0),
+          padding: const EdgeInsets.only(top: 0.0),
           // padding: const EdgeInsets.all(8.0),
           //new
           child: Container(
@@ -231,20 +341,29 @@ class HomePageState extends State<HomePage> {
                   color: Colors.black54,
                 ),
                 border: InputBorder.none,
-                suffixIcon: IconButton(
-                  // onPressed: () => ,
-                  onPressed: () {
+                suffixIcon: InkWell(
+                  onTap: () {
                     Navigator.pushNamed(context, '/four');
                   },
-                  icon: Icon(
-                    Icons.account_circle,
-                    size: 30,
-                    color: Colors.black54,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: CircleAvatar(
+                          radius: 15.0,
+                          backgroundImage:
+                              // NetworkImage(_googleSignIn.currentUser.photoUrl),
+                              NetworkImage(
+                                  'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
               onChanged: (value) => applicationBloc.searchPlaces(value),
-              onTap: () => applicationBloc.clearSelectedLocation(),
+              // onTap: () => applicationBloc.clearSelectedLocation(),
             ),
           ),
         ),
@@ -270,249 +389,65 @@ class HomePageState extends State<HomePage> {
                         0.7,
                       ))
                 ]),
-            child: ListView.builder(
-                itemCount: applicationBloc.searchResults.length,
-                padding: EdgeInsets.all(10),
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      applicationBloc
-                          // .searchResults[index].name,
-                          .searchResults[index]
-                          .description,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onTap: () {
-                      applicationBloc.setSelectedLocation(
-                          applicationBloc.searchResults[index].placeId);
-                    },
-                  );
-                }),
+            child: ListView.separated(
+              itemCount: applicationBloc.searchResults.length,
+              // itemCount: 0,
+              padding: EdgeInsets.all(10),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    applicationBloc
+                        // .searchResults[index].name,
+                        .searchResults[index]
+                        .description,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: () {
+                    applicationBloc.setSelectedLocation(
+                        applicationBloc.searchResults[index].placeId);
+                    // applicationBloc.setSelectedLocation(
+                    //     applicationBloc.searchResults[index].placeId);
+                  },
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+            ),
           )
       ],
     );
   }
 
-  // Widget search() {
-  //   final _controller = TextEditingController();
-  //   String _streetNumber = '';
-  //   String _street = '';
-  //   String _city = '';
-  //   String _zipCode = '';
-
-  //   @override
-  //   void dispose() {
-  //     _controller.dispose();
-  //     super.dispose();
-  //   }
-  //   final applicationBloc = Provider.of<ApplicationBloc>(context);
-
-  //   return
-  //       //new search bar
-  //       Padding(
-  //     padding: const EdgeInsets.only(top: 63, left: 25, right: 25),
-  //     child: Container(
-  //       // width: MediaQuery.of(context).size.width +50,
-  //       // height: MediaQuery.of(context).size.height,
-  //       width: MediaQuery.of(context).size.width,
-  //       // margin: EdgeInsets.only(top: 80.0, left: 40.0, right: 40.0),
-  //       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-  //       decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.circular(30),
-  //           boxShadow: [
-  //             BoxShadow(
-  //                 color: Colors.black12,
-  //                 blurRadius: 5.0,
-  //                 spreadRadius: 0.5,
-  //                 offset: Offset(
-  //                   0.7,
-  //                   0.7,
-  //                 ))
-  //           ]),
-  //       child:
-        
-  //           // TextField(
-  //           //   // controller: _locationController,
-  //           //   textCapitalization: TextCapitalization.words,
-  //           //   textInputAction: TextInputAction.search,
-  //           //   decoration: InputDecoration(
-  //           //     hintText: 'ค้นหาห้องน้ำ',
-  //           //     /*'Search',*/
-  //           //     hintStyle:
-  //           //         TextStyle(fontSize: 13.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
-  //           //     icon: Icon(
-  //           //       Icons.search,
-  //           //       color: Colors.black54,
-  //           //     ),
-  //           //     border: InputBorder.none,
-  //           //     suffixIcon: IconButton(
-  //           //       // onPressed: () => ,
-  //           //       onPressed: () {
-  //           //         Navigator.pushNamed(context, '/four');
-  //           //       },
-  //           //       icon: Icon(
-  //           //         Icons.account_circle,
-  //           //         size: 30,
-  //           //         color: Colors.black54,
-  //           //       ),
-  //           //     ),
-  //           //   ),
-  //           //   // cursorColor: Colors.black87,
-  //           //   // style: TextStyle(height: 2.0, fontSize: 20.0),
-  //           //   // onChanged: (value) => applicationBloc.searchPlaces(value),
-  //           //   // onTap: () => applicationBloc.clearSelectedLocation(),
-  //           // ),
-  //           TextField(
-  //         controller: _controller,
-  //         readOnly: true,
-  //         style: TextStyle(fontSize: 18.0, fontFamily: 'Sukhumvit'),
-  //         onTap: () async {
-  //           // generate a new token here
-  //           final sessionToken = Uuid().v4();
-  //           final Suggestion result = await showSearch(
-  //             context: context,
-  //             delegate: AddressSearch(sessionToken),
-  //           );
-  //           // This will change the text displayed in the TextField
-  //           if (result != null) {
-  //             final placeDetails = await PlaceApiProvider(sessionToken)
-  //                 .getPlaceDetailFromId(result.placeId);
-  //             setState(() {
-  //               _controller.text = result.description;
-  //               _streetNumber = placeDetails.streetNumber;
-  //               _street = placeDetails.street;
-  //               _city = placeDetails.city;
-  //               _zipCode = placeDetails.zipCode;
-  //             });
-  //           }
-  //         },
-  //         decoration: InputDecoration(
-  //           hintText: 'ค้นหาห้องน้ำ',
-  //           /*'Search',*/
-  //           hintStyle:
-  //               TextStyle(fontSize: 15.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
-  //           icon: Icon(
-  //             Icons.search,
-  //             color: Colors.black54,
-  //           ),
-  //           border: InputBorder.none,
-  //           suffixIcon: IconButton(
-  //             // onPressed: () => ,
-  //             onPressed: () {
-  //               Navigator.pushNamed(context, '/four');
-  //             },
-  //             icon: Icon(
-  //               Icons.account_circle,
-  //               size: 30,
-  //               color: Colors.black54,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
+  /////////////////////////////////////////// new
+  // Future<void> _goToPlace(Place place) async {
+  //   final GoogleMapController controller = await _mapController.future;
+  //   controller.animateCamera(
+  //     CameraUpdate.newCameraPosition(
+  //       CameraPosition(
+  //           target: LatLng(
+  //               place.geometry.location.lat, place.geometry.location.lng),
+  //           zoom: 14.0),
   //     ),
   //   );
   // }
 
-//ปุ่ม zoom เข้า-ออก
-  // Widget _zoomminusfunction() {
-  //   return Align(
-  //     alignment: Alignment.topLeft,
-  //     child: IconButton(
-  //         icon: Icon(OMIcons.zoomIn, color: Color(0xff6200ee)),
-  //         onPressed: () {
-  //           zoomVal--;
-  //           _minus(zoomVal);
-  //         }),
-  //   );
-  // }
-
-  // Widget _zoomplusfunction() {
-  //   return Align(
-  //     alignment: Alignment.topRight,
-  //     child: IconButton(
-  //         icon: Icon(OMIcons.zoomOut, color: Color(0xff6200ee)),
-  //         onPressed: () {
-  //           zoomVal++;
-  //           _plus(zoomVal);
-  //         }),
-  //   );
-  // }
-
-  // Future<void> _minus(double zoomVal) async {
+  // Future<void> _gotoLocation(double lat, double long,context) async {
+  //   // final GoogleMapController controller = await _mapController.future;
+  //   //old -------------------------------------------------------------
   //   final GoogleMapController controller = await _controller.future;
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(
-  //       CameraPosition(target: LatLng(40.712776, -74.005974), zoom: zoomVal)));
+  //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+  //   // controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+  //     target: LatLng(place.geometry.location.lat, place.geometry.location.lng),
+  //     // target: LatLng(lat, long),
+  //     zoom: 15,
+  //     tilt: 50.0,
+  //     bearing: 45.0,
+  //   )));
   // }
 
-  // Future<void> _plus(double zoomVal) async {
-  //   final GoogleMapController controller = await _controller.future;
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(
-  //       CameraPosition(target: LatLng(40.712776, -74.005974), zoom: zoomVal)));
-  // }
-
-  Widget _buildContainer() {
-    return Align(
-      alignment: Alignment.bottomLeft,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 18.0),
-        height: 250.0,
-        child: ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            SizedBox(width: 10.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipORp6yyQOYLlycgjzYCXOgNjykKvfFlPrkTHPxo=w408-h272-k-no",
-                  13.65004,
-                  100.49449,
-                  "มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี"),
-            ),
-            SizedBox(width: 10.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipPBP8muRmeYLaGWKkKFmXaSHHs2WH55Ah4AKYeh=w408-h271-k-no",
-                  13.66,
-                  100.49449,
-                  "KMUTT Library"),
-            ),
-            SizedBox(width: 10.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipP-W915Ac24QVcnF3WKnDx6KxyPoM6HL74zWfPZ=w408-h306-k-no",
-                  13.65004,
-                  100.49449,
-                  "โรงอาหาร มจธ."),
-            ),
-            SizedBox(width: 10.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipMKRN-1zTYMUVPrH-CcKzfTo6Nai7wdL7D8PMkt=w340-h160-k-no",
-                  40.761421,
-                  -73.981667,
-                  "Le Bernardin"),
-            ),
-            SizedBox(width: 10.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _boxes(
-                  "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-                  40.732128,
-                  -73.999619,
-                  "Blue Hill"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _boxes(String _image, double lat, double long, String restaurantName) {
+  Widget _boxes(String _image, double lat, double long, String restaurantName,
+      score, rating, address, testt) {
     return GestureDetector(
       onTap: () {
         // _gotoLocation(lat, long);
@@ -543,7 +478,18 @@ class HomePageState extends State<HomePage> {
                       ),
                       child: Image(
                         fit: BoxFit.cover,
-                        image: NetworkImage(_image),
+                        image: NetworkImage(
+                          _image,
+                        ),
+                        errorBuilder: (context, exception, stackTrack) =>
+                            Container(
+                          color: ToiletColors.colorButton,
+                          child: Icon(
+                            Icons.collections,
+                            size: 100,
+                            color: ToiletColors.colorPurple,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -552,14 +498,15 @@ class HomePageState extends State<HomePage> {
                     height: 450,
                     // height: MediaQuery.of(context).size.width + 5,
                     padding: const EdgeInsets.only(
-                        bottom: 40, top: 30, left: 20, right: 20),
+                        bottom: 40, top: 15, left: 20, right: 20),
                     margin: EdgeInsets.all(20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          child: myDetailsContainer1(restaurantName),
+                          child: myDetailsContainer1(
+                              restaurantName, score, rating, address, testt),
                         ),
                         Container(
                           child: Row(
@@ -573,7 +520,7 @@ class HomePageState extends State<HomePage> {
                                   color: ToiletColors.colorButton,
                                   onPressed: () {
                                     //กดไปหน้า นำทาง
-                                    _gotoLocation(lat, long);
+                                    // _gotoLocation(lat, long);
                                   },
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
@@ -697,7 +644,9 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget myDetailsContainer1(String restaurantName) {
+  // Widget myDetailsContainer1(String restaurantName, context, index) {
+  Widget myDetailsContainer1(
+      String restaurantName, score, rating, address, testt) {
     return Container(
       alignment: Alignment.topLeft,
       child: Column(
@@ -713,117 +662,109 @@ class HomePageState extends State<HomePage> {
                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                 fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 10.0),
+          SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Container(
-                  child: Text(
-                "4.1",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 40.0,
-                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                ),
-              )),
-              // SizedBox(width: 10.0),
-              Container(
-                child: Icon(
-                  OMIcons.star,
-                  color: Colors.amber,
-                  size: 35.0,
-                ),
+              Row(
+                children: <Widget>[
+                  RatingBarIndicator(
+                    rating: rating.rating,
+                    itemBuilder: (context, index) =>
+                        Icon(Icons.star, color: Colors.amber),
+                    itemCount: 5,
+                    itemSize: 40.0,
+                    direction: Axis.horizontal,
+                  ),
+                  Text(
+                    '($score)',
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 35.0,
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        fontWeight: FontWeight.normal),
+                  )
+                ],
               ),
-              // SizedBox(width: 8.0),
-              Container(
-                child: Icon(
-                  OMIcons.star,
-                  color: Colors.amber,
-                  size: 35.0,
-                ),
-              ),
-              // SizedBox(width: 8.0),
-              Container(
-                child: Icon(
-                  OMIcons.star,
-                  color: Colors.amber,
-                  size: 35.0,
-                ),
-              ),
-              // SizedBox(width: 8.0),
-              Container(
-                child: Icon(
-                  OMIcons.star,
-                  color: Colors.amber,
-                  size: 35.0,
-                ),
-              ),
-              // SizedBox(width: 8.0),
-              Container(
-                child: Icon(
-                  OMIcons.starHalf,
-                  color: Colors.amber,
-                  size: 35.0,
-                ),
-              ),
-              // SizedBox(width: 8.0),
-              Container(
-                  child: Text(
-                "(946)",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 30.0,
-                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                ),
-              )),
             ],
           ),
-          // SizedBox(height: 5.0),
+          SizedBox(height: 10.0),
           Row(
             children: [
-              Container(
-                  child: Text(
-                "Kmutt \u00B7 ",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 35.0,
-                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Consumer<double>(
+                      builder: (context, meters, wiget) {
+                        return (meters != null)
+                            ? Text(
+                                '$address',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 30.0,
+                                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                    fontWeight: FontWeight.normal),
+                              )
+                            : Container();
+                      },
+                    ),
+                  ],
                 ),
-              )),
-              Container(child: Icon(OMIcons.directionsCar)),
-              Container(
-                  child: Text(
-                "\u00B7 1.6 mi",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 30.0,
-                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                ),
-              )),
+              ),
+              // Container(child: Icon(Icons.directions)),
+              // Container(
+              //     //mi
+              //     child: Text(
+              //   mi,
+              //   style: TextStyle(
+              //     color: Colors.black54,
+              //     fontSize: 30.0,
+              //     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+              //   ),
+              // )),
             ],
           ),
-          // SizedBox(height: 5.0),
+          SizedBox(height: 15.0),
           Container(
             child: new Row(
               children: <Widget>[
                 Text(
                   "Closed \u00B7 Opens 17:00 Thu",
+                  // testt,
+
                   style: TextStyle(
                       color: Colors.black54,
-                      fontSize: 35.0,
+                      fontSize: 30.0,
                       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                       fontWeight: FontWeight.normal),
                 ),
                 SizedBox(width: 50.0),
-                Text(
-                  "500 เมตร",
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 35.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.normal),
+                Consumer<double>(
+                  builder: (context, meters, wiget) {
+                    return (meters != null)
+                        ? Text(
+                            '\u00b7  ${(meters / 1609).round()} mi',
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 30.0,
+                                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                fontWeight: FontWeight.normal),
+                          )
+                        : Container();
+                  },
                 ),
+                // Text(
+                //   "500 เมตร",
+                //   style: TextStyle(
+                //       color: Colors.blue,
+                //       fontSize: 35.0,
+                //       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                //       fontWeight: FontWeight.normal),
+                // ),
               ],
             ),
           ),
@@ -832,164 +773,4 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  Widget _buildGoogleMap(BuildContext context) {
-    final applicationbloc = Provider.of<ApplicationBloc>(context);
-
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: GoogleMap(
-        // จากหน้า map
-        // padding: EdgeInsets.only(
-        //   top: 120,
-        //   right: 20,
-        //   bottom: 189,
-        // ),
-
-        //new
-        mapType: MapType.normal,
-        // initialCameraPosition:
-        //     CameraPosition(target: LatLng(40.712776, -74.005974), zoom: 12),
-        onMapCreated: (GoogleMapController controller) {
-          _mapController.complete(controller);
-          //old --------------------------------------
-          // _controller.complete(controller);
-        },
-        // onMapCreated: (controller) => _googleMapController = controller,
-
-        initialCameraPosition: CameraPosition(
-          target: LatLng(applicationbloc.currentLocation.latitude,
-              applicationbloc.currentLocation.longitude),
-          zoom: 16.0,
-        ),
-        myLocationButtonEnabled: true,
-        myLocationEnabled: true,
-        zoomControlsEnabled: false,
-
-        padding: EdgeInsets.only(
-          top: 120,
-          right: 20,
-          bottom: 189,
-        ),
-
-        //marker ของแต่ละ location ที่ปักไว้
-        markers: {
-          newyork1Marker,
-          newyork2Marker,
-          newyork3Marker,
-          gramercyMarker,
-          bernardinMarker,
-          kmuttMarker,
-          blueMarker
-        },
-      ),
-    );
-  }
-
-  // Widget mylocation() {
-  //   final applicationbloc = Provider.of<Applicationbloc>(context);
-
-  //   //button current location
-  //   return Container(
-  //     color: Colors.transparent,
-  //     margin: EdgeInsets.all(15),
-  //     padding:
-  //         //  const EdgeInsets.fromLTRB(
-  //         //     320 /*left*/, 110 /*top*/, 0 /*right*/, 0 /*bottom*/),
-  //         EdgeInsets.only(
-  //       top: 120,
-  //       right: 20,
-  //       left: 300,
-  //       bottom: 189,
-  //     ),
-  //     child: FloatingActionButton(
-  //       backgroundColor: Colors.white.withOpacity(0.8),
-  //       //Theme.of(context).primaryColorLight,
-  //       foregroundColor: Colors.black,
-  //       onPressed: () => LatLng(applicationbloc.currentLocation.latitude,
-  //           applicationbloc.currentLocation.longitude),
-  //       // onPressed : () => _googleMapController.animateCamera(
-  //       //   CameraUpdate.newCameraPosition(_intitialCameraPosition)),
-  //       child: Icon(
-  //         Icons.my_location,
-  //         size: 20,
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  Future<void> _gotoLocation(double lat, double long) async {
-    final GoogleMapController controller = await _mapController.future;
-    //old -------------------------------------------------------------
-    // final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-      target: LatLng(lat, long),
-      zoom: 15,
-      tilt: 50.0,
-      bearing: 45.0,
-    )));
-  }
 }
-
-Marker kmuttMarker = Marker(
-  markerId: MarkerId('Kumtt'),
-  position: LatLng(13.65004, 100.49449),
-  infoWindow: InfoWindow(title: 'มหาวิทยาลัยเทคโนโลยี\nพระจอมเกล้าธนบุรี'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(
-    BitmapDescriptor.hueViolet,
-  ),
-);
-
-Marker gramercyMarker = Marker(
-  markerId: MarkerId('gramercy'),
-  position: LatLng(40.738380, -73.988426),
-  infoWindow: InfoWindow(title: 'Gramercy Tavern'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(
-    BitmapDescriptor.hueViolet,
-  ),
-);
-
-Marker bernardinMarker = Marker(
-  markerId: MarkerId('bernardin'),
-  position: LatLng(40.761421, -73.981667),
-  infoWindow: InfoWindow(title: 'Le Bernardin'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(
-    BitmapDescriptor.hueViolet,
-  ),
-);
-Marker blueMarker = Marker(
-  markerId: MarkerId('bluehill'),
-  position: LatLng(40.732128, -73.999619),
-  infoWindow: InfoWindow(title: 'Blue Hill'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(
-    BitmapDescriptor.hueViolet,
-  ),
-);
-
-//New York Marker
-
-Marker newyork1Marker = Marker(
-  markerId: MarkerId('newyork1'),
-  position: LatLng(40.742451, -74.005959),
-  infoWindow: InfoWindow(title: 'Los Tacos'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(
-    BitmapDescriptor.hueViolet,
-  ),
-);
-Marker newyork2Marker = Marker(
-  markerId: MarkerId('newyork2'),
-  position: LatLng(40.729640, -73.983510),
-  infoWindow: InfoWindow(title: 'Tree Bistro'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(
-    BitmapDescriptor.hueViolet,
-  ),
-);
-Marker newyork3Marker = Marker(
-  markerId: MarkerId('newyork3'),
-  position: LatLng(40.719109, -74.000183),
-  infoWindow: InfoWindow(title: 'Le Coucou'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(
-    BitmapDescriptor.hueViolet,
-  ),
-);

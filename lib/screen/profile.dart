@@ -167,6 +167,7 @@ class ProfileState extends State<Profile>  {
                     fontWeight: FontWeight.w600,
                   ),),
             ),
+            //มือถือ ดึงไม่ได้อยู่แล้ว
             ListTile(
               leading: Container(
                 decoration: BoxDecoration(
@@ -197,6 +198,7 @@ class ProfileState extends State<Profile>  {
                     fontWeight: FontWeight.w600,
                   ),),
             ),
+            //เพศ ก็ดึงไม่ได้จ้า
             ListTile(
               leading: Container(
                 decoration: BoxDecoration(

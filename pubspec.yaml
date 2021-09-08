@@ -61,9 +61,12 @@ dependencies:
   
   rive: ^0.7.16
 
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
