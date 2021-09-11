@@ -1,26 +1,8 @@
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/screen/firstScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 
-
-class Profile extends StatefulWidget {
-  //   final UserDetails detailsUser;
-  // Profile({Key key, @required this.detailsUser}) : super(key: key);  
-  @override
-  ProfileState createState() => ProfileState();
-}
-
-
-class ProfileState extends State<Profile>  {
-  // final GoogleSignIn _googleSignIn =  GoogleSignIn();
-
-
-  @override
-  Widget build(BuildContext context) {
+  Widget profile(BuildContext context) {
     return Material(
         child: Stack(children: <Widget>[
       Align(
@@ -238,4 +220,4 @@ class ProfileState extends State<Profile>  {
 
     ]));
   }
-}
+

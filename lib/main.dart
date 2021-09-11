@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
           '/two': (context) => HomePage(),
           // '/two': (context) => Homeonescreen(),
           '/third': (context) => ToiletDetail(),
-          '/four': (context) => Profile(),
+          '/four': (context) => profile(context),
           '/five': (context) => addToilet(),
           '/six': (context) => AddToiletDetail(),
         },
