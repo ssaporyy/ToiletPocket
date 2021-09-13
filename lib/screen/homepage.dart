@@ -96,7 +96,8 @@ class _HomePageState extends State<HomePage> {
         CameraPosition(
             target: LatLng(
                 place.geometry.location.lat, place.geometry.location.lng),
-            zoom: 14.0),
+              zoom: 16.0,
+              tilt: 50.0,),
       ),
     );
   }
@@ -136,7 +137,10 @@ class _HomePageState extends State<HomePage> {
                                             .currentLocation.latitude,
                                         applicationBloc
                                             .currentLocation.longitude),
-                                    zoom: 13.0),
+                                    zoom: 16.0,
+                                    tilt: 50.0,
+                                    // bearing: 30,
+                                    ),
                                 zoomGesturesEnabled: true,
                                 onMapCreated: (GoogleMapController controller) {
                                   _mapController.complete(controller);
