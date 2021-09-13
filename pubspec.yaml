@@ -60,13 +60,6 @@ dependencies:
   uuid: ^3.0.4
   
   rive: ^0.7.16
-  flutter_launcher_icons: ^0.9.2
-
-flutter_icons:
-  image_path: "images/icon_app_white.png"
-  android: true
-  ios: true
-
 
 
 
