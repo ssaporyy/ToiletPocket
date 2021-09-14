@@ -11,7 +11,7 @@ import 'package:ToiletPocket/services/places_service.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart'; 
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/one',
+        initialRoute: '/two',
         routes: <String, WidgetBuilder>{
 // // When navigating to the "/" route, build the FirstScreen widget.
           '/one': (context) => FirstScreen(),
