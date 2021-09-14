@@ -53,13 +53,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/one',
+        initialRoute: '/two',
         routes: <String, WidgetBuilder>{
-// // When navigating to the "/" route, build the FirstScreen widget.
           '/one': (context) => FirstScreen(),
-// // When navigating to the "/second" route, build the SecondScreen widget.
           '/two': (context) => HomePage(),
-          // '/two': (context) => Homeonescreen(),
           '/third': (context) => ToiletDetail(),
           '/four': (context) => profile(context),
           '/five': (context) => addToilet(),

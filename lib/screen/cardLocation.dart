@@ -1,12 +1,15 @@
 
+import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
-Widget boxes(String _image, double lat, double long, String restaurantName,
+Widget boxes(String _image, double lat, double long, String toiletName,
       score, rating, address, testt,BuildContext context) {
+          final applicationBloc = Provider.of<ApplicationBloc>(context);
+
     return GestureDetector(
       onTap: () {
         // _gotoLocation(lat, long);
@@ -65,7 +68,7 @@ Widget boxes(String _image, double lat, double long, String restaurantName,
                       children: [
                         Container(
                           child: myDetailsContainer1(
-                              restaurantName, score, rating, address, testt),
+                              toiletName, score, rating, address, testt),
                         ),
                         Container(
                           child: Row(
@@ -205,7 +208,7 @@ Widget boxes(String _image, double lat, double long, String restaurantName,
 
   // Widget myDetailsContainer1(String restaurantName, context, index) {
   Widget myDetailsContainer1(
-      String restaurantName, score, rating, address, testt) {
+      String toiletName, score, rating, address, testt) {
     return Container(
       alignment: Alignment.topLeft,
       child: Column(
@@ -213,7 +216,7 @@ Widget boxes(String _image, double lat, double long, String restaurantName,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            restaurantName,
+            toiletName,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 color: Color(0xff6200ee),
@@ -261,7 +264,7 @@ Widget boxes(String _image, double lat, double long, String restaurantName,
                             ? Text(
                                 '$address',
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                                maxLines: 1,
                                 style: TextStyle(
                                     color: Colors.black54,
                                     fontSize: 30.0,

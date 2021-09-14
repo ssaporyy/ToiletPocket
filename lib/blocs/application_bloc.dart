@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ToiletPocket/models/photo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ToiletPocket/models/geometry.dart';
@@ -32,19 +33,22 @@ class ApplicationBloc with ChangeNotifier {
   List<Marker> markers = List<Marker>();
   //new
   List<Places> places;
-
+  List<Photo> photos;
 
   ApplicationBloc() {
     setCurrentLocation();
   }
 
-
   setCurrentLocation() async {
     currentLocation = await geoLocatorService.getLocation();
     // currentLocation = await geoLocatorService.getCurrentLocation();
-    selectedLocationStatic = Place(name: null,
-      geometry: Geometry(location: Location(
-          lat: currentLocation.latitude, lng: currentLocation.longitude),),);
+    selectedLocationStatic = Place(
+      name: null,
+      geometry: Geometry(
+        location: Location(
+            lat: currentLocation.latitude, lng: currentLocation.longitude),
+      ),
+    );
     notifyListeners();
   }
 
@@ -53,11 +57,11 @@ class ApplicationBloc with ChangeNotifier {
     notifyListeners();
   }
 
-
   setSelectedLocation(String placeId) async {
     var sLocation = await placesService.getPlace(placeId);
     //new
-    var markers = (places != null)? markerService.getMarkers(places): List<Marker>();
+    var markers =
+        (places != null) ? markerService.getMarkers(places) : List<Marker>();
     //
     selectedLocation.add(sLocation);
     selectedLocationStatic = sLocation;
@@ -90,14 +94,16 @@ class ApplicationBloc with ChangeNotifier {
     if (placeType != null) {
       var places = await placesService.getPlaceSs(
           selectedLocationStatic.geometry.location.lat,
-          selectedLocationStatic.geometry.location.lng, placeType);
-      markers= [];
+          selectedLocationStatic.geometry.location.lng,
+          placeType);
+      markers = [];
       if (places.length > 0) {
-        var newMarker = markerSService.createMarkerFromPlace(places[0],false);
+        var newMarker = markerSService.createMarkerFromPlace(places[0], false);
         markers.add(newMarker);
       }
 
-      var locationMarker = markerSService.createMarkerFromPlace(selectedLocationStatic,true);
+      var locationMarker =
+          markerSService.createMarkerFromPlace(selectedLocationStatic, true);
       markers.add(locationMarker);
 
       var _bounds = markerSService.bounds(Set<Marker>.of(markers));
@@ -107,14 +113,10 @@ class ApplicationBloc with ChangeNotifier {
     }
   }
 
-  
-
-
-@override
-void dispose() {
-  selectedLocation.close();
-  bounds.close();
-  super.dispose();
-}
-
+  @override
+  void dispose() {
+    selectedLocation.close();
+    bounds.close();
+    super.dispose();
+  }
 }

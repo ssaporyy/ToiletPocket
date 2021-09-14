@@ -1,5 +1,6 @@
 import 'package:ToiletPocket/Show_toiletDetail_review/CarouselWithDotsPage.dart';
 import 'package:ToiletPocket/Show_toiletDetail_review/review.dart';
+import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 // import 'package:getwidget/components/carousel/gf_items_carousel.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-
+import 'package:provider/provider.dart';
 
 class ToiletDetail extends StatefulWidget {
   ToiletDetail({Key key}) : super(key: key);
@@ -102,24 +103,44 @@ Widget appbar(BuildContext context) {
 }
 
 Widget slide(BuildContext context) {
+  final applicationBloc = Provider.of<ApplicationBloc>(context);
   return SingleChildScrollView(
-    padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-    child: Column(
-      children: <Widget>[
-        img(context),
-        ToiletLocation(context),
-        Padding(
-          padding: const EdgeInsets.only(left: 3),
-          child: time(context),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 3),
-          child: info(context),
-        ),
-        rate(context),
-      ],
-    ),
-  );
+      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      child: Consumer<double>(builder: (context, meters, wiget) {
+        return (meters != null)
+            ? Column(
+                children: <Widget>[
+                  img(context),
+                  toiletLocation(context),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 3),
+                    child: time(context),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 3),
+                    child: info(context),
+                  ),
+                  rate(context),
+                ],
+              )
+            : Container();
+      })
+      // Column(
+      //   children: <Widget>[
+      //     img(context),
+      //     toiletLocation(context),
+      //     Padding(
+      //       padding: const EdgeInsets.only(left: 3),
+      //       child: time(context),
+      //     ),
+      //     Padding(
+      //       padding: const EdgeInsets.only(left: 3),
+      //       child: info(context),
+      //     ),
+      //     rate(context),
+      //   ],
+      // ),
+      );
 }
 
 Widget img(BuildContext context) {
@@ -141,7 +162,9 @@ Widget img(BuildContext context) {
   );
 }
 
-Widget ToiletLocation(BuildContext context) {
+Widget toiletLocation(BuildContext context) {
+  final applicationBloc = Provider.of<ApplicationBloc>(context);
+
   return Container(
     alignment: Alignment.centerLeft,
     child: ListTile(

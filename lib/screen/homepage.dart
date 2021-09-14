@@ -45,6 +45,7 @@ class _HomePageState extends State<HomePage> {
       if (place != null) {
         _locationController.text = place.name;
         _goToPlace(place);
+        // applicationBloc.clearSelectedLocation();
       } else
         _locationController.text = "";
     });
@@ -94,10 +95,11 @@ class _HomePageState extends State<HomePage> {
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-            target: LatLng(
-                place.geometry.location.lat, place.geometry.location.lng),
-              zoom: 16.0,
-              tilt: 50.0,),
+          target:
+              LatLng(place.geometry.location.lat, place.geometry.location.lng),
+          zoom: 16.0,
+          tilt: 50.0,
+        ),
       ),
     );
   }
@@ -132,15 +134,14 @@ class _HomePageState extends State<HomePage> {
                               width: MediaQuery.of(context).size.width,
                               child: GoogleMap(
                                 initialCameraPosition: CameraPosition(
-                                    target: LatLng(
-                                        applicationBloc
-                                            .currentLocation.latitude,
-                                        applicationBloc
-                                            .currentLocation.longitude),
-                                    zoom: 16.0,
-                                    tilt: 50.0,
-                                    // bearing: 30,
-                                    ),
+                                  target: LatLng(
+                                      applicationBloc.currentLocation.latitude,
+                                      applicationBloc
+                                          .currentLocation.longitude),
+                                  zoom: 16.0,
+                                  tilt: 50.0,
+                                  // bearing: 30,
+                                ),
                                 zoomGesturesEnabled: true,
                                 onMapCreated: (GoogleMapController controller) {
                                   _mapController.complete(controller);
@@ -182,8 +183,8 @@ class _HomePageState extends State<HomePage> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: boxes(
-                                                  // "${places[index].photos}",
-                                                  "",
+                                                  '',
+                                                  // "${applicationBloc.places[index].photos[index].photoReference}",
                                                   // "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
                                                   applicationBloc
                                                       .currentLocation.latitude,

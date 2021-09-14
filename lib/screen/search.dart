@@ -7,15 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-class Search extends StatelessWidget {
-  Search({ Key key }) : super(key: key);
-  final _locationController = TextEditingController();
+class Search extends StatefulWidget {
+  const Search({ Key key }) : super(key: key);
 
+  @override
+  _SearchState createState() => _SearchState();
+}
+
+class _SearchState extends State<Search> {
+  final _locationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
-    // var txt = TextEditingController();
-
     return Column(
       children: [
         Padding(
