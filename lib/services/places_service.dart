@@ -17,7 +17,7 @@ class PlacesService {
     // var response = await http.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&type=toilets&rankby=distance&key=$key');
     //ใช้ได้
     var response = await http.get(
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&type=establishment&keyword=toilets&rankby=distance&key=$key');
+        Uri.parse('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&type=establishment&keyword=toilets&rankby=distance&key=$key'));
     //original
     // var response = await http.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&type=parking&rankby=distance&key=$key');
     var json = convert.jsonDecode(response.body);
@@ -36,7 +36,7 @@ class PlacesService {
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=establishment&components=country:th&language=th&key=$key';
     // 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=(cities)&key=$key';
     // 'https://maps.googleapis.com/maps/api/place/textsearch/json?input=toilets+in+$search&key=$key';
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
     var json = convert.jsonDecode(response.body);
     var jsonResults = json['predictions'] as List;
     return jsonResults.map((place) => PlaceSearch.fromJson(place)).toList();
@@ -47,7 +47,7 @@ class PlacesService {
   Future<Place> getPlace(String placeId) async {
     var url =
         'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key';
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
     var json = convert.jsonDecode(response.body);
     var jsonResult = json['result'] as Map<String, dynamic>;
     return Place.fromJson(jsonResult);
@@ -68,7 +68,7 @@ class PlacesService {
         'https://maps.googleapis.com/maps/api/place/textsearch/json?location=$lat,$lng&type=$placeType&rankby=distance&key=$key';
     // 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=$key=$lat,$lng&radius=1500&keyword=$placeType';
 
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
     var json = convert.jsonDecode(response.body);
     var jsonResults = json['results'] as List;
     return jsonResults.map((place) => Place.fromJson(place)).toList();
