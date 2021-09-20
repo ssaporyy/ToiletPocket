@@ -9,9 +9,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 //
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:ToiletPocket/models/error.dart';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+// import 'package:ToiletPocket/models/error.dart';
 
 class Search extends StatefulWidget {
   const Search({ Key key }) : super(key: key);
@@ -24,26 +24,26 @@ class _SearchState extends State<Search> {
   final _locationController = TextEditingController();
 
   // 
-    BitmapDescriptor pinLocationIcon;
-  Error error;
-  List<Result> places;
-  bool searching = true;
-  String keyword;
-  List<Marker> markers = <Marker>[];
-  static const String baseUrl =
-      "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-  static const String _API_KEY = 'AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno';
-  double lat;
-  double lng;
-    // double lat = applicationBloc.currentLocation.longitude;
-    // double lng = applicationBloc.currentLocation.latitude;
-  // static double latitude = 13.736717;
-  // static double longitude = 100.523186;
-//new
-  void setCustomMapPin() async {
-    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(10, 10)), 'images/flush.png');
-  }
+//     BitmapDescriptor pinLocationIcon;
+//   Error error;
+//   List<Result> places;
+//   bool searching = true;
+//   String keyword;
+//   List<Marker> markers = <Marker>[];
+//   static const String baseUrl =
+//       "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
+//   static const String _API_KEY = 'AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno';
+//   double lat;
+//   double lng;
+//     // double lat = applicationBloc.currentLocation.longitude;
+//     // double lng = applicationBloc.currentLocation.latitude;
+//   // static double latitude = 13.736717;
+//   // static double longitude = 100.523186;
+// //new
+//   void setCustomMapPin() async {
+//     pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+//         ImageConfiguration(size: Size(10, 10)), 'images/flush.png');
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class _SearchState extends State<Search> {
                   onTap: () {
                     Navigator.pushNamed(context, '/four');
 
-                    searchNearby(lat, lng);
+                    // searchNearby(lat, lng);
 
                   },
                   child: Column(
@@ -104,8 +104,9 @@ class _SearchState extends State<Search> {
                           radius: 15.0,
                           backgroundImage:
                               // NetworkImage(_googleSignIn.currentUser.photoUrl),
-                              NetworkImage(
-                                  'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'),
+                              // NetworkImage(
+                              //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'),
+                              AssetImage('images/ruto.jpg'),
                         ),
                       ),
                     ],
@@ -174,60 +175,60 @@ class _SearchState extends State<Search> {
   }
 
 
-    void searchNearby(double lat, double lng) async {
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
-    double lat = applicationBloc.currentLocation.longitude;
-    double lng = applicationBloc.currentLocation.latitude;
-    // static double latitude = applicationBloc.currentLocation.longitude;
-    // static double longitude = applicationBloc.currentLocation.latitude;
-    setState(() {
-      markers.clear();
-    });
-    dynamic /*String */ url =
-        '$baseUrl?key=$_API_KEY&location=$lat,$lng&radius=1500&keyword=toilets';
-    print(url);
-    final response = await http.get(url);
+  //   void searchNearby(double lat, double lng) async {
+  //   final applicationBloc = Provider.of<ApplicationBloc>(context);
+  //   double lat = applicationBloc.currentLocation.longitude;
+  //   double lng = applicationBloc.currentLocation.latitude;
+  //   // static double latitude = applicationBloc.currentLocation.longitude;
+  //   // static double longitude = applicationBloc.currentLocation.latitude;
+  //   setState(() {
+  //     markers.clear();
+  //   });
+  //   dynamic /*String */ url =
+  //       '$baseUrl?key=$_API_KEY&location=$lat,$lng&radius=1500&keyword=toilets';
+  //   print(url);
+  //   final response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      _handleResponse(data);
-    } else {
-      throw Exception('An error occurred getting places nearby');
-    }
+  //   if (response.statusCode == 200) {
+  //     final data = json.decode(response.body);
+  //     _handleResponse(data);
+  //   } else {
+  //     throw Exception('An error occurred getting places nearby');
+  //   }
 
-    // make sure to hide searching
-    setState(() {
-      searching = false;
-    });
-  }
+  //   // make sure to hide searching
+  //   setState(() {
+  //     searching = false;
+  //   });
+  // }
 
-  void _handleResponse(data) {
-    // bad api key or otherwise
-    if (data['status'] == "REQUEST_DENIED") {
-      setState(() {
-        error = Error.fromJson(data);
-      });
-      // success
-    } else if (data['status'] == "OK") {
-      setState(() {
-        places = PlaceResponse.parseResults(data['results']);
-        for (int i = 0; i < places.length; i++) {
-          markers.add(
-            Marker(
-              markerId: MarkerId(places[i].placeId),
-              // icon: BitmapDescriptor.defaultMarkerWithHue(198.0),
-              icon: pinLocationIcon,
-              position: LatLng(places[i].geometry.location.lat,
-                  places[i].geometry.location.lng),
-              infoWindow: InfoWindow(
-                  title: places[i].name, snippet: places[i].vicinity),
-              onTap: () {},
-            ),
-          );
-        }
-      });
-    } else {
-      print(data);
-    }
-  }
+  // void _handleResponse(data) {
+  //   // bad api key or otherwise
+  //   if (data['status'] == "REQUEST_DENIED") {
+  //     setState(() {
+  //       error = Error.fromJson(data);
+  //     });
+  //     // success
+  //   } else if (data['status'] == "OK") {
+  //     setState(() {
+  //       places = PlaceResponse.parseResults(data['results']);
+  //       for (int i = 0; i < places.length; i++) {
+  //         markers.add(
+  //           Marker(
+  //             markerId: MarkerId(places[i].placeId),
+  //             // icon: BitmapDescriptor.defaultMarkerWithHue(198.0),
+  //             icon: pinLocationIcon,
+  //             position: LatLng(places[i].geometry.location.lat,
+  //                 places[i].geometry.location.lng),
+  //             infoWindow: InfoWindow(
+  //                 title: places[i].name, snippet: places[i].vicinity),
+  //             onTap: () {},
+  //           ),
+  //         );
+  //       }
+  //     });
+  //   } else {
+  //     print(data);
+  //   }
+  // }
 }

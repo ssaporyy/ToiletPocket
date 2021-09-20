@@ -108,10 +108,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final currentPosition = Provider.of<Position>(context);
+    // final currentPosition = Provider.of<Position>(context);
     final placesProvider = Provider.of<Future<List<Places>>>(context);
     final geoService = GeoLocatorService();
-    final markerService = MarkerService();
+    // final markerService = MarkerService();
     //new
     final applicationBloc = Provider.of<ApplicationBloc>(context);
 
