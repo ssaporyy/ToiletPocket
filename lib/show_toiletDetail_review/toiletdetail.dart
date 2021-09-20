@@ -106,40 +106,22 @@ Widget slide(BuildContext context) {
   final applicationBloc = Provider.of<ApplicationBloc>(context);
   return SingleChildScrollView(
       padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      child: Consumer<double>(builder: (context, meters, wiget) {
-        return (meters != null)
-            ? Column(
-                children: <Widget>[
-                  img(context),
-                  toiletLocation(context),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 3),
-                    child: time(context),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 3),
-                    child: info(context),
-                  ),
-                  rate(context),
-                ],
-              )
-            : Container();
-      })
-      // Column(
-      //   children: <Widget>[
-      //     img(context),
-      //     toiletLocation(context),
-      //     Padding(
-      //       padding: const EdgeInsets.only(left: 3),
-      //       child: time(context),
-      //     ),
-      //     Padding(
-      //       padding: const EdgeInsets.only(left: 3),
-      //       child: info(context),
-      //     ),
-      //     rate(context),
-      //   ],
-      // ),
+      child: 
+      Column(
+        children: <Widget>[
+          img(context),
+          toiletLocation(context),
+          Padding(
+            padding: const EdgeInsets.only(left: 3),
+            child: time(context),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 3),
+            child: info(context),
+          ),
+          rate(context),
+        ],
+      ),
       );
 }
 
