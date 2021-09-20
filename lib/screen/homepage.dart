@@ -142,11 +142,16 @@ class _HomePageState extends State<HomePage> {
                                   tilt: 50.0,
                                   // bearing: 30,
                                 ),
+                                myLocationEnabled: true,
                                 zoomGesturesEnabled: true,
+                                //เลื่อนปุ่ม current ให้ขึ้นมา
+                                padding: EdgeInsets.only(bottom: 220.0,),
                                 onMapCreated: (GoogleMapController controller) {
                                   _mapController.complete(controller);
                                 },
                                 markers: Set<Marker>.of(markers),
+                                myLocationButtonEnabled: true,
+                               
                               ),
                             ),
                             Align(
