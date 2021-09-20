@@ -1,5 +1,6 @@
 import 'package:ToiletPocket/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 
 
   Widget profile(BuildContext context) {
@@ -77,9 +78,10 @@ import 'package:flutter/material.dart';
               radius: 55.0,
               backgroundImage: 
                       // NetworkImage(_googleSignIn.currentUser.photoUrl),
-              NetworkImage(
-                  'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'
-                  ),
+              // NetworkImage(
+              //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'
+              //     ),
+              AssetImage('images/ruto.jpg'),
             ),
           ),
         ]),

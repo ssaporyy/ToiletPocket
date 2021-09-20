@@ -127,12 +127,18 @@ Widget slide(BuildContext context) {
 
 Widget img(BuildContext context) {
   final List<String> imgList = [
-    "https://shrm-res.cloudinary.com/image/upload/c_crop,h_1574,w_2800,x_0,y_0/w_auto:100,w_1200,q_35,f_auto/v1/Risk%20Management/iStock-182768607_zzxdq5.jpg",
-    'https://media4.s-nbcnews.com/i/newscms/2020_26/1583450/public-restroom-corona-kb-main-200623_9519eb6bd31f5da24860f90cb8fc60af.jpg',
-    'https://whyy.org/wp-content/uploads/2020/04/bigstock-Toilet-Shot-In-Detail-In-A-Whi-236077285.jpg',
-    'https://media.architecturaldigest.com/photos/56cce09bd2db26483dc7f7b0/2:1/w_5398,h_2699,c_limit/Master%20Bathroom%20-%20Shower%20View%20-After.jpg',
-    'https://www.thespruce.com/thmb/uGGY19t5PZ323A0ANVSQjrviHgY=/1820x1365/smart/filters:no_upscale()/remodel-small-bathrooms-efficiently-1821379-hero-366429e654034a0e9713ea5e27f3186b.jpg',
-    'https://www.smarthomesounds.co.uk/wp/wp-content/uploads/2019/07/In-celing-1-1410x650.jpg',
+    // "https://shrm-res.cloudinary.com/image/upload/c_crop,h_1574,w_2800,x_0,y_0/w_auto:100,w_1200,q_35,f_auto/v1/Risk%20Management/iStock-182768607_zzxdq5.jpg",
+    // 'https://media4.s-nbcnews.com/i/newscms/2020_26/1583450/public-restroom-corona-kb-main-200623_9519eb6bd31f5da24860f90cb8fc60af.jpg',
+    // 'https://whyy.org/wp-content/uploads/2020/04/bigstock-Toilet-Shot-In-Detail-In-A-Whi-236077285.jpg',
+    // 'https://media.architecturaldigest.com/photos/56cce09bd2db26483dc7f7b0/2:1/w_5398,h_2699,c_limit/Master%20Bathroom%20-%20Shower%20View%20-After.jpg',
+    // 'https://www.thespruce.com/thmb/uGGY19t5PZ323A0ANVSQjrviHgY=/1820x1365/smart/filters:no_upscale()/remodel-small-bathrooms-efficiently-1821379-hero-366429e654034a0e9713ea5e27f3186b.jpg',
+    // 'https://www.smarthomesounds.co.uk/wp/wp-content/uploads/2019/07/In-celing-1-1410x650.jpg',
+    'images/toilets/1.jpg',
+    'images/toilets/2.jpg',
+    'images/toilets/3.jpg',
+    'images/toilets/4.jpg',
+    'images/toilets/5.jpg',
+    'images/toilets/6.jpg',
   ];
   return Container(
     padding: EdgeInsets.fromLTRB(0, 0, 20, 5),

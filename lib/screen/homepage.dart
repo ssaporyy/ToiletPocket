@@ -71,12 +71,14 @@ class _HomePageState extends State<HomePage> {
 //   static const String _API_KEY = 'AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno';
 //   double lat;
 //   double lng;
+//     // double lat = applicationBloc.currentLocation.longitude;
+//     // double lng = applicationBloc.currentLocation.latitude;
 //   // static double latitude = 13.736717;
 //   // static double longitude = 100.523186;
 // //new
 //   void setCustomMapPin() async {
 //     pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-//         ImageConfiguration(size: Size(10, 10)), 'assets/Icon-flush.png');
+//         ImageConfiguration(size: Size(10, 10)), 'images/flush.png');
 //   }
 
   @override
@@ -117,7 +119,6 @@ class _HomePageState extends State<HomePage> {
       create: (context) => placesProvider,
       child: Scaffold(
         body: (applicationBloc.currentLocation != null)
-            // ? Consumer<List<Result>>(
             ? Consumer<List<Places>>(
                 builder: (_, places, __) {
                   var markers = (places != null)
@@ -145,13 +146,14 @@ class _HomePageState extends State<HomePage> {
                                 myLocationEnabled: true,
                                 zoomGesturesEnabled: true,
                                 //เลื่อนปุ่ม current ให้ขึ้นมา
-                                padding: EdgeInsets.only(bottom: 220.0,),
+                                padding: EdgeInsets.only(
+                                  bottom: 220.0,
+                                ),
                                 onMapCreated: (GoogleMapController controller) {
                                   _mapController.complete(controller);
                                 },
                                 markers: Set<Marker>.of(markers),
                                 myLocationButtonEnabled: true,
-                               
                               ),
                             ),
                             Align(
@@ -227,7 +229,7 @@ class _HomePageState extends State<HomePage> {
                             //     padding: EdgeInsets.all(10),
                             //     child: FloatingActionButton.extended(
                             //       onPressed: () {
-                            //         searchNearby(applicationBloc.selectedLocationStatic.geometry.location.lat, applicationBloc.selectedLocationStatic.geometry.location.lng);
+                            //         searchNearby(lat, lng);
                             //       },
                             //       label: Text('Places Nearby'),
                             //       icon: Icon(Icons.place),
@@ -247,10 +249,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   // void searchNearby(double lat, double lng) async {
+  //   final applicationBloc = Provider.of<ApplicationBloc>(context);
+  //   double lat = applicationBloc.currentLocation.longitude;
+  //   double lng = applicationBloc.currentLocation.latitude;
+  //   // static double latitude = applicationBloc.currentLocation.longitude;
+  //   // static double longitude = applicationBloc.currentLocation.latitude;
   //   setState(() {
   //     markers.clear();
   //   });
-  //   String url =
+  //   dynamic /*String */ url =
   //       '$baseUrl?key=$_API_KEY&location=$lat,$lng&radius=1500&keyword=toilets';
   //   print(url);
   //   final response = await http.get(url);

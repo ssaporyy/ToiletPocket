@@ -25,7 +25,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                 ),
                 child: Stack(
                   children: [
-                    Image.network(
+                    Image.asset(
                       item,
                       fit: BoxFit.cover,
                       width: 400,

@@ -124,8 +124,10 @@ Widget comment(BuildContext context) {
                   flex: 0,
                   child: Container(padding: EdgeInsets.fromLTRB(15, 0, 20, 0),
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://cdn.readawrite.com/articles/1821/1820201/thumbnail/large.gif?3'),
+                      backgroundImage: 
+                      // NetworkImage(
+                      //     'https://cdn.readawrite.com/articles/1821/1820201/thumbnail/large.gif?3'),
+                      AssetImage('images/ruto.jpg'),
                       radius: 22,
                     ),
                   ),
@@ -188,8 +190,10 @@ Widget comment(BuildContext context) {
                             padding: const EdgeInsets.all(0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Image.network(
-                                "https://shrm-res.cloudinary.com/image/upload/c_crop,h_1574,w_2800,x_0,y_0/w_auto:100,w_1200,q_35,f_auto/v1/Risk%20Management/iStock-182768607_zzxdq5.jpg",
+                              child: 
+                              // Image.network(
+                              //   "https://shrm-res.cloudinary.com/image/upload/c_crop,h_1574,w_2800,x_0,y_0/w_auto:100,w_1200,q_35,f_auto/v1/Risk%20Management/iStock-182768607_zzxdq5.jpg",
+                                Image.asset('images/toilets/1.jpg',
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -198,8 +202,10 @@ Widget comment(BuildContext context) {
                             padding: const EdgeInsets.all(0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Image.network(
-                                'https://media4.s-nbcnews.com/i/newscms/2020_26/1583450/public-restroom-corona-kb-main-200623_9519eb6bd31f5da24860f90cb8fc60af.jpg',
+                              child: 
+                              // Image.network(
+                              //   'https://media4.s-nbcnews.com/i/newscms/2020_26/1583450/public-restroom-corona-kb-main-200623_9519eb6bd31f5da24860f90cb8fc60af.jpg',
+                              Image.asset('images/toilets/2.jpg',
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -208,8 +214,10 @@ Widget comment(BuildContext context) {
                             padding: const EdgeInsets.all(0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Image.network(
-                                'https://www.smarthomesounds.co.uk/wp/wp-content/uploads/2019/07/In-celing-1-1410x650.jpg',
+                              child: 
+                              // Image.network(
+                              //   'https://www.smarthomesounds.co.uk/wp/wp-content/uploads/2019/07/In-celing-1-1410x650.jpg',
+                                Image.asset('images/toilets/3.jpg',
                                 fit: BoxFit.cover,
                               ),
                             ),

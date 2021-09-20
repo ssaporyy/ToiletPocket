@@ -97,6 +97,14 @@ flutter:
     - images/google.png
     - images/Profile.png
     - images/toiletPlus.png
+    - images/ruto.jpg
+    - images/toilets/1.jpg
+    - images/toilets/2.jpg
+    - images/toilets/3.jpg
+    - images/toilets/4.jpg
+    - images/toilets/5.jpg
+    - images/toilets/6.jpg
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
