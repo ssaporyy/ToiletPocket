@@ -2,6 +2,8 @@ import 'package:ToiletPocket/Show_toiletDetail_review/CarouselWithDotsPage.dart'
 import 'package:ToiletPocket/Show_toiletDetail_review/review.dart';
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/models/place.dart';
+import 'package:ToiletPocket/models/places.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -151,7 +153,7 @@ Widget img(BuildContext context) {
 }
 
 Widget toiletLocation(BuildContext context) {
-  final applicationBloc = Provider.of<ApplicationBloc>(context);
+  final _place = ModalRoute.of(context)?.settings.arguments as Places;
 
   return Container(
     alignment: Alignment.centerLeft,
@@ -162,7 +164,7 @@ Widget toiletLocation(BuildContext context) {
         size: 36.0,
       ),
       title: Text(
-        '126 ถ. ประชาอุทิศ แขวง บางมด เขตทุ่งครุ กรุงเทพมหานคร 10140',
+        _place.name, 
         style: TextStyle(
           color: Colors.black,
           fontSize: 13.0,

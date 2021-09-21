@@ -10,12 +10,7 @@ Widget boxes(String _image, double lat, double long, String toiletName,
       score, rating, address, testt,BuildContext context) {
           final applicationBloc = Provider.of<ApplicationBloc>(context);
 
-    return GestureDetector(
-      onTap: () {
-        // _gotoLocation(lat, long);
-        Navigator.pushNamed(context, '/third');
-      },
-      child: Container(
+    return Container(
         child: new FittedBox(
           fit: BoxFit.cover,
           child: Material(
@@ -202,7 +197,6 @@ Widget boxes(String _image, double lat, double long, String toiletName,
                 ],
               )),
         ),
-      ),
     );
   }
 

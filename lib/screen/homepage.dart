@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                                 child: (places.length > 0)
                                     ? ListView.builder(
                                         //ตั้งให้แสดงขึ้นมา 5 ที่โดยไม่ได้กำหนดระยะทาง
-                                        itemCount: places.length = 5,
+                                        itemCount: 5,
                                         // itemCount: places.length,
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
@@ -189,7 +189,9 @@ class _HomePageState extends State<HomePage> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(10.0),
-                                              child: boxes(
+                                              child: 
+                                              GestureDetector(
+                                                child: boxes(
                                                   '',
                                                   // "${applicationBloc.places[index].photos[index].photoReference}",
                                                   // "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
@@ -207,6 +209,10 @@ class _HomePageState extends State<HomePage> {
                                                       .vicinity,
                                                   /**test */ '',
                                                   context),
+                                                  onTap: (){
+                                                    Navigator.pushNamed(context, '/third',arguments: places[index],);
+                                                  },
+                                              ),                              
                                             ),
                                           );
                                         },
