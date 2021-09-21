@@ -6,6 +6,7 @@ import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/models/result.dart';
 import 'package:ToiletPocket/screen/cardLocation.dart';
 import 'package:ToiletPocket/screen/search.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
@@ -17,9 +18,9 @@ import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:ToiletPocket/services/marker_service.dart';
 
 //
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:ToiletPocket/models/error.dart';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+// import 'package:ToiletPocket/models/error.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    final applicationBloc =
+    final applicationBloc = 
         Provider.of<ApplicationBloc>(context, listen: false);
 
     //Listen for selected Location
@@ -45,6 +46,7 @@ class _HomePageState extends State<HomePage> {
       if (place != null) {
         _locationController.text = place.name;
         _goToPlace(place);
+        //
         // applicationBloc.clearSelectedLocation();
       } else
         _locationController.text = "";
@@ -106,6 +108,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+//
+  final user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     // final currentPosition = Provider.of<Position>(context);
@@ -150,6 +155,7 @@ class _HomePageState extends State<HomePage> {
                                 //เลื่อนปุ่ม current ให้ขึ้นมา
                                 padding: EdgeInsets.only(
                                   bottom: 220.0,
+                                  top: 120,
                                 ),
                                 onMapCreated: (GoogleMapController controller) {
                                   _mapController.complete(controller);
@@ -194,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                                               child: 
                                               GestureDetector(
                                                 child: boxes(
-                                                  '${_place.photos}',
+                                                  '',
                                                   // "${applicationBloc.places[index].photos[index].photoReference}",
                                                   // "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
                                                   applicationBloc
@@ -237,7 +243,9 @@ class _HomePageState extends State<HomePage> {
                             //     padding: EdgeInsets.all(10),
                             //     child: FloatingActionButton.extended(
                             //       onPressed: () {
-                            //         searchNearby(lat, lng);
+                            //         // searchNearby(lat, lng);
+                            //         searchNearby(applicationBloc.selectedLocationStatic.geometry.location.lat, applicationBloc.selectedLocationStatic.geometry.location.lng);
+
                             //       },
                             //       label: Text('Places Nearby'),
                             //       icon: Icon(Icons.place),
