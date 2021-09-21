@@ -164,7 +164,7 @@ Widget toiletLocation(BuildContext context) {
         size: 36.0,
       ),
       title: Text(
-        _place.name, 
+        _place.vicinity, 
         style: TextStyle(
           color: Colors.black,
           fontSize: 13.0,

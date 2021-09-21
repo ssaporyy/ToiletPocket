@@ -114,6 +114,8 @@ class _HomePageState extends State<HomePage> {
     // final markerService = MarkerService();
     //new
     final applicationBloc = Provider.of<ApplicationBloc>(context);
+    final _place = ModalRoute.of(context)?.settings.arguments as Places;
+
 
     return FutureProvider(
       create: (context) => placesProvider,
@@ -192,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                                               child: 
                                               GestureDetector(
                                                 child: boxes(
-                                                  '',
+                                                  '${_place.photos}',
                                                   // "${applicationBloc.places[index].photos[index].photoReference}",
                                                   // "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
                                                   applicationBloc
