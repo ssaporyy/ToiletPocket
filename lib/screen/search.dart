@@ -101,8 +101,11 @@ class _SearchState extends State<Search> {
                         child: CircleAvatar(
                           radius: 15.0,
                           backgroundImage: NetworkImage(user == null
-                              ?
-                              'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
+                              ? (Icon(
+                                  Icons.account_circle,
+                                  size: 13,
+                                  color: Colors.grey,
+                                ))
                               : (user
                                   .photoURL)), 
                                   // NetworkImage(user.photoURL),

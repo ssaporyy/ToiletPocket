@@ -23,7 +23,7 @@ class Profile extends StatelessWidget {
         ),
       ),
       Container(
-        padding: EdgeInsets.only(top: 25, left: 15),
+        padding: EdgeInsets.only(top: 30, left: 15),
         child: Column(
           children: [
             TextButton(
@@ -97,14 +97,15 @@ class Profile extends StatelessWidget {
                           blurRadius: 11, color: Colors.white, spreadRadius: 6)
                     ],
                   ),
-                  child: CircleAvatar(backgroundColor: ToiletColors.colorButton,
+                  child: CircleAvatar(
                     radius: 55.0,
-                    backgroundImage: 
-                    NetworkImage(
-                      user == null
-                        ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
-                        : (user.photoURL)
-                        ),
+                    backgroundImage: NetworkImage(user == null
+                        ? (Icon(
+                            Icons.account_circle,
+                            size: 20,
+                            color: Colors.grey,
+                          ))
+                        : (user.photoURL)),
                     // backgroundImage: NetworkImage(user.photoURL),
                     // NetworkImage(
                     //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'
@@ -115,10 +116,10 @@ class Profile extends StatelessWidget {
               ]),
             ),
             SizedBox(
-              height: 15,
+              height: 20,
             ),
             Container(
-              padding: EdgeInsets.only(top: 70),
+              padding: EdgeInsets.only(top: 55),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
