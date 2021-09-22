@@ -47,7 +47,7 @@ class _SearchState extends State<Search> {
 //         ImageConfiguration(size: Size(10, 10)), 'images/flush.png');
 //   }
 //   //
-  final user = FirebaseAuth.instance.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -100,18 +100,11 @@ class _SearchState extends State<Search> {
                       Container(
                         child: CircleAvatar(
                           radius: 15.0,
-                          backgroundImage: NetworkImage(user == null
-                              ? (Icon(
-                                  Icons.account_circle,
-                                  size: 13,
-                                  color: Colors.grey,
-                                ))
-                              : (user
-                                  .photoURL)), 
-                                  // NetworkImage(user.photoURL),
-                          // NetworkImage(
-                          //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'),
-                          // AssetImage('images/ruto.jpg'),
+                          backgroundImage:
+                              NetworkImage(user.photoURL),
+                              // NetworkImage(
+                              //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'),
+                              // AssetImage('images/ruto.jpg'),
                         ),
                       ),
                     ],
@@ -119,7 +112,7 @@ class _SearchState extends State<Search> {
                 ),
               ),
               onChanged: (value) => applicationBloc.searchPlaces(value),
-              onTap: () => applicationBloc.clearSelectedLocation(),
+              // onTap: () => applicationBloc.clearSelectedLocation(),
             ),
           ),
         ),
@@ -161,6 +154,9 @@ class _SearchState extends State<Search> {
                   onTap: () {
                     applicationBloc.setSelectedLocation(
                         applicationBloc.searchResults[index].placeId);
+                    //     setState(() {
+                    //       applicationBloc.clearSelectedLocation();
+                    //     });
                     // print(applicationBloc.selectedLocationStatic.geometry.location.lat);
                     // print(applicationBloc.selectedLocationStatic.geometry.location.lng);
                     // searchNearby(applicationBloc.selectedLocationStatic.geometry.location.lat, applicationBloc.selectedLocationStatic.geometry.location.lng);

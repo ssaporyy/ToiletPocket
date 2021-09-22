@@ -23,7 +23,7 @@ class Profile extends StatelessWidget {
         ),
       ),
       Container(
-        padding: EdgeInsets.only(top: 30, left: 15),
+        padding: EdgeInsets.only(top: 25, left: 15),
         child: Column(
           children: [
             TextButton(
@@ -63,8 +63,7 @@ class Profile extends StatelessWidget {
                 // padding: EdgeInsets.only(top: 100, left: 25),
                 child: ListTile(
               title: Text(
-                (user == null ? 'My Name' : '${user.displayName} '),
-                // '${user.displayName}',
+                '${user.displayName}',
                 // 'Watanabe Haruto (하루토)',
                 style: TextStyle(
                   color: Colors.black,
@@ -74,8 +73,7 @@ class Profile extends StatelessWidget {
                 ),
               ),
               subtitle: Text(
-                (user == null ? 'My Email' : '${user.email} '),
-                // '${user.email}',
+                '${user.email}',
                 // 'Haruto@hotmail.com',
                 style: TextStyle(
                   color: ToiletColors.colorText,
@@ -99,14 +97,7 @@ class Profile extends StatelessWidget {
                   ),
                   child: CircleAvatar(
                     radius: 55.0,
-                    backgroundImage: NetworkImage(user == null
-                        ? (Icon(
-                            Icons.account_circle,
-                            size: 20,
-                            color: Colors.grey,
-                          ))
-                        : (user.photoURL)),
-                    // backgroundImage: NetworkImage(user.photoURL),
+                    backgroundImage: NetworkImage(user.photoURL),
                     // NetworkImage(
                     //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'
                     //     ),
@@ -114,9 +105,6 @@ class Profile extends StatelessWidget {
                   ),
                 ),
               ]),
-            ),
-            SizedBox(
-              height: 20,
             ),
             Container(
               padding: EdgeInsets.only(top: 55),
@@ -152,8 +140,7 @@ class Profile extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      (user == null ? 'My Name' : '${user.displayName} '),
-                      // '${user.displayName}',
+                      '${user.displayName}',
                       // 'Watanabe Haruto (하루토)',
                       style: TextStyle(
                         color: Colors.grey[800],
@@ -163,10 +150,6 @@ class Profile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
-
                   ListTile(
                     leading: Container(
                       decoration: BoxDecoration(
@@ -196,8 +179,7 @@ class Profile extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      (user == null ? 'My Email' : '${user.email} '),
-                      // '${user.email}',
+                      '${user.email}',
                       // 'Haruto@hotmail.com',
                       style: TextStyle(
                         color: Colors.grey[800],
@@ -208,83 +190,83 @@ class Profile extends StatelessWidget {
                     ),
                   ),
                   //มือถือ ดึงไม่ได้อยู่แล้ว
-                  // ListTile(
-                  //   leading: Container(
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.white,
-                  //       shape: BoxShape.circle,
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //             blurRadius: 11,
-                  //             color: Colors.black12,
-                  //             spreadRadius: 2)
-                  //       ],
-                  //     ),
-                  //     child: Icon(
-                  //       Icons.phone_iphone,
-                  //       size: 33,
-                  //       color: ToiletColors.colorbottonPhone,
-                  //     ),
-                  //     width: 60,
-                  //     height: 60,
-                  //   ),
-                  //   title: Text(
-                  //     'มือถือ',
-                  //     style: TextStyle(
-                  //       color: ToiletColors.colorText,
-                  //       fontSize: 13.0,
-                  //       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                  //     ),
-                  //   ),
-                  //   subtitle: Text(
-                  //     '+66X-XXX-XXXX',
-                  //     style: TextStyle(
-                  //       color: Colors.grey[800],
-                  //       fontSize: 19.0,
-                  //       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                  //       fontWeight: FontWeight.w600,
-                  //     ),
-                  //   ),
-                  // ),
-                  // //เพศ ก็ดึงไม่ได้จ้า
-                  // ListTile(
-                  //   leading: Container(
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.white,
-                  //       shape: BoxShape.circle,
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //             blurRadius: 11,
-                  //             color: Colors.black12,
-                  //             spreadRadius: 2)
-                  //       ],
-                  //     ),
-                  //     child: Icon(
-                  //       Icons.transgender,
-                  //       size: 28,
-                  //       color: ToiletColors.colorbottonGender,
-                  //     ),
-                  //     width: 60,
-                  //     height: 60,
-                  //   ),
-                  //   title: Text(
-                  //     'เพศ',
-                  //     style: TextStyle(
-                  //       color: ToiletColors.colorText,
-                  //       fontSize: 13.0,
-                  //       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                  //     ),
-                  //   ),
-                  //   subtitle: Text(
-                  //     'XX',
-                  //     style: TextStyle(
-                  //       color: Colors.grey[800],
-                  //       fontSize: 19.0,
-                  //       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                  //       fontWeight: FontWeight.w600,
-                  //     ),
-                  //   ),
-                  // ),
+                  ListTile(
+                    leading: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                              blurRadius: 11,
+                              color: Colors.black12,
+                              spreadRadius: 2)
+                        ],
+                      ),
+                      child: Icon(
+                        Icons.phone_iphone,
+                        size: 33,
+                        color: ToiletColors.colorbottonPhone,
+                      ),
+                      width: 60,
+                      height: 60,
+                    ),
+                    title: Text(
+                      'มือถือ',
+                      style: TextStyle(
+                        color: ToiletColors.colorText,
+                        fontSize: 13.0,
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                      ),
+                    ),
+                    subtitle: Text(
+                      '+66X-XXX-XXXX',
+                      style: TextStyle(
+                        color: Colors.grey[800],
+                        fontSize: 19.0,
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  //เพศ ก็ดึงไม่ได้จ้า
+                  ListTile(
+                    leading: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                              blurRadius: 11,
+                              color: Colors.black12,
+                              spreadRadius: 2)
+                        ],
+                      ),
+                      child: Icon(
+                        Icons.transgender,
+                        size: 28,
+                        color: ToiletColors.colorbottonGender,
+                      ),
+                      width: 60,
+                      height: 60,
+                    ),
+                    title: Text(
+                      'เพศ',
+                      style: TextStyle(
+                        color: ToiletColors.colorText,
+                        fontSize: 13.0,
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                      ),
+                    ),
+                    subtitle: Text(
+                      'XX',
+                      style: TextStyle(
+                        color: Colors.grey[800],
+                        fontSize: 19.0,
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
                   // ปุ่ม logout
                   // Container(
                   //   alignment: Alignment.bottomRight,
