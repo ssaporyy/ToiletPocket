@@ -7,6 +7,7 @@ class Timeselect extends StatefulWidget {
 
 class _TimeselectState extends State<Timeselect> {
   TimeOfDay _time = TimeOfDay(hour: 0, minute: 00);
+  TimeOfDay _time2 = TimeOfDay(hour: 0, minute: 00);
 
   void _selectTime() async {
     final TimeOfDay newTime = await showTimePicker(
@@ -26,14 +27,14 @@ class _TimeselectState extends State<Timeselect> {
   void _selectTime2() async {
     final TimeOfDay newTime = await showTimePicker(
       context: context,
-      initialTime: _time,
+      initialTime: _time2,
     );
     if (newTime != null) {
       setState(() {
-        _time = newTime;
+        _time2 = newTime;
         // print(_time);
-        if (_time == newTime) {
-          debugPrint('TimeOfClosed: $_time');
+        if (_time2 == newTime) {
+          debugPrint('TimeOfClosed: $_time2');
         }
       });
     }
@@ -56,7 +57,7 @@ class _TimeselectState extends State<Timeselect> {
                   style: TextStyle(
                     color: Colors.red,
                     // fontWeight: FontWeight.w600,
-                    fontSize: 13,
+                    fontSize: 11,
                     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                   ),
                 ),
@@ -82,11 +83,11 @@ class _TimeselectState extends State<Timeselect> {
             child: Row(
               children: [
                 Text(
-                  "ปิดเมื่อ  ${_time.format(context)}",
+                  "ปิดเมื่อ  ${_time2.format(context)}",
                   style: TextStyle(
                     color: Colors.red,
                     // fontWeight: FontWeight.w600,
-                    fontSize: 13,
+                    fontSize: 11,
                     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                   ),
                 ),

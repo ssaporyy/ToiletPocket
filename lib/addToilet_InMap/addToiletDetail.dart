@@ -2,7 +2,7 @@ import 'package:ToiletPocket/addToilet_InMap/addImage.dart';
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/addToilet_InMap/customRadio.dart';
 import 'package:ToiletPocket/addToilet_InMap/iconSelect.dart';
-import 'package:ToiletPocket/test.dart';
+import 'package:ToiletPocket/star.dart';
 import 'package:ToiletPocket/addToilet_InMap/time.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +114,7 @@ Widget addDetail(BuildContext context) {
             ),
             Container(
                 height: 80,
-                //ยังไม่ได้แก้ ส่วนนี้เป็นดาวที่ให้เรทติ้งที่อยู่ หน้า test.dart
+                //ยังไม่ได้แก้ ส่วนนี้เป็นดาวที่ให้เรทติ้งที่อยู่ หน้า star.dart
                 child: MyHomePage()),
             Padding(
               padding: const EdgeInsets.only(left: 0, top: 3),
@@ -160,7 +160,7 @@ Widget ToiletLocation(BuildContext context) {
         '126 ถ. ประชาอุทิศ แขวง บางมด เขตทุ่งครุ กรุงเทพมหานคร 10140',
         style: TextStyle(
           color: Colors.black,
-          fontSize: 13.0,
+          fontSize: 11.0,
           fontFamily: 'Sukhumvit' ?? 'SF-Pro',
           fontWeight: FontWeight.w500,
         ),
@@ -198,7 +198,7 @@ Widget info(BuildContext context) {
           color: ToiletColors.colorPurple,
           size: 29.0,
         ),
-        title: Container(height: 100, child: SelectIcon()),
+        title: Container(height: 150, child: SelectIcon()),
       ));
 }
 

@@ -198,7 +198,7 @@ class _SelectIconState extends State<SelectIcon> {
   Iterable<Widget> get companyWidgets sync* {
     for (Company company in _companies) {
       yield Padding(
-        padding: const EdgeInsets.only(left: 5),
+        padding: const EdgeInsets.only(left: 3),
         child: FilterChip(
           avatar: CircleAvatar(backgroundColor: Colors.transparent,
             child: 
@@ -218,7 +218,7 @@ class _SelectIconState extends State<SelectIcon> {
             style: TextStyle(
               color: Colors.black,
               // fontWeight: FontWeight.w600,
-              fontSize: 13,
+              fontSize: 10,
               fontFamily: 'Sukhumvit' ?? 'SF-Pro',
             ),
           ),
@@ -243,9 +243,9 @@ class _SelectIconState extends State<SelectIcon> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Row(
         children: <Widget>[
-          Wrap(
+          Wrap(direction: Axis.vertical,
             children: companyWidgets.toList(),
           ),
           // Text('Selected: ${_filters.join(', ')}'),

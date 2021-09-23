@@ -115,7 +115,7 @@ class _addImageState extends State<addImage> {
   Widget buildGridView() {
     return GridView.count(
       padding: EdgeInsets.only(top: 0, left: 4),
-      crossAxisCount: 3,
+      crossAxisCount: 1,scrollDirection: Axis.horizontal,
       children: List.generate(images.length, (index) {
         Asset asset = images[index];
         return Container(

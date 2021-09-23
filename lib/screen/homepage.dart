@@ -104,6 +104,18 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+
+    //new--------------------------------------------------------------
+    // final applicationBloc = Provider.of<ApplicationBloc>(context);
+
+    // controller.animateCamera(CameraUpdate.newCameraPosition(
+    //   CameraPosition(
+    //     bearing: 0,
+    //     target: LatLng(applicationBloc.currentLocation.latitude,
+    //         applicationBloc.currentLocation.longitude),
+    //     zoom: 17.0,
+    //   ),
+    // ));
   }
 
   @override
@@ -115,7 +127,6 @@ class _HomePageState extends State<HomePage> {
     //new
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     final _place = ModalRoute.of(context)?.settings.arguments as Places;
-
 
     return FutureProvider(
       create: (context) => placesProvider,
@@ -145,6 +156,10 @@ class _HomePageState extends State<HomePage> {
                                   tilt: 50.0,
                                   // bearing: 30,
                                 ),
+                                // //new
+                                onCameraMove: (position) {
+                                  print(position.target);
+                                },
                                 myLocationEnabled: true,
                                 zoomGesturesEnabled: true,
                                 //เลื่อนปุ่ม current ให้ขึ้นมา
@@ -191,36 +206,39 @@ class _HomePageState extends State<HomePage> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(10.0),
-                                              child: 
-                                              GestureDetector(
+                                              child: GestureDetector(
                                                 child: boxes(
-                                                  '${_place.photos}',
-                                                  // "${applicationBloc.places[index].photos[index].photoReference}",
-                                                  // "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-                                                  applicationBloc
-                                                      .currentLocation.latitude,
-                                                  applicationBloc
-                                                      .currentLocation
-                                                      .longitude,
-                                                  "${places[index].name}",
-                                                  // "${places[index].name}",
-                                                  /*score*/ places[index]
-                                                      .userRatingsTotal,
-                                                  /*rating*/ places[index],
-                                                  /*address*/ places[index]
-                                                      .vicinity,
-                                                  /**test */ '',
-                                                  context),
-                                                  onTap: (){
-                                                    Navigator.pushNamed(context, '/third',arguments: places[index],);
-                                                  },
-                                              ),                              
+                                                    "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
+
+                                                    applicationBloc
+                                                        .currentLocation
+                                                        .latitude,
+                                                    applicationBloc
+                                                        .currentLocation
+                                                        .longitude,
+                                                    "${index.toString()}",
+                                                    // "${places[index].name}",
+                                                    /*score*/ places[index]
+                                                        .userRatingsTotal,
+                                                    /*rating*/ places[index],
+                                                    /*address*/ places[index]
+                                                        .vicinity,
+                                                    /**test */ '',
+                                                    context),
+                                                onTap: () {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    '/third',
+                                                    arguments: places[index],
+                                                  );
+                                                },
+                                              ),
                                             ),
                                           );
                                         },
                                       )
                                     : Center(
-                                        child: Text('No Parking Found Nearby'),
+                                        child: Text('No, Found Nearby'),
                                       ),
                               ),
                             ),

@@ -16,17 +16,21 @@ class PlacesService {
     // var response = await http.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&radius=1500&type=establishment&keyword=toilets&key=$key');
     // var response = await http.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&type=toilets&rankby=distance&key=$key');
     //ใช้ได้
-    var response = await http.get(
-        Uri.parse('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&type=establishment&keyword=toilets&rankby=distance&key=$key'));
+    var response = await http.get(Uri.parse(
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&type=establishment&keyword=toilets&rankby=distance&key=$key'));
     //original
     // var response = await http.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&type=parking&rankby=distance&key=$key');
     var json = convert.jsonDecode(response.body);
     var jsonResults = json['results'] as List;
+    // print('lengthof${jsonResults.length}');
 
-    //new
-    // return jsonResults.map((place) => Place.fromJson(place)).toList();
-    //old
-    return jsonResults.map((place) => Places.fromJson(place, icon)).toList();
+    // //new
+    // // return jsonResults.map((place) => Place.fromJson(place)).toList();
+    // //old
+    // var a = jsonResults.map((place) => Places.fromJson(place, icon)).toList();
+    // print('lengthofSSSS${a.length}');
+    // return a;
+    return  jsonResults.map((place) => Places.fromJson(place, icon)).toList();
   }
 
 //new
@@ -42,7 +46,7 @@ class PlacesService {
     return jsonResults.map((place) => PlaceSearch.fromJson(place)).toList();
   }
 
-//เสิร์จขึ้นที่เดียว 
+//เสิร์จขึ้นที่เดียว
 
   Future<Place> getPlace(String placeId) async {
     var url =
