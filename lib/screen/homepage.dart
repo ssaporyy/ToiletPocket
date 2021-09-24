@@ -104,18 +104,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-
-    //new--------------------------------------------------------------
-    // final applicationBloc = Provider.of<ApplicationBloc>(context);
-
-    // controller.animateCamera(CameraUpdate.newCameraPosition(
-    //   CameraPosition(
-    //     bearing: 0,
-    //     target: LatLng(applicationBloc.currentLocation.latitude,
-    //         applicationBloc.currentLocation.longitude),
-    //     zoom: 17.0,
-    //   ),
-    // ));
   }
 
   @override
@@ -157,9 +145,9 @@ class _HomePageState extends State<HomePage> {
                                   // bearing: 30,
                                 ),
                                 // //new
-                                onCameraMove: (position) {
-                                  print(position.target);
-                                },
+                                // onCameraMove: (position) {
+                                //   print(position.target);
+                                // },
                                 myLocationEnabled: true,
                                 zoomGesturesEnabled: true,
                                 //เลื่อนปุ่ม current ให้ขึ้นมา
@@ -186,6 +174,11 @@ class _HomePageState extends State<HomePage> {
                                         // itemCount: places.length,
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
+                                          final photoReference = places[index]
+                                                  .photos
+                                                  .isEmpty
+                                              ? ''
+                                              : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
                                           return FutureProvider(
                                             create: (context) =>
                                                 geoService.getDistance(
@@ -208,15 +201,17 @@ class _HomePageState extends State<HomePage> {
                                                   const EdgeInsets.all(10.0),
                                               child: GestureDetector(
                                                 child: boxes(
-                                                    "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
-
+                                                    //ระเบิด !!!! .photos[0] ถ้าไม่มีรูปอยู่ใน list เรียกรูปออกมาไม่ได้ = ERROR !!!!!
+                                                    //"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
+                                                    photoReference,
+                                                    // '',
                                                     applicationBloc
                                                         .currentLocation
                                                         .latitude,
                                                     applicationBloc
                                                         .currentLocation
                                                         .longitude,
-                                                    "${index.toString()}",
+                                                    "${places[index].name}",
                                                     // "${places[index].name}",
                                                     /*score*/ places[index]
                                                         .userRatingsTotal,
@@ -225,6 +220,20 @@ class _HomePageState extends State<HomePage> {
                                                         .vicinity,
                                                     /**test */ '',
                                                     context),
+
+                                                //   //ระเบิด !!!! .photos[0] ไม่มีรูปอยู่ใน list เลยเรียกรูปออกมาไม่ได้ = ERROR !!!!!
+                                                //   "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
+
+                                                // 13.7083,
+                                                //   100.4562,
+                                                //   "$index",
+                                                //   // "${places[index].name}",
+                                                //   /*score*/ 'score',
+                                                //   /*rating*/ 'rating',
+                                                //   /*address*/ 'address',
+                                                //   /**test */
+                                                // context),
+
                                                 onTap: () {
                                                   Navigator.pushNamed(
                                                     context,

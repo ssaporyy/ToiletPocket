@@ -30,6 +30,8 @@ class PlacesService {
     // var a = jsonResults.map((place) => Places.fromJson(place, icon)).toList();
     // print('lengthofSSSS${a.length}');
     // return a;
+    final openNowPlace = jsonResults.map((place) => Places.fromJson(place, icon)).toList();
+    openNowPlace.where((element) => element.)
     return  jsonResults.map((place) => Places.fromJson(place, icon)).toList();
   }
 
