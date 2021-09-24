@@ -6,7 +6,9 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 // import 'package:toiletpocket/CarouselWithDotsPage.dart';
 
 Widget rate(BuildContext context) {
-  final _place = ModalRoute.of(context)?.settings.arguments as Places;
+  final _args =
+      ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
+  final _place = _args['places'] as Places;
   return Container(
     child: Column(children: [
       Container(
@@ -41,7 +43,8 @@ Widget rate(BuildContext context) {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "4.7",
+                        "${_place.rating}",
+                        // "4.7",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
@@ -54,7 +57,7 @@ Widget rate(BuildContext context) {
                 ),
                 Container(
                   child: RatingBarIndicator(
-                   rating: _place.rating,
+                    rating: _place.rating,
                     itemBuilder: (context, index) =>
                         Icon(Icons.star, color: Colors.amber),
                     itemCount: 5,
@@ -80,7 +83,27 @@ Widget rate(BuildContext context) {
               ]),
               Container(
                 child: Text(
-                  "ดี",
+                  
+                  (() {
+                    if (_place.rating == 0.0) {
+                      return "-";
+                    } else if (_place.rating <= 1.0) {
+                      return "แย่";
+                    
+                    } else if (_place.rating <= 2.0) {
+                      return "ควรปรับปรุง";
+                    } else if (_place.rating <= 3.0) {
+                      return "พอใช้";
+                    
+                    } else if (_place.rating <= 4.0) {
+                      return "ดี";
+                    
+                    } else if (_place.rating <= 5.0) {
+                      return "ดีเยี่ยม";
+
+                    }
+                  }()),
+                  // "ดี",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16.0,
