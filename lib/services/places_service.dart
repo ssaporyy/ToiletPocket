@@ -30,9 +30,7 @@ class PlacesService {
     // var a = jsonResults.map((place) => Places.fromJson(place, icon)).toList();
     // print('lengthofSSSS${a.length}');
     // return a;
-    final openNowPlace = jsonResults.map((place) => Places.fromJson(place, icon)).toList();
-    openNowPlace.where((element) => element.)
-    return  jsonResults.map((place) => Places.fromJson(place, icon)).toList();
+    return jsonResults.map((place) => Places.fromJson(place, icon)).toList();
   }
 
 //new
@@ -57,6 +55,15 @@ class PlacesService {
     var json = convert.jsonDecode(response.body);
     var jsonResult = json['result'] as Map<String, dynamic>;
     return Place.fromJson(jsonResult);
+  }
+
+  Future<Places> getPlaceDetail(String placeId) async {
+    final _url =
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key';
+    final response = await http.get(Uri.parse(_url));
+    final json = convert.jsonDecode(response.body);
+    final jsonResult = json['result'] as Map<String, dynamic>;
+    return Places.fromJson(jsonResult, null);
   }
 
 //เสิร์จขึ้นหลายที่

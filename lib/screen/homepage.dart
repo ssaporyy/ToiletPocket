@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:ToiletPocket/blocs/application_bloc.dart';
+import 'package:ToiletPocket/models/open.dart';
 import 'package:ToiletPocket/models/place_response.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/models/result.dart';
 import 'package:ToiletPocket/screen/cardLocation.dart';
 import 'package:ToiletPocket/screen/search.dart';
+import 'package:ToiletPocket/services/places_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
@@ -33,6 +35,7 @@ class _HomePageState extends State<HomePage> {
   StreamSubscription locationSubscription;
   StreamSubscription boundsSubscription;
   final _locationController = TextEditingController();
+  final placesService = PlacesService();
 
   @override
   void initState() {
@@ -108,177 +111,174 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final currentPosition = Provider.of<Position>(context);
+    final currentPosition = Provider.of<Position>(context);
     final placesProvider = Provider.of<Future<List<Places>>>(context);
     final geoService = GeoLocatorService();
-    // final markerService = MarkerService();
+    final markerService = MarkerService();
     //new
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     final _place = ModalRoute.of(context)?.settings.arguments as Places;
 
     return FutureProvider(
       create: (context) => placesProvider,
-      child: Scaffold(
-        body: (applicationBloc.currentLocation != null)
-            ? Consumer<List<Places>>(
-                builder: (_, places, __) {
-                  var markers = (places != null)
-                      ? applicationBloc.markerService.getMarkers(places)
-                      : List<Marker>();
-                  return (places != null)
-                      ? Stack(
-                          children: [
-                            // Maps(),
-                            Container(
-                              // height: MediaQuery.of(context).size.height / 2,
-                              // height: 500,
-                              height: MediaQuery.of(context).size.height,
-                              width: MediaQuery.of(context).size.width,
-                              child: GoogleMap(
-                                initialCameraPosition: CameraPosition(
-                                  target: LatLng(
-                                      applicationBloc.currentLocation.latitude,
-                                      applicationBloc
-                                          .currentLocation.longitude),
-                                  zoom: 16.0,
-                                  tilt: 50.0,
-                                  // bearing: 30,
+      child: SafeArea(
+        child: Scaffold(
+          body: (currentPosition != null)
+              ? Consumer<List<Places>>(
+                  builder: (_, places, __) {
+                    var markers = (places != null)
+                        ? markerService.getMarkers(places)
+                        : List<Marker>();
+                    return (places != null)
+                        ? Stack(
+                            children: [
+                              // Maps(),
+                              Container(
+                                // height: MediaQuery.of(context).size.height / 2,
+                                // height: 500,
+                                height: MediaQuery.of(context).size.height,
+                                width: MediaQuery.of(context).size.width,
+                                child: GoogleMap(
+                                  initialCameraPosition: CameraPosition(
+                                    target: LatLng(
+                                        currentPosition.latitude,
+                                        currentPosition.longitude),
+                                    zoom: 16.0,
+                                    tilt: 50.0,
+                                    // bearing: 30,
+                                  ),
+                                  // //new
+                                  // onCameraMove: (position) {
+                                  //   print(position.target);
+                                  // },
+                                  myLocationEnabled: true,
+                                  zoomGesturesEnabled: true,
+                                  //เลื่อนปุ่ม current ให้ขึ้นมา
+                                  padding: EdgeInsets.only(
+                                    bottom: 220.0,
+                                  ),
+                                  onMapCreated:
+                                      (GoogleMapController controller) {
+                                    _mapController.complete(controller);
+                                  },
+                                  markers: Set<Marker>.of(markers),
+                                  myLocationButtonEnabled: true,
                                 ),
-                                // //new
-                                // onCameraMove: (position) {
-                                //   print(position.target);
-                                // },
-                                myLocationEnabled: true,
-                                zoomGesturesEnabled: true,
-                                //เลื่อนปุ่ม current ให้ขึ้นมา
-                                padding: EdgeInsets.only(
-                                  bottom: 220.0,
-                                ),
-                                onMapCreated: (GoogleMapController controller) {
-                                  _mapController.complete(controller);
-                                },
-                                markers: Set<Marker>.of(markers),
-                                myLocationButtonEnabled: true,
                               ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Container(
-                                padding: EdgeInsets.only(left: 20),
-                                margin: EdgeInsets.symmetric(vertical: 18.0),
-                                height: 250.0,
-                                child: (places.length > 0)
-                                    ? ListView.builder(
-                                        //ตั้งให้แสดงขึ้นมา 5 ที่โดยไม่ได้กำหนดระยะทาง
-                                        itemCount: 5,
-                                        // itemCount: places.length,
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (context, index) {
-                                          final photoReference = places[index]
-                                                  .photos
-                                                  .isEmpty
-                                              ? ''
-                                              : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
-                                          return FutureProvider(
-                                            create: (context) =>
-                                                geoService.getDistance(
-                                                    applicationBloc
-                                                        .currentLocation
-                                                        .latitude,
-                                                    applicationBloc
-                                                        .currentLocation
-                                                        .longitude,
-                                                    places[index]
-                                                        .geometry
-                                                        .location
-                                                        .lat,
-                                                    places[index]
-                                                        .geometry
-                                                        .location
-                                                        .lng),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: GestureDetector(
-                                                child: boxes(
-                                                    //ระเบิด !!!! .photos[0] ถ้าไม่มีรูปอยู่ใน list เรียกรูปออกมาไม่ได้ = ERROR !!!!!
-                                                    //"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
-                                                    photoReference,
-                                                    // '',
-                                                    applicationBloc
-                                                        .currentLocation
-                                                        .latitude,
-                                                    applicationBloc
-                                                        .currentLocation
-                                                        .longitude,
-                                                    "${places[index].name}",
-                                                    // "${places[index].name}",
-                                                    /*score*/ places[index]
-                                                        .userRatingsTotal,
-                                                    /*rating*/ places[index],
-                                                    /*address*/ places[index]
-                                                        .vicinity,
-                                                    /**test */ '',
-                                                    context),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 20),
+                                  margin: EdgeInsets.symmetric(vertical: 18.0),
+                                  height: 250.0,
+                                  child: (places.length > 0)
+                                      ? ListView.builder(
+                                          //ตั้งให้แสดงขึ้นมา 5 ที่โดยไม่ได้กำหนดระยะทาง
+                                          itemCount: 5,
+                                          // itemCount: places.length,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index) {
+                                            final photoReference = places[index]
+                                                    .photos
+                                                    .isEmpty
+                                                ? ''
+                                                : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
+                                            
+                                            return FutureProvider(
+                                              create: (context) =>
+                                                  geoService.getDistance(
+                                                      currentPosition
+                                                          .latitude,
+                                                      currentPosition
+                                                          .longitude,
+                                                      places[index]
+                                                          .geometry
+                                                          .location
+                                                          .lat,
+                                                      places[index]
+                                                          .geometry
+                                                          .location
+                                                          .lng),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: GestureDetector(
+                                                  child: boxes(
+                                                      //ระเบิด !!!! .photos[0] ถ้าไม่มีรูปอยู่ใน list เรียกรูปออกมาไม่ได้ = ERROR !!!!!
+                                                      //"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
+                                                      photoReference,
+                                                      // '',
+                                                      currentPosition
+                                                          .latitude,
+                                                      currentPosition
+                                                          .longitude,
+                                                      "${places[index].name}",
+                                                      // "${places[index].name}",
+                                                      /*score*/ places[index]
+                                                          .userRatingsTotal,
+                                                      /*rating*/ places[index],
+                                                      /*address*/ places[index]
+                                                          .vicinity,
+                                                      /**openClose */ '${places[index].openingHours.open_now.toString() == 'true' ? "เปิดทำการ" :"ปิดทำการ"}',
+                                                      context),
 
-                                                //   //ระเบิด !!!! .photos[0] ไม่มีรูปอยู่ใน list เลยเรียกรูปออกมาไม่ได้ = ERROR !!!!!
-                                                //   "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
 
-                                                // 13.7083,
-                                                //   100.4562,
-                                                //   "$index",
-                                                //   // "${places[index].name}",
-                                                //   /*score*/ 'score',
-                                                //   /*rating*/ 'rating',
-                                                //   /*address*/ 'address',
-                                                //   /**test */
-                                                // context),
+                                                  onTap: () async {
+                                                    final placeDetail =
+                                                        await placesService
+                                                            .getPlaceDetail(
+                                                                places[index]
+                                                                    .placeId);
 
-                                                onTap: () {
-                                                  Navigator.pushNamed(
-                                                    context,
-                                                    '/third',
-                                                    arguments: places[index],
-                                                  );
-                                                },
+                                                    Navigator.pushNamed(
+                                                      context,
+                                                      '/third',
+                                                      arguments: {
+                                                        'places': places[index],
+                                                        'places_detail':
+                                                            placeDetail,
+                                                      },
+                                                    );
+                                                  },
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                      )
-                                    : Center(
-                                        child: Text('No, Found Nearby'),
-                                      ),
+                                            );
+                                          },
+                                        )
+                                      : Center(
+                                          child: Text('No, Found Nearby'),
+                                        ),
+                                ),
                               ),
-                            ),
-                            Positioned(
-                              top: 65,
-                              left: 20,
-                              right: 20,
-                              child: Search(),
-                            ),
+                              Positioned(
+                                top: 65,
+                                left: 20,
+                                right: 20,
+                                child: Search(),
+                              ),
 
-                            // Align(
-                            //   alignment: Alignment.bottomRight,
-                            //   child: Padding(
-                            //     padding: EdgeInsets.all(10),
-                            //     child: FloatingActionButton.extended(
-                            //       onPressed: () {
-                            //         searchNearby(lat, lng);
-                            //       },
-                            //       label: Text('Places Nearby'),
-                            //       icon: Icon(Icons.place),
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
-                        )
-                      : Center(child: CircularProgressIndicator());
-                },
-              )
-            : Center(
-                child: CircularProgressIndicator(),
-              ),
+                              // Align(
+                              //   alignment: Alignment.bottomRight,
+                              //   child: Padding(
+                              //     padding: EdgeInsets.all(10),
+                              //     child: FloatingActionButton.extended(
+                              //       onPressed: () {
+                              //         searchNearby(lat, lng);
+                              //       },
+                              //       label: Text('Places Nearby'),
+                              //       icon: Icon(Icons.place),
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
+                          )
+                        : Center(child: CircularProgressIndicator());
+                  },
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                ),
+        ),
       ),
     );
   }

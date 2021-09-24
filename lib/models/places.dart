@@ -2,6 +2,8 @@ import 'package:ToiletPocket/models/geometry.dart';
 import 'package:ToiletPocket/models/photo.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'opening_hours.dart';
+
 class Places {
   final String name;
   final double rating;
@@ -19,8 +21,7 @@ class Places {
   final int userRatingsTotal;
   //
   // List<OpeningHour> openingHours;
-  // OpeningHours openingHours;
-
+  final OpeningHours openingHours;
 
   Places({
     this.geometry,
@@ -29,40 +30,40 @@ class Places {
     this.userRatingCount,
     this.vicinity,
     this.icon,
-    this.photos, this.placeId, this.reference, this.scope, this.types, this.userRatingsTotal,/*this.openingHours,    this.openingHours,*/
-
+    this.openingHours,
+    this.photos,
+    this.placeId,
+    this.reference,
+    this.scope,
+    this.types,
+    this.userRatingsTotal,
+    /*this.openingHours,    this.openingHours,*/
   });
 
-  Places.fromJson(
-    Map<dynamic, dynamic> json,
-    BitmapDescriptor icon
-  )   : name = json['name'],
-        rating = (json['rating'] != null)
-            ? json['rating'].toDouble()
-            : null,
+  Places.fromJson(Map<String, dynamic> json, BitmapDescriptor icon)
+      : name = json['name'],
+        rating = (json['rating'] != null) ? json['rating'].toDouble() : null,
         userRatingCount = (json['user_ratings_total'] != null)
             ? json['user_ratings_total']
             : null,
         vicinity = json['vicinity'],
         geometry = Geometry.fromJson(json['geometry']),
-  //new --------------------------------------
-    photos= json['photos'] != null
-          ? json['photos'].map<Photo>((i) => Photo.fromJson(i)).toList()
-          : [],
-      placeId= json['place_id'],
-      reference= json['reference'],
-      scope= json['scope'],
-      types= List<String>.from(json['types']),
-      userRatingsTotal= json['user_ratings_total'],
-  //new --------------------------------------
-    // openingHours = json['opening_hours'] != null
-    //     ? new OpeningHours.fromJson(json['opening_hours'])
-    //     : null,
+        //new --------------------------------------
+        photos = json['photos'] != null
+            ? json['photos'].map<Photo>((i) => Photo.fromJson(i)).toList()
+            : [],
+        placeId = json['place_id'],
+        reference = json['reference'],
+        scope = json['scope'],
+        types = List<String>.from(json['types']),
+        userRatingsTotal = json['user_ratings_total'],
+        //new --------------------------------------
+        openingHours = json['opening_hours'] != null
+            ? OpeningHours.fromJson(json['opening_hours'] as Map<String, dynamic>)
+            : null,
 
-
-  //old
-  icon=icon;
-
+        //old
+        icon = icon;
 
   // Place.fromJson(
   //   Map<dynamic, dynamic> parsedJson,
@@ -87,11 +88,8 @@ class Places {
   //     types: List<String>.from(json['types']),
   //     userRatingsTotal: json['user_ratings_total'],
 
-
   // //old
   // icon=icon;
-
-  
 
 }
 

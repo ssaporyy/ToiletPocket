@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 // import 'package:ToiletPocket/models/error.dart';
 
 class Search extends StatefulWidget {
-  const Search({ Key key }) : super(key: key);
+  const Search({Key key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
@@ -22,28 +22,6 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   final _locationController = TextEditingController();
-
-  // 
-//     BitmapDescriptor pinLocationIcon;
-//   Error error;
-//   List<Result> places;
-//   bool searching = true;
-//   String keyword;
-//   List<Marker> markers = <Marker>[];
-//   static const String baseUrl =
-//       "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-//   static const String _API_KEY = 'AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno';
-//   double lat;
-//   double lng;
-//     // double lat = applicationBloc.currentLocation.longitude;
-//     // double lng = applicationBloc.currentLocation.latitude;
-//   // static double latitude = 13.736717;
-//   // static double longitude = 100.523186;
-// //new
-//   void setCustomMapPin() async {
-//     pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-//         ImageConfiguration(size: Size(10, 10)), 'images/flush.png');
-//   }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +71,6 @@ class _SearchState extends State<Search> {
                     Navigator.pushNamed(context, '/four');
 
                     // searchNearby(lat, lng);
-
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,9 +136,7 @@ class _SearchState extends State<Search> {
                     // applicationBloc.setSelectedLocation(
                     //     applicationBloc.searchResults[index].placeId);
 
-                    setState(() {
-                      
-                    });
+                    setState(() {});
                   },
                 );
               },
@@ -173,7 +148,6 @@ class _SearchState extends State<Search> {
       ],
     );
   }
-
 
   //   void searchNearby(double lat, double lng) async {
   //   final applicationBloc = Provider.of<ApplicationBloc>(context);

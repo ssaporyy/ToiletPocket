@@ -24,9 +24,11 @@ class ApplicationBloc with ChangeNotifier {
   //Variables
   Position currentLocation;
   List<PlaceSearch> searchResults;
-  StreamController<Place> selectedLocation = StreamController<Place>.broadcast();
+  StreamController<Place> selectedLocation =
+      StreamController<Place>.broadcast();
   // StreamController<Place> selectedLocation = StreamController<Place>();
-  StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>.broadcast();
+  StreamController<LatLngBounds> bounds =
+      StreamController<LatLngBounds>.broadcast();
   // StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>();
   Place selectedLocationStatic;
   String placeType;
@@ -70,6 +72,7 @@ class ApplicationBloc with ChangeNotifier {
     searchResults = null;
     notifyListeners();
   }
+
   // setSelectedLocation(String placeId) async {
   //   var sLocation = await placesService.getPlace(placeId);
   //   selectedLocation.add(sLocation);
