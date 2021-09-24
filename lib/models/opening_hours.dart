@@ -1,45 +1,27 @@
 import 'dart:convert';
 
+import 'package:ToiletPocket/models/periods.dart';
 import 'package:flutter/foundation.dart';
 
 class OpeningHours {
   final bool open_now;
   final List<String> weekday_text;
+  final List<Periods> periods;
   OpeningHours({
     this.open_now,
     this.weekday_text,
+    this.periods,
   });
- 
-  Map<String, dynamic> toMap() {
-    return {
-      'open_now': open_now,
-      'weekday_text': weekday_text,
-    };
-  }
 
-  factory OpeningHours.fromMap(Map<String, dynamic> map) {
+  factory OpeningHours.fromJson(Map<String, dynamic> json) {
     return OpeningHours(
-      open_now: map['open_now'],
-      weekday_text: List<String>.from(map['weekday_text']),
+      open_now: json['open_now'] != null ? json['open_now'] : false,
+      weekday_text: json['weekday_text'] != null
+          ? (json['weekday_text'] as List).cast<String>()
+          : <String>[],
+      periods: json['periods'] != null
+          ? json['periods'].map<Periods>((i) => Periods.fromJson(i)).toList()
+          : <Periods>[],
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory OpeningHours.fromJson(String source) => OpeningHours.fromMap(json.decode(source));
-
-  @override
-  String toString() => 'OpeningHours(open_now: $open_now, weekday_text: $weekday_text)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-  
-    return other is OpeningHours &&
-      other.open_now == open_now &&
-      listEquals(other.weekday_text, weekday_text);
-  }
-
-  @override
-  int get hashCode => open_now.hashCode ^ weekday_text.hashCode;
 }

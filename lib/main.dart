@@ -13,7 +13,7 @@ import 'package:ToiletPocket/services/places_service.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart'; 
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,9 +39,13 @@ class MyApp extends StatelessWidget {
         }),
         ProxyProvider2<Position, BitmapDescriptor, Future<List<Places>>>(
           update: (context, position, icon, places) {
+            // print('re-render');
             return (position != null)
                 ? placesService.getPlaces(
-                    position.latitude, position.longitude, icon)
+                    position.latitude,
+                    position.longitude,
+                    icon,
+                  )
                 : null;
           },
         ),
@@ -65,7 +69,6 @@ class MyApp extends StatelessWidget {
           '/six': (context) => AddToiletDetail(),
           '/seven': (context) => AddComment(),
           '/eight': (context) => Destination(),
-
         },
       ),
     );

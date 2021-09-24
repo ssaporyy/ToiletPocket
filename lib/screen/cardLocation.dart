@@ -1,5 +1,6 @@
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/models/open.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ Widget boxes(
   score,
   rating,
   address,
-  testt,
+  openClose,
   BuildContext context,
 ) {
   // final bool hasImage = false;
@@ -74,7 +75,7 @@ Widget boxes(
                   children: [
                     Container(
                       child: myDetailsContainer1(
-                          toiletName, score, rating, address, testt),
+                          toiletName, score, rating, address, openClose,context),
                     ),
                     Container(
                       child: Row(
@@ -210,7 +211,11 @@ Widget boxes(
 }
 
 // Widget myDetailsContainer1(String restaurantName, context, index) {
-Widget myDetailsContainer1(String toiletName, score, rating, address, testt) {
+Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,BuildContext context) {
+  // final _args =
+  //     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+  // final _place = _args['places'] as Places;
+  // final _placeDetail = _args['places_detail'] as Places;
   return Container(
     alignment: Alignment.topLeft,
     child: Column(
@@ -300,11 +305,11 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, testt) {
           child: new Row(
             children: <Widget>[
               Text(
-                "Closed \u00B7 Opens 17:00 Thu",
-                // testt,
-
+                openClose,
                 style: TextStyle(
-                    color: Colors.black54,
+                    color: openClose == 'ปิดทำการ'
+                ? Colors.red
+                : Colors.green,
                     fontSize: 30.0,
                     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                     fontWeight: FontWeight.normal),

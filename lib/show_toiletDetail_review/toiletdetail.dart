@@ -107,27 +107,34 @@ Widget appbar(BuildContext context) {
 Widget slide(BuildContext context) {
   final applicationBloc = Provider.of<ApplicationBloc>(context);
   return SingleChildScrollView(
-      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      child: 
-      Column(
-        children: <Widget>[
-          img(context),
-          toiletLocation(context),
-          Padding(
-            padding: const EdgeInsets.only(left: 3),
-            child: time(context),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 3),
-            child: info(context),
-          ),
-          rate(context),
-        ],
-      ),
-      );
+    padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+    child: Column(
+      children: <Widget>[
+        img(context),
+        toiletLocation(context),
+        Padding(
+          padding: const EdgeInsets.only(left: 3),
+          child: time(context),
+        ),
+        //ไอคอนแสดง ห้องน้ำคนพิการ ที่สูญบุหรี่
+        // Padding(
+        //   padding: const EdgeInsets.only(left: 3),
+        //   child: info(context),
+        // ),
+        rate(context),
+      ],
+    ),
+  );
 }
 
 Widget img(BuildContext context) {
+  // final _place = ModalRoute.of(context)?.settings.arguments as Places;
+  // final photoReference = _place
+  //         .photos
+  //         .isEmpty
+  //     ? ''
+  //     : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_place.photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
+
   final List<String> imgList = [
     // "https://shrm-res.cloudinary.com/image/upload/c_crop,h_1574,w_2800,x_0,y_0/w_auto:100,w_1200,q_35,f_auto/v1/Risk%20Management/iStock-182768607_zzxdq5.jpg",
     // 'https://media4.s-nbcnews.com/i/newscms/2020_26/1583450/public-restroom-corona-kb-main-200623_9519eb6bd31f5da24860f90cb8fc60af.jpg',
@@ -141,6 +148,11 @@ Widget img(BuildContext context) {
     'images/toilets/4.jpg',
     'images/toilets/5.jpg',
     'images/toilets/6.jpg',
+    // photoReference,
+
+    // _place.photos.isEmpty
+    //     ? 'https://shrm-res.cloudinary.com/image/upload/c_crop,h_1574,w_2800,x_0,y_0/w_auto:100,w_1200,q_35,f_auto/v1/Risk%20Management/iStock-182768607_zzxdq5.jpg'
+    //     : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_place.photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
   ];
   return Container(
     padding: EdgeInsets.fromLTRB(0, 0, 20, 5),
@@ -153,8 +165,9 @@ Widget img(BuildContext context) {
 }
 
 Widget toiletLocation(BuildContext context) {
-  final _place = ModalRoute.of(context)?.settings.arguments as Places;
-
+  final _args =
+      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+  final _place = _args['places'] as Places;
   return Container(
     alignment: Alignment.centerLeft,
     child: ListTile(
@@ -164,7 +177,7 @@ Widget toiletLocation(BuildContext context) {
         size: 36.0,
       ),
       title: Text(
-        _place.vicinity, 
+        _place.vicinity,
         style: TextStyle(
           color: Colors.black,
           fontSize: 13.0,
@@ -177,6 +190,11 @@ Widget toiletLocation(BuildContext context) {
 }
 
 Widget time(BuildContext context) {
+  final _args =
+      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+  final _place = _args['places'] as Places;
+  final _placeDetail = _args['places_detail'] as Places;
+
   return ExpansionTile(
     leading: Icon(
       Icons.access_time_sharp,
@@ -184,9 +202,24 @@ Widget time(BuildContext context) {
       size: 28.0,
     ),
     title: Text(
-      "เปิดเมื่อ 08.30",
+      // _place.openingHours.periods[0].open.time,
+      (() {
+        if (_placeDetail.openingHours == null) {
+          return "ไม่ระบุ";
+        } else if (_placeDetail.openingHours.open_now.toString() == 'true') {
+          return "เปิดทำการ";
+        } else if (_placeDetail.openingHours.open_now.toString() == 'false') {
+          return "ปิดทำการ";
+        }
+      }()),
+
       style: TextStyle(
-        color: Colors.black,
+        color:
+            // Colors.black,
+            _placeDetail.openingHours == null ||
+                    _placeDetail.openingHours.open_now.toString() == 'flase'
+                ? Colors.red
+                : Colors.green,
         fontSize: 13.0,
         fontFamily: 'Sukhumvit' ?? 'SF-Pro',
         fontWeight: FontWeight.w700,
@@ -197,184 +230,147 @@ Widget time(BuildContext context) {
     backgroundColor: Colors.white,
     children: [
       Container(
+        alignment: Alignment.topLeft,
         padding: EdgeInsets.fromLTRB(72, 0, 60, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "วันพฤหัสบดี",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    "8:30–16:30",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ]),
-            SizedBox(
-              height: 2,
+            Text(
+              (() {
+                if (_placeDetail.openingHours == null) {
+                  return "";
+                } else if (_placeDetail.openingHours.weekday_text[0] == null) {
+                  return "ไม่ระบุเวลาทำการ";
+                } else if (_placeDetail.openingHours.weekday_text[0] != null) {
+                  return _placeDetail.openingHours.weekday_text[0];
+                }
+              }()),
+              style: TextStyle(
+                wordSpacing: -1.0,
+                letterSpacing: 2.0,
+                color: Colors.black,
+                fontSize: 13.0,
+                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "วันศุกร์",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    "8:30–16:30",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ]),
-            SizedBox(
-              height: 2,
+            Text(
+              (() {
+                if (_placeDetail.openingHours == null) {
+                  return "";
+                } else if (_placeDetail.openingHours.weekday_text[1] == null) {
+                  return "ไม่ระบุเวลาทำการ";
+                } else if (_placeDetail.openingHours.weekday_text[1] != null) {
+                  return _placeDetail.openingHours.weekday_text[1];
+                }
+              }()),
+              style: TextStyle(
+                wordSpacing: -1.0,
+                letterSpacing: 2.0,
+                color: Colors.black,
+                fontSize: 13.0,
+                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "วันเสาร์",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    "ปิดทำการ",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ]),
-            SizedBox(
-              height: 2,
+            Text(
+              (() {
+                if (_placeDetail.openingHours == null) {
+                  return "";
+                } else if (_placeDetail.openingHours.weekday_text[2] == null) {
+                  return "ไม่ระบุเวลาทำการ";
+                } else if (_placeDetail.openingHours.weekday_text[2] != null) {
+                  return _placeDetail.openingHours.weekday_text[2];
+                }
+              }()),
+              style: TextStyle(
+                wordSpacing: -1.0,
+                letterSpacing: 2.0,
+                color: Colors.black,
+                fontSize: 13.0,
+                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "วันอาทิตย์",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    "ปิดทำการ",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ]),
-            SizedBox(
-              height: 2,
+            Text(
+              (() {
+                if (_placeDetail.openingHours == null) {
+                  return "";
+                } else if (_placeDetail.openingHours.weekday_text[3] == null) {
+                  return "ไม่ระบุเวลาทำการ";
+                } else if (_placeDetail.openingHours.weekday_text[3] != null) {
+                  return _placeDetail.openingHours.weekday_text[3];
+                }
+              }()),
+              style: TextStyle(
+                wordSpacing: -1.0,
+                letterSpacing: 2.0,
+                color: Colors.black,
+                fontSize: 13.0,
+                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "วันจันทร์",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    "8:30–16:30",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ]),
-            SizedBox(
-              height: 2,
+            Text(
+              (() {
+                if (_placeDetail.openingHours == null) {
+                  return "";
+                } else if (_placeDetail.openingHours.weekday_text[4] == null) {
+                  return "ไม่ระบุเวลาทำการ";
+                } else if (_placeDetail.openingHours.weekday_text[4] != null) {
+                  return _placeDetail.openingHours.weekday_text[4];
+                }
+              }()),
+              style: TextStyle(
+                wordSpacing: -1.0,
+                letterSpacing: 2.0,
+                color: Colors.black,
+                fontSize: 13.0,
+                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "วันอังคาร",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    "8:30–16:30",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ]),
-            SizedBox(
-              height: 2,
+            Text(
+              (() {
+                if (_placeDetail.openingHours == null) {
+                  return "";
+                } else if (_placeDetail.openingHours.weekday_text[5] == null) {
+                  return "ไม่ระบุเวลาทำการ";
+                } else if (_placeDetail.openingHours.weekday_text[5] != null) {
+                  return _placeDetail.openingHours.weekday_text[5];
+                }
+              }()),
+              style: TextStyle(
+                wordSpacing: -1.0,
+                letterSpacing: 2.0,
+                color: Colors.black,
+                fontSize: 13.0,
+                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "วันพุธ",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    "8:30–16:30",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ]),
+            Text(
+              (() {
+                if (_placeDetail.openingHours == null) {
+                  return "";
+                } else if (_placeDetail.openingHours.weekday_text[6] == null) {
+                  return "ไม่ระบุเวลาทำการ";
+                } else if (_placeDetail.openingHours.weekday_text[6] != null) {
+                  return _placeDetail.openingHours.weekday_text[6];
+                }
+              }()),
+              style: TextStyle(
+                wordSpacing: -1.0,
+                letterSpacing: 2.0,
+                color: Colors.black,
+                fontSize: 13.0,
+                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontWeight: FontWeight.w700,
+              ),
+            ),
             SizedBox(
-              height: 20,
+              height: 15,
             ),
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'geometry.dart';
+import 'opening_hours.dart';
 import 'photo.dart';
 
 class Result {
@@ -8,7 +9,7 @@ class Result {
   //new
   // final BitmapDescriptor icon;
   // final int userRatingCount;
-  final String icon;//
+  final String icon; //
   final String id;
   final String name; //
   final List<Photo> photos;
@@ -20,8 +21,7 @@ class Result {
   final int userRatingsTotal;
   final String vicinity; //
   //
-  // OpeningHours openingHours;
-
+  OpeningHours openingHours;
 
   Result({
     this.geometry,
@@ -39,36 +39,38 @@ class Result {
     this.userRatingsTotal,
     this.vicinity,
     /*old this.icon*/
-    // 
-    // this.openingHours,
+    //
+    this.openingHours,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json /*, BitmapDescriptor icon*/) {
+  factory Result.fromJson(
+      Map<String, dynamic> json /*, BitmapDescriptor icon*/) {
     return Result(
-      geometry: Geometry.fromJson(json['geometry']),
-      //new
-      icon: json['icon'],
-      // icon=icon,
-      // userRatingCount: (json['user_ratings_total'] != null)
-      //     ? json['user_ratings_total']
-      //     : null,
-          //
-      id: json['id'],
-      name: json['name'],
-      photos: json['photos'] != null
-          ? json['photos'].map<Photo>((i) => Photo.fromJson(i)).toList()
-          : [],
-      placeId: json['place_id'],
-      rating: json['rating'] != null ? json['rating'].toDouble() : 0.0,
-      reference: json['reference'],
-      scope: json['scope'],
-      types: List<String>.from(json['types']),
-      userRatingsTotal: json['user_ratings_total'],
-      vicinity: json['vicinity'],
-      // 
-      // openingHours: json['opening_hours'] != null
-      //   ? new OpeningHours.fromJson(json['opening_hours'])
-      //   : null,
-    );
+        geometry: Geometry.fromJson(json['geometry']),
+        //new
+        icon: json['icon'],
+        // icon=icon,
+        // userRatingCount: (json['user_ratings_total'] != null)
+        //     ? json['user_ratings_total']
+        //     : null,
+        //
+        id: json['id'],
+        name: json['name'],
+        photos: json['photos'] != null
+            ? json['photos'].map<Photo>((i) => Photo.fromJson(i)).toList()
+            : [],
+        placeId: json['place_id'],
+        rating: json['rating'] != null ? json['rating'].toDouble() : 0.0,
+        reference: json['reference'],
+        scope: json['scope'],
+        types: List<String>.from(json['types']),
+        userRatingsTotal: json['user_ratings_total'],
+        vicinity: json['vicinity'],
+        openingHours: json['opening_hours'] != null? OpeningHours.fromJson(json['opening_hours']) : null,
+        //
+        // openingHours: json['opening_hours'] != null
+        //   ? new OpeningHours.fromJson(json['opening_hours'])
+        //   : null,
+        );
   }
 }
