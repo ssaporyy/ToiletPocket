@@ -205,7 +205,7 @@ Widget time(BuildContext context) {
       // _place.openingHours.periods[0].open.time,
       (() {
         if (_placeDetail.openingHours == null) {
-          return "ไม่ระบุ";
+          return "ไม่ระบุเวลาทำการ";
         } else if (_placeDetail.openingHours.open_now.toString() == 'true') {
           return "เปิดทำการ";
         } else if (_placeDetail.openingHours.open_now.toString() == 'false') {

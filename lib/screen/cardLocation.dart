@@ -48,7 +48,7 @@ Widget boxes(
                     fit: BoxFit.cover,
                     image: NetworkImage(
                       _image.isEmpty
-                          ? 'https://www.familyhandyman.com/wp-content/uploads/2019/08/FH11DJA_514_52_002-Gerber-Ultra-Flush-Toilet.jpg?fit=680,680'
+                          ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
                           : _image,
                     ),
                     // errorBuilder: (context, exception, stackTrack) => Container(
