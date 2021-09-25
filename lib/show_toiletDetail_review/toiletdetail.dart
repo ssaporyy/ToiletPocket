@@ -128,7 +128,9 @@ Widget slide(BuildContext context) {
 }
 
 Widget img(BuildContext context) {
-  // final _place = ModalRoute.of(context)?.settings.arguments as Places;
+   final _args =
+      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+  final _place = _args['places'] as Places;
   // final photoReference = _place
   //         .photos
   //         .isEmpty
@@ -142,12 +144,20 @@ Widget img(BuildContext context) {
     // 'https://media.architecturaldigest.com/photos/56cce09bd2db26483dc7f7b0/2:1/w_5398,h_2699,c_limit/Master%20Bathroom%20-%20Shower%20View%20-After.jpg',
     // 'https://www.thespruce.com/thmb/uGGY19t5PZ323A0ANVSQjrviHgY=/1820x1365/smart/filters:no_upscale()/remodel-small-bathrooms-efficiently-1821379-hero-366429e654034a0e9713ea5e27f3186b.jpg',
     // 'https://www.smarthomesounds.co.uk/wp/wp-content/uploads/2019/07/In-celing-1-1410x650.jpg',
-    'images/toilets/1.jpg',
-    'images/toilets/2.jpg',
-    'images/toilets/3.jpg',
-    'images/toilets/4.jpg',
-    'images/toilets/5.jpg',
-    'images/toilets/6.jpg',
+    // 'images/toilets/1.jpg',
+    // 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_place.photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
+    // 'images/toilets/2.jpg',
+    // 'images/toilets/3.jpg',
+    // 'images/toilets/4.jpg',
+    // 'images/toilets/5.jpg',
+    // 'images/toilets/6.jpg',
+    // photoReference
+
+// ใช้ได้อยู่จ้า
+    _place.photos.isEmpty ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg' :'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_place.photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
+    // _place.photos.isEmpty ?'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg' :'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_place.photos[1].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
+
+    
     // photoReference,
 
     // _place.photos.isEmpty

@@ -25,12 +25,21 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                 ),
                 child: Stack(
                   children: [
-                    Image.asset(
-                      item,
+                    Image.network(
+                      item.isEmpty
+                          ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
+                          : item,
+                      // item,
                       fit: BoxFit.cover,
                       width: 400,
                       height: 250,
                     ),
+                    // Image.asset(
+                    //   item,
+                    //   fit: BoxFit.cover,
+                    //   width: 400,
+                    //   height: 250,
+                    // ),
                     //เงารูป
                     // Positioned(
                     //   bottom: 0.0,

@@ -219,6 +219,7 @@ class _HomePageState extends State<HomePage> {
 
                                                       '${places[index].openingHours == null || places[index].openingHours.open_now.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
                                                       context),
+                                                      
                                                   onTap: () async {
                                                     final placeDetail =
                                                         await placesService

@@ -5,17 +5,26 @@ import 'package:ToiletPocket/addToilet_InMap/addToiletDetail.dart';
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/addComment/addReviewComment.dart';
+import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:ToiletPocket/screen/firstScreen.dart';
 import 'package:ToiletPocket/screen/homepage.dart';
 import 'package:ToiletPocket/screen/profile.dart';
 import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:ToiletPocket/services/places_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+
+
+Future main() async {
+  //
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  //
   runApp(MyApp());
 }
 
@@ -52,6 +61,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ApplicationBloc(),
         ), //new
+        ChangeNotifierProvider(create:  (context) => GoogleSignInProvider()),
       ],
       child: MaterialApp(
         title: 'Toilet App',
@@ -59,12 +69,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/two',
+        initialRoute: '/one',
         routes: <String, WidgetBuilder>{
           '/one': (context) => FirstScreen(),
           '/two': (context) => HomePage(),
           '/third': (context) => ToiletDetail(),
-          '/four': (context) => profile(context),
+          '/four': (context) => Profile(),
           '/five': (context) => addToilet(),
           '/six': (context) => AddToiletDetail(),
           '/seven': (context) => AddComment(),

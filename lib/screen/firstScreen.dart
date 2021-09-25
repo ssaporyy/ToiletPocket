@@ -1,5 +1,6 @@
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/provider/google_sign_in.dart';
+import 'package:ToiletPocket/screen/homepage.dart';
 import 'package:ToiletPocket/screen/profile.dart';
 import 'package:ToiletPocket/screen/showUp.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -14,24 +15,6 @@ class FirstScreen extends StatefulWidget {
 }
 
 class FirstScreenState extends State<FirstScreen> {
-  // final GoogleSignIn googleSignIn = GoogleSignIn();
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // Future<FirebaseUser> signInWithGoogle() async {
-  //   final GoogleSignInAccount googleUser = await googleSignIn.signIn();
-  //   final GoogleSignInAuthentication googleAuth =
-  //       await googleUser.authentication;
-
-  //   final AuthCredential credential = GoogleAuthProvider.getCredential(
-  //       idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-
-  //   final UserCredential authResult =
-  //       await _auth.signInWithCredential(credential);
-  //   final User user = authResult.user;
-
-  //   return user;
-  // }
-
   @override
   Widget build(BuildContext context) {
     int delayAmount = 3500;
@@ -140,11 +123,13 @@ class FirstScreenState extends State<FirstScreen> {
                 color: Colors.transparent,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // final provider = Provider.of<GoogleSignInProvider>(context,
-                    //     listen: false);
-                    // provider.login();
-                    //กดแล้ว login บัญชี google
-                    // googleSignIn.signOut();
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
+                    provider.login();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) {
+                      return HomePage();
+                    }));
                   },
                   label: Text('Continue with Google',
                       style: TextStyle(
@@ -214,19 +199,3 @@ class FirstScreenState extends State<FirstScreen> {
     ]));
   }
 }
-
-// class UserDetails {
-//   final String providerDetails;
-//   final String userName;
-//   final String photoUrl;
-//   final String userEmail;
-//   final List<ProviderDetails> providerData;
-
-//   UserDetails(this.providerDetails, this.userName, this.photoUrl,
-//       this.userEmail, this.providerData);
-// }
-
-// class ProviderDetails {
-//   ProviderDetails(this.providerDetails);
-//   final String providerDetails;
-// }

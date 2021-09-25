@@ -4,14 +4,9 @@ import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/models/place.dart';
 import 'package:ToiletPocket/models/place_response.dart';
 import 'package:ToiletPocket/models/result.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
-//
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
-// import 'package:ToiletPocket/models/error.dart';
 
 class Search extends StatefulWidget {
   const Search({Key key}) : super(key: key);
@@ -22,22 +17,16 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   final _locationController = TextEditingController();
-
+  final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     return Column(
       children: [
         Padding(
-          //old
           padding: const EdgeInsets.only(top: 0.0),
-          // padding: const EdgeInsets.all(8.0),
-          //new
           child: Container(
-            // width: MediaQuery.of(context).size.width +50,
-            // height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            // margin: EdgeInsets.only(top: 80.0, left: 40.0, right: 40.0),
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -52,7 +41,6 @@ class _SearchState extends State<Search> {
                         0.7,
                       ))
                 ]),
-
             child: TextField(
               controller: _locationController,
               textCapitalization: TextCapitalization.words,
@@ -69,8 +57,6 @@ class _SearchState extends State<Search> {
                 suffixIcon: InkWell(
                   onTap: () {
                     Navigator.pushNamed(context, '/four');
-
-                    // searchNearby(lat, lng);
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,11 +65,11 @@ class _SearchState extends State<Search> {
                       Container(
                         child: CircleAvatar(
                           radius: 15.0,
-                          backgroundImage:
-                              // NetworkImage(_googleSignIn.currentUser.photoUrl),
-                              // NetworkImage(
-                              //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'),
-                              AssetImage('images/ruto.jpg'),
+                          backgroundImage: NetworkImage(user == null
+                              ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
+                              : (user.photoURL)), // NetworkImage(
+                          //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'),
+                          // AssetImage('images/ruto.jpg'),
                         ),
                       ),
                     ],
@@ -148,61 +134,4 @@ class _SearchState extends State<Search> {
       ],
     );
   }
-
-  //   void searchNearby(double lat, double lng) async {
-  //   final applicationBloc = Provider.of<ApplicationBloc>(context);
-  //   double lat = applicationBloc.currentLocation.longitude;
-  //   double lng = applicationBloc.currentLocation.latitude;
-  //   // static double latitude = applicationBloc.currentLocation.longitude;
-  //   // static double longitude = applicationBloc.currentLocation.latitude;
-  //   setState(() {
-  //     markers.clear();
-  //   });
-  //   dynamic /*String */ url =
-  //       '$baseUrl?key=$_API_KEY&location=$lat,$lng&radius=1500&keyword=toilets';
-  //   print(url);
-  //   final response = await http.get(url);
-
-  //   if (response.statusCode == 200) {
-  //     final data = json.decode(response.body);
-  //     _handleResponse(data);
-  //   } else {
-  //     throw Exception('An error occurred getting places nearby');
-  //   }
-
-  //   // make sure to hide searching
-  //   setState(() {
-  //     searching = false;
-  //   });
-  // }
-
-  // void _handleResponse(data) {
-  //   // bad api key or otherwise
-  //   if (data['status'] == "REQUEST_DENIED") {
-  //     setState(() {
-  //       error = Error.fromJson(data);
-  //     });
-  //     // success
-  //   } else if (data['status'] == "OK") {
-  //     setState(() {
-  //       places = PlaceResponse.parseResults(data['results']);
-  //       for (int i = 0; i < places.length; i++) {
-  //         markers.add(
-  //           Marker(
-  //             markerId: MarkerId(places[i].placeId),
-  //             // icon: BitmapDescriptor.defaultMarkerWithHue(198.0),
-  //             icon: pinLocationIcon,
-  //             position: LatLng(places[i].geometry.location.lat,
-  //                 places[i].geometry.location.lng),
-  //             infoWindow: InfoWindow(
-  //                 title: places[i].name, snippet: places[i].vicinity),
-  //             onTap: () {},
-  //           ),
-  //         );
-  //       }
-  //     });
-  //   } else {
-  //     print(data);
-  //   }
-  // }
 }
