@@ -217,7 +217,7 @@ Widget time(BuildContext context) {
         color:
             // Colors.black,
             _placeDetail.openingHours == null ||
-                    _placeDetail.openingHours.open_now.toString() == 'flase'
+                    _placeDetail.openingHours.open_now.toString() == 'false'
                 ? Colors.red
                 : Colors.green,
         fontSize: 13.0,

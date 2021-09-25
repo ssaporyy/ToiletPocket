@@ -140,8 +140,7 @@ class _HomePageState extends State<HomePage> {
                                 width: MediaQuery.of(context).size.width,
                                 child: GoogleMap(
                                   initialCameraPosition: CameraPosition(
-                                    target: LatLng(
-                                        currentPosition.latitude,
+                                    target: LatLng(currentPosition.latitude,
                                         currentPosition.longitude),
                                     zoom: 16.0,
                                     tilt: 50.0,
@@ -155,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                                   zoomGesturesEnabled: true,
                                   //เลื่อนปุ่ม current ให้ขึ้นมา
                                   padding: EdgeInsets.only(
-                                    bottom: 220.0,
+                                    bottom: 255.0,
                                   ),
                                   onMapCreated:
                                       (GoogleMapController controller) {
@@ -183,14 +182,12 @@ class _HomePageState extends State<HomePage> {
                                                     .isEmpty
                                                 ? ''
                                                 : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
-                                            
+
                                             return FutureProvider(
                                               create: (context) =>
                                                   geoService.getDistance(
-                                                      currentPosition
-                                                          .latitude,
-                                                      currentPosition
-                                                          .longitude,
+                                                      currentPosition.latitude,
+                                                      currentPosition.longitude,
                                                       places[index]
                                                           .geometry
                                                           .location
@@ -208,10 +205,8 @@ class _HomePageState extends State<HomePage> {
                                                       //"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
                                                       photoReference,
                                                       // '',
-                                                      currentPosition
-                                                          .latitude,
-                                                      currentPosition
-                                                          .longitude,
+                                                      currentPosition.latitude,
+                                                      currentPosition.longitude,
                                                       "${places[index].name}",
                                                       // "${places[index].name}",
                                                       /*score*/ places[index]
@@ -219,10 +214,11 @@ class _HomePageState extends State<HomePage> {
                                                       /*rating*/ places[index],
                                                       /*address*/ places[index]
                                                           .vicinity,
-                                                      /**openClose */ '${places[index].openingHours.open_now.toString() == 'true' ? "เปิดทำการ" :"ปิดทำการ"}',
+                                                      /**openClose */
+                                                      //'',
+
+                                                      '${places[index].openingHours == null || places[index].openingHours.open_now.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
                                                       context),
-
-
                                                   onTap: () async {
                                                     final placeDetail =
                                                         await placesService
