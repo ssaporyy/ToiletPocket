@@ -53,6 +53,18 @@
 	<string>Example usage description</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Example usage description</string>
+
+	<key>CFBundleURLTypes</key>
+<array>
+	<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>com.googleusercontent.apps.612655535636-d1irld1kdjok0jfsbateal6d6krgqk05</string>
+		</array>
+	</dict>
+</array>
 </dict>
 <!-- <key>CFBundleURLTypes</key>
 <array>
