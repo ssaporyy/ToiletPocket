@@ -1,5 +1,6 @@
 import 'package:ToiletPocket/models/geometry.dart';
 import 'package:ToiletPocket/models/photo.dart';
+import 'package:ToiletPocket/models/reviews.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'opening_hours.dart';
@@ -19,10 +20,12 @@ class Places {
   final String scope;
   final List<String> types;
   final int userRatingsTotal;
+ 
   //
   // List<OpeningHour> openingHours;
   final OpeningHours openingHours;
-
+ final List<Reviews> reviews;
+ 
   Places({
     this.geometry,
     this.name,
@@ -37,7 +40,8 @@ class Places {
     this.scope,
     this.types,
     this.userRatingsTotal,
-    /*this.openingHours,    this.openingHours,*/
+    //
+    this.reviews,
   });
 
   Places.fromJson(Map<String, dynamic> json, BitmapDescriptor icon)
@@ -48,7 +52,6 @@ class Places {
             : null,
         vicinity = json['vicinity'],
         geometry = Geometry.fromJson(json['geometry']),
-        //new --------------------------------------
         photos = json['photos'] != null
             ? json['photos'].map<Photo>((i) => Photo.fromJson(i)).toList()
             : [],
@@ -57,56 +60,14 @@ class Places {
         scope = json['scope'],
         types = List<String>.from(json['types']),
         userRatingsTotal = json['user_ratings_total'],
-        //new --------------------------------------
         openingHours = json['opening_hours'] != null
-            ? OpeningHours.fromJson(json['opening_hours'] as Map<String, dynamic>)
+            ? OpeningHours.fromJson(
+                json['opening_hours'] as Map<String, dynamic>)
             : null,
-
+            //
+        reviews = json['reviews'] != null
+            ? json['reviews'].map<Reviews>((i) => Reviews.fromJson(i)).toList()
+            : [],
         //old
         icon = icon;
-
-  // Place.fromJson(
-  //   Map<dynamic, dynamic> parsedJson,
-  //   BitmapDescriptor icon
-  // )   : name = parsedJson['name'],
-  //       rating = (parsedJson['rating'] != null)
-  //           ? parsedJson['rating'].toDouble()
-  //           : null,
-  //       userRatingCount = (parsedJson['user_ratings_total'] != null)
-  //           ? parsedJson['user_ratings_total']
-  //           : null,
-  //       vicinity = parsedJson['vicinity'],
-  //       geometry = Geometry.fromJson(parsedJson['geometry']),
-  // //new
-  //   photos: json['photos'] != null
-  //         ? json['photos'].map<Photo>((i) => Photo.fromJson(i)).toList()
-  //         : [],
-  //     placeId: json['place_id'],
-  //     rating: json['rating'] != null ? json['rating'].toDouble() : 0.0,
-  //     reference: json['reference'],
-  //     scope: json['scope'],
-  //     types: List<String>.from(json['types']),
-  //     userRatingsTotal: json['user_ratings_total'],
-
-  // //old
-  // icon=icon;
-
 }
-
-// //new
-// class Place {
-//   final Geometry geometry;
-//   final String name;
-//   final String vicinity;
-
-//   Place({this.geometry,this.name,this.vicinity});
-
-//   factory Place.fromJson(Map<String,dynamic> json){
-//     return Place(
-//         geometry:  Geometry.fromJson(json['geometry']),
-//         name: json['formatted_address'],
-//         vicinity: json['vicinity'],
-        
-//     );
-//   }
-// }

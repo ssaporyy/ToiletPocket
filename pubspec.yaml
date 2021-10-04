@@ -30,12 +30,8 @@ dependencies:
   google_sign_in: ^5.1.0
   cloud_firestore: ^2.5.3
   # firebase_storage: ^10.0.1
-  # firebase_auth: ^3.0.1
-  # cloud_firestore: ^2.4.0
-  # google_sign_in: ^5.0.5
 
   cupertino_icons: ^1.0.0
-  # http: ^0.12.2
   json_serializable: ^4.1.0
   pedantic: ^1.11.0
   geolocator: ^7.6.0
@@ -97,7 +93,9 @@ flutter:
     - images/signin.riv
     - images/google.png
     - images/Profile.png
+    - images/comment.png
     - images/toiletPlus.png
+    - images/toiletplus_.png
     - images/direction.png
     - images/ruto.jpg
     - images/toilets/1.jpg

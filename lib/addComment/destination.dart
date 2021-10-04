@@ -1,4 +1,5 @@
 import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/star.dart';
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
@@ -111,7 +112,9 @@ Widget add(BuildContext context) {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(
+                            height: 5,
+                          ),
                           Text(
                             'ชื่อห้องน้ำ',
                             style: TextStyle(
@@ -121,7 +124,9 @@ Widget add(BuildContext context) {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(
+                            height: 5,
+                          ),
                           Text(
                             'address',
                             style: TextStyle(
@@ -138,12 +143,103 @@ Widget add(BuildContext context) {
                         margin: EdgeInsets.all(0),
                         child: RaisedButton(
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               side:
                                   BorderSide(color: ToiletColors.colorButton2)),
                           onPressed: () {
-                            //ไปหน้าใส่รายละเอียด
-                            Navigator.pushNamed(context, '/six');
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  actionsAlignment: MainAxisAlignment.center,
+                                  actions: <Widget>[
+                                      SizedBox(height: 10,),
+                                    Column(
+                                      children: [
+                                      Text(
+                                        "รีวิวและประเมินห้องน้ำ",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20,
+                                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                        ),
+                                      ),
+                                      SizedBox(height: 10,),
+                                      Container(height: 80, child: Star()),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Container(
+                                              width: 100,
+                                              height: 47,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            30.0)),
+                                              ),
+                                              child: ElevatedButton(
+                                                // Within the `FirstScreen` widget
+                                                style: ElevatedButton.styleFrom(
+                                                    shape: StadiumBorder(),
+                                                    primary: ToiletColors
+                                                        .colorButton2,
+                                                    elevation: 5.0),
+
+                                                child: Image.asset(
+                                                  'images/comment.png',
+                                                  alignment: Alignment.center,
+                                                  width: 35,
+                                                ),
+                                                onPressed: () {
+                                                  // Navigate to the second screen using a named route.
+                                                  Navigator.pushNamed(
+                                                      context, '/seven');
+                                                },
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 100,
+                                              height: 47,
+                                              child: ElevatedButton(
+                                                // Within the `FirstScreen` widget
+                                                style: ElevatedButton.styleFrom(
+                                                    shape: StadiumBorder(),
+                                                    primary: ToiletColors
+                                                        .colorButton2,
+                                                    elevation: 5.0),
+
+                                                child: Text(
+                                                  'ยืนยัน',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Sukhumvit' ??
+                                                          'SF-Pro',
+                                                      fontSize: 20),
+                                                ),
+                                                onPressed: () {
+                                                  // Navigator.of(context).pop();
+                                                  Navigator.pushNamed(
+                                                      context, '/two');
+                                                },
+                                              ),
+                                            ),
+                                          ]),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                    ]),
+                                  ],
+                                  elevation: 10.0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                );
+                              },
+                            );
                           },
                           padding: EdgeInsets.all(10.0),
                           color: ToiletColors.colorButton2,
@@ -178,7 +274,6 @@ Widget add(BuildContext context) {
           ),
         ),
       )
-    
     ],
   );
 }

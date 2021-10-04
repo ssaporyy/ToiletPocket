@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/models/place.dart';
@@ -109,6 +110,32 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _currentLocation() async {
+    final GoogleMapController controller = await _mapController.future;
+    LocationData _currentPosition;
+    var location = new Location();
+    try {
+      _currentPosition = await location.getLocation();
+    } on Exception {
+      _currentPosition = null;
+    }
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+        bearing: 0,
+        target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
+        zoom: 16.0,
+        tilt: 50.0,
+      ),
+    ));
+  }
+  // Update the position on CameraMove
+//  _onCameraMove(CameraPosition position) {
+//    LatLng _lastMapPosition = _center;
+// static const LatLng _center = LatLng(currentPosition.latitude,currentPosition.longitude);
+//     _lastMapPosition = position.target;
+//   }
+
   @override
   Widget build(BuildContext context) {
     final currentPosition = Provider.of<Position>(context);
@@ -147,11 +174,14 @@ class _HomePageState extends State<HomePage> {
                                     // bearing: 30,
                                   ),
                                   // //new
-                                  // onCameraMove: (position) {
-                                  //   print(position.target);
-                                  // },
+                                  onCameraMove:
+                                      (CameraPosition cameraPosition) {
+                                    print(cameraPosition.zoom);
+                                  },
                                   myLocationEnabled: true,
                                   zoomGesturesEnabled: true,
+                                  zoomControlsEnabled: false,
+                                  compassEnabled: false,
                                   //เลื่อนปุ่ม current ให้ขึ้นมา
                                   padding: EdgeInsets.only(
                                     bottom: 255.0,
@@ -161,7 +191,63 @@ class _HomePageState extends State<HomePage> {
                                     _mapController.complete(controller);
                                   },
                                   markers: Set<Marker>.of(markers),
-                                  myLocationButtonEnabled: true,
+                                  myLocationButtonEnabled: false,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, bottom: 280),
+                                child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Container(
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        // Within the `FirstScreen` widget
+                                        style: ElevatedButton.styleFrom(
+                                            shape: CircleBorder(),
+                                            primary: Colors.white,
+                                            elevation: 5.0),
+                                        child: Icon(
+                                          Icons.location_on,
+                                          color: ToiletColors.colorButtonblue,
+                                        ),
+                                        onPressed: _currentLocation,
+                                      ),
+                                    )),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, bottom: 340),
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Container(
+                                    height: 50,
+                                    child: ElevatedButton(
+                                      // Within the `FirstScreen` widget
+                                      style: ElevatedButton.styleFrom(
+                                          shape: CircleBorder(),
+                                          primary: Colors.white,
+                                          elevation: 5.0),
+
+                                      child: Image.asset(
+                                        'images/toiletPlus.png',
+                                        fit: BoxFit.cover,
+                                        height: 20,
+                                      ),
+                                      onPressed: () {
+                                        // Navigate to the second screen using a named route.
+                                        Navigator.pushNamed(context, '/five');
+                                      },
+                                    ),
+                                  ),
+                                  // FloatingActionButton(
+                                  //     backgroundColor: Colors.blue,
+                                  //     onPressed: () {},
+                                  //     child: Image.asset(
+                                  //       'images/toiletPlus.png',
+                                  //       fit: BoxFit.cover,
+                                  //       height: 20,
+                                  //     )),
                                 ),
                               ),
                               Align(
@@ -219,7 +305,6 @@ class _HomePageState extends State<HomePage> {
 
                                                       '${places[index].openingHours == null || places[index].openingHours.open_now.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
                                                       context),
-                                                      
                                                   onTap: () async {
                                                     final placeDetail =
                                                         await placesService
@@ -234,6 +319,9 @@ class _HomePageState extends State<HomePage> {
                                                         'places': places[index],
                                                         'places_detail':
                                                             placeDetail,
+                                                        
+
+
                                                       },
                                                     );
                                                   },
@@ -248,7 +336,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Positioned(
-                                top: 65,
+                                top: 55,
                                 left: 20,
                                 right: 20,
                                 child: Search(),

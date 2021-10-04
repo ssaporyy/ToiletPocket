@@ -22,14 +22,17 @@ class ToiletDetail extends StatefulWidget {
 class ToiletDetailState extends State<ToiletDetail> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: back(context),
-      body: Stack(
-        children: <Widget>[
-          // back(context),
-          appbar(context),
-          // slide(context),
-        ],
+    return SafeArea(
+      child: MaterialApp( debugShowCheckedModeBanner: false,
+        home: 
+        // appBar: back(context),
+        Stack(
+          children: <Widget>[
+            // back(context),
+            appbar(context),
+            // slide(context),
+          ],
+        ),
       ),
     );
   }
@@ -42,7 +45,7 @@ Widget appbar(BuildContext context) {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(
-                  top: 55.0, left: 30.0, right: 30.0, bottom: 30.0),
+                  top: 30.0, left: 30.0, right: 30.0, bottom: 30.0),
               child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, '/two');

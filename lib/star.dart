@@ -3,15 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-class MyHomePage extends StatefulWidget {
+class Star extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _StarState createState() => _StarState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _StarState extends State<Star> {
   double rating = 3.0;
-  // String result = 'Good';
-  // String result2 = 'Bad';
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,33 +40,29 @@ class _MyHomePageState extends State<MyHomePage> {
             onRated: (value) {
               setState(() {
                 rating = value;
-                // print(rating);
-
-                // if (rating == 1.0) {
-                //   print('result1');
-                // } else if (rating == 2.0) {
-                //   print('result2');
-                // } else if (rating == 3.0) {
-                //   print('result3');
-                // } else if (rating == 4.0) {
-                //   print('result4');
-                // } else if (rating == 5.0) {
-                //   print('result5');
-                // } else {
-                //   print(rating);
-                // }
               });
             },
           ),
           SizedBox(
-            height: 5,
+            height: 10,
           ),
           Text(
-            "คุณให้คะแนน $rating คะแนน",
+            // "คุณให้คะแนน $rating คะแนน",
+            rating == 5.0
+                ? 'ดีเยี่ยม'
+                : ((rating < 5.0) & (rating > 3.0))
+                    ? 'ดี'
+                    : ((rating < 4.0) & (rating > 2.0))
+                        ? 'พอใช้'
+                        : ((rating < 3.0) & (rating > 1.0))
+                            ? 'ควรปรับปรุง'
+                            : ((rating < 2.0) & (rating > 0.0))
+                                ? 'แย่'
+                                : 'คะแนนความพึงพอใจ',
             style: TextStyle(
               fontFamily: 'Sukhumvit' ?? 'SF-Pro',
               color: Colors.black,
-              fontSize: 11,
+              fontSize: 15,
             ),
           ),
         ],

@@ -14,14 +14,16 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 class AddToiletDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: back(context),
-      body: Stack(
-        children: <Widget>[
-          // back(context),
-          appbar(context),
-          // slide(context),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        // appBar: back(context),
+        body: Stack(
+          children: <Widget>[
+            // back(context),
+            appbar(context),
+            // slide(context),
+          ],
+        ),
       ),
     );
   }
@@ -110,14 +112,14 @@ Widget addDetail(BuildContext context) {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 15,
             ),
             Container(
                 height: 80,
                 //ยังไม่ได้แก้ ส่วนนี้เป็นดาวที่ให้เรทติ้งที่อยู่ หน้า star.dart
-                child: MyHomePage()),
+                child: Star()),
             Padding(
-              padding: const EdgeInsets.only(left: 0, top: 3),
+              padding: const EdgeInsets.only(left: 0, top: 2),
               child: ToiletLocation(context),
             ),
             Padding(
@@ -140,7 +142,7 @@ Widget addDetail(BuildContext context) {
               padding: const EdgeInsets.only(left: 0),
               child: confirm(),
             ),
-            SizedBox(height: 50,),
+            SizedBox(height: 15,),
           ],
         ),
       ),

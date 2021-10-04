@@ -5,6 +5,7 @@ import 'package:ToiletPocket/addToilet_InMap/customRadio.dart';
 import 'package:ToiletPocket/addToilet_InMap/iconSelect.dart';
 import 'package:ToiletPocket/star.dart';
 import 'package:ToiletPocket/addToilet_InMap/time.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -47,7 +48,7 @@ Widget appbar(BuildContext context) {
           padding: EdgeInsets.only(top: 43.0, left: 30.0, right: 0.0),
           child: InkWell(
             onTap: () {
-              // Navigator.pushNamed(context, '/two');
+              Navigator.pushNamed(context, '/two');
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,6 +99,7 @@ Widget appbar(BuildContext context) {
 
 @override
 Widget addDetail(BuildContext context) {
+  final user = FirebaseAuth.instance.currentUser;
   double rating = 3.0;
   return Container(
     padding: EdgeInsets.only(left: 0, top: 20),
@@ -119,7 +121,7 @@ Widget addDetail(BuildContext context) {
           ),
           Container(
             alignment: Alignment.center,
-            child: Column(children: [
+            child: Column(verticalDirection: VerticalDirection.down, children: [
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -136,14 +138,18 @@ Widget addDetail(BuildContext context) {
                       // NetworkImage(
                       //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'
                       //     ),
-                      AssetImage('images/ruto.jpg'),
+                      // AssetImage('images/ruto.jpg'),
+                      NetworkImage(user == null
+                          ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
+                          : (user.photoURL)),
                 ),
               ),
               SizedBox(
                 height: 3,
               ),
               Text(
-                'Haruto',
+                // 'Haruto',
+                (user == null ? 'My Name' : '${user.displayName} '),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18.0,
@@ -155,32 +161,34 @@ Widget addDetail(BuildContext context) {
           ),
           //star ดาว
           Container(
-              height: 65,
+              height: 70,
               //ยังไม่ได้แก้ ส่วนนี้เป็นดาวที่ให้เรทติ้งที่อยู่ หน้า star.dart
-              child: MyHomePage()),
+              child: Star()),
           Padding(
             padding: EdgeInsets.only(left: 0),
             child: Container(
               margin: EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 10),
               // hack textfield height
               padding: EdgeInsets.only(bottom: 0.0),
-              child: TextField(
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.done,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                  fontWeight: FontWeight.w500,
-                ),
-                maxLines: 4,
-                decoration: InputDecoration(
-                  hintText: "แสดงความคิดเห็น",
-                  hintStyle: TextStyle(
-                    fontSize: 12,
+              child: Flexible(
+                child: TextField(
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.done,
+                  style: TextStyle(
+                    fontSize: 13,
                     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                     fontWeight: FontWeight.w500,
                   ),
-                  border: OutlineInputBorder(),
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    hintText: "แสดงความคิดเห็น",
+                    hintStyle: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black45),
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               ),
             ),
@@ -191,7 +199,7 @@ Widget addDetail(BuildContext context) {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 0, bottom: 20),
-            child: confirm(),
+            child: confirm(context),
           ),
           // SizedBox(height: 50,),
         ],
@@ -213,7 +221,7 @@ Widget addPhotocomment(BuildContext context) {
   );
 }
 
-Widget confirm() {
+Widget confirm(BuildContext context) {
   return Container(
     margin: EdgeInsets.only(top: 0),
     width: 120,
@@ -223,6 +231,7 @@ Widget confirm() {
           side: BorderSide(color: ToiletColors.colorButton2)),
       onPressed: () {
         //ยืนยัน
+        Navigator.pushNamed(context, '/two');
       },
       padding: EdgeInsets.all(10.0),
       color: ToiletColors.colorButton2,
