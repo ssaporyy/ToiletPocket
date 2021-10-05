@@ -11,5 +11,7 @@ import GoogleMaps
   GMSServices.provideAPIKey("AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno")
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    // GIDSignIn.sharedInstance().clientID = "612655535636-d1irld1kdjok0jfsbateal6d6krgqk05.apps.googleusercontent.com"
   }
+
 }

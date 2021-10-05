@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>612655535636-d1irld1kdjok0jfsbateal6d6krgqk05.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.612655535636-d1irld1kdjok0jfsbateal6d6krgqk05</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>612655535636-k2v2rk2368ssa8ph3af70kvhpa9ug2rf.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDQWW0X0qEfeq7OTrplRusP_tir6inKk8c</string>
+	<key>GCM_SENDER_ID</key>
+	<string>612655535636</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.ToiletPocket</string>
+	<key>PROJECT_ID</key>
+	<string>toiletpocket-pj</string>
+	<key>STORAGE_BUCKET</key>
+	<string>toiletpocket-pj.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:612655535636:ios:c1706bdd61e567f3d93901</string>
+</dict>
+</plist>
