@@ -222,7 +222,8 @@ class Profile extends StatelessWidget {
                                 ToiletColors.colorPurple),
                           ),
                           child: Text(
-                            'Sign Out',
+                            (user == null ? 'Sign in' : 'Sign Out'),
+                            // 'Sign Out',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 19.0,
@@ -234,11 +235,18 @@ class Profile extends StatelessWidget {
                             final provider = Provider.of<GoogleSignInProvider>(
                                 context,
                                 listen: false);
-                            provider.logout();
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return FirstScreen();
-                            }));
+                            if (user == null) {
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return FirstScreen();
+                              }));
+                            } else if(user != null){
+                              provider.logout();
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return FirstScreen();
+                              }));
+                            }
                           },
                         ),
                       ),
