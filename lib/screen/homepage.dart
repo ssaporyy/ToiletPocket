@@ -63,28 +63,6 @@ class _HomePageState extends State<HomePage> {
     // setCustomMapPin();
   }
 
-//   //new
-//   BitmapDescriptor pinLocationIcon;
-//   Error error;
-//   List<Result> places;
-//   bool searching = true;
-//   String keyword;
-//   List<Marker> markers = <Marker>[];
-//   static const String baseUrl =
-//       "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-//   static const String _API_KEY = 'AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno';
-//   double lat;
-//   double lng;
-//     // double lat = applicationBloc.currentLocation.longitude;
-//     // double lng = applicationBloc.currentLocation.latitude;
-//   // static double latitude = 13.736717;
-//   // static double longitude = 100.523186;
-// //new
-//   void setCustomMapPin() async {
-//     pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-//         ImageConfiguration(size: Size(10, 10)), 'images/flush.png');
-//   }
-
   @override
   void dispose() {
     final applicationBloc =
@@ -136,6 +114,12 @@ class _HomePageState extends State<HomePage> {
 //     _lastMapPosition = position.target;
 //   }
 
+  // Future<void> _gotoLocation(double lat,double long) async {
+  //   final GoogleMapController controller = await _mapController.future;
+  //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(lat, long), zoom: 15,tilt: 50.0,
+  //     bearing: 45.0,)));
+  // }
+
   @override
   Widget build(BuildContext context) {
     final currentPosition = Provider.of<Position>(context);
@@ -158,6 +142,7 @@ class _HomePageState extends State<HomePage> {
                     var markers = (places != null)
                         ? markerService.getMarkers(places)
                         : List<Marker>();
+
                     return (places != null)
                         ? Stack(
                             children: [
@@ -176,9 +161,12 @@ class _HomePageState extends State<HomePage> {
                                     // bearing: 30,
                                   ),
                                   // //new
-                                  onCameraMove:
-                                      (CameraPosition cameraPosition) {
-                                    print(cameraPosition.zoom);
+                                  // onCameraMove:
+                                  //     (CameraPosition cameraPosition) {
+
+                                  //     },
+                                  onCameraMove: (position) {
+                                    print(position.target);
                                   },
                                   myLocationEnabled: true,
                                   zoomGesturesEnabled: true,
@@ -191,6 +179,18 @@ class _HomePageState extends State<HomePage> {
                                   onMapCreated:
                                       (GoogleMapController controller) {
                                     _mapController.complete(controller);
+                                    // print(
+                                    //   currentPosition.latitude,
+                                    // );
+                                    // print(
+                                    //   currentPosition.longitude,
+                                    // );
+                                    // print(
+                                    // 'lat:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lat}');
+
+                                    // print(
+                                    //   'lng:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lng}',
+                                    // );
                                   },
                                   markers: Set<Marker>.of(markers),
                                   myLocationButtonEnabled: false,
@@ -270,20 +270,27 @@ class _HomePageState extends State<HomePage> {
                                                     .isEmpty
                                                 ? ''
                                                 : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
-
+                                            // print(
+                                            //   'lat:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lat}',
+                                            // );
+                                            // print(
+                                            //   'lng:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lng}',
+                                            // );
                                             return FutureProvider(
                                               create: (context) =>
                                                   geoService.getDistance(
-                                                      currentPosition.latitude,
-                                                      currentPosition.longitude,
-                                                      places[index]
-                                                          .geometry
-                                                          .location
-                                                          .lat,
-                                                      places[index]
-                                                          .geometry
-                                                          .location
-                                                          .lng),
+                                                currentPosition.latitude,
+                                                currentPosition.longitude,
+                                                places[index]
+                                                    .geometry
+                                                    .location
+                                                    .lat,
+                                                places[index]
+                                                    .geometry
+                                                    .location
+                                                    .lng,
+                                                    
+                                              ),
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(10.0),
@@ -293,8 +300,46 @@ class _HomePageState extends State<HomePage> {
                                                       //"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
                                                       photoReference,
                                                       // '',
-                                                      currentPosition.latitude,
-                                                      currentPosition.longitude,
+                                                      // applicationBloc
+                                                      //         .selectedLocationStatic
+                                                      //         .geometry
+                                                      //         .location
+                                                      //         .lat,
+                                                      //         applicationBloc
+                                                      //         .selectedLocationStatic
+                                                      //         .geometry
+                                                      //         .location
+                                                      //         .lng,
+                                                      // 13.1667,100.9333,
+
+                                                      (applicationBloc.searchResults !=
+                                                                  null &&
+                                                              applicationBloc
+                                                                      .searchResults.length !=
+                                                                  0)
+                                                          ? applicationBloc
+                                                              .selectedLocationStatic
+                                                              .geometry
+                                                              .location
+                                                              .lat
+                                                          : currentPosition
+                                                              .latitude,
+                                                      (applicationBloc
+                                                                      .searchResults !=
+                                                                  null &&
+                                                              applicationBloc
+                                                                      .searchResults
+                                                                      .length !=
+                                                                  0)
+                                                          ? applicationBloc
+                                                              .selectedLocationStatic
+                                                              .geometry
+                                                              .location
+                                                              .lng
+                                                          : currentPosition
+                                                              .longitude,
+                                                      // currentPosition.latitude,
+                                                      // currentPosition.longitude,
                                                       "${places[index].name}",
                                                       // "${places[index].name}",
                                                       /*score*/ places[index]
@@ -302,6 +347,7 @@ class _HomePageState extends State<HomePage> {
                                                       /*rating*/ places[index],
                                                       /*address*/ places[index]
                                                           .vicinity,
+
                                                       /**openClose */
                                                       //'',
 
@@ -321,12 +367,10 @@ class _HomePageState extends State<HomePage> {
                                                         'places': places[index],
                                                         'places_detail':
                                                             placeDetail,
-                                                        
-
-
                                                       },
                                                     );
                                                   },
+                                                  
                                                 ),
                                               ),
                                             );

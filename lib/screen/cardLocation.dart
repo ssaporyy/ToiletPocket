@@ -14,13 +14,14 @@ Widget boxes(
   String toiletName,
   score,
   rating,
-  address,
+  address,  
   openClose,
   BuildContext context,
 ) {
   // final bool hasImage = false;
   final applicationBloc = Provider.of<ApplicationBloc>(context);
   final _place = ModalRoute.of(context)?.settings.arguments as Places;
+
   return Container(
     child: new FittedBox(
       fit: BoxFit.cover,
@@ -74,8 +75,8 @@ Widget boxes(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      child: myDetailsContainer1(
-                          toiletName, score, rating, address, openClose,context),
+                      child: myDetailsContainer1(toiletName, score, rating,
+                          address, openClose, context),
                     ),
                     Container(
                       child: Row(
@@ -89,7 +90,8 @@ Widget boxes(
                               color: ToiletColors.colorButton,
                               onPressed: () {
                                 //กดไปหน้า นำทาง
-                                // _gotoLocation(lat, long);
+                                //  _gotoLocation(lat, long);
+                                
                               },
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
@@ -210,8 +212,11 @@ Widget boxes(
   );
 }
 
+
+
 // Widget myDetailsContainer1(String restaurantName, context, index) {
-Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,BuildContext context) {
+Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
+    BuildContext context) {
   // final _args =
   //     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
   // final _place = _args['places'] as Places;
@@ -307,9 +312,7 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
               Text(
                 openClose,
                 style: TextStyle(
-                    color: openClose == 'ปิดทำการ'
-                ? Colors.red
-                : Colors.green,
+                    color: openClose == 'ปิดทำการ' ? Colors.red : Colors.green,
                     fontSize: 30.0,
                     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                     fontWeight: FontWeight.normal),

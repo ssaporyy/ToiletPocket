@@ -116,13 +116,18 @@ class _SearchState extends State<Search> {
                         .description,
                     style: TextStyle(color: Colors.black),
                   ),
+                  // กดแล้วเปลี่ยนหน้าแผนที่ไปหมุดสถานที่ที่เสิร์จ
                   onTap: () {
                     applicationBloc.setSelectedLocation(
                         applicationBloc.searchResults[index].placeId);
+                    // print(
+                    //   'lat:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lat}',
+                    // );
+                    // print(
+                    //   'lng:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lng}',
+                    // );
                     // applicationBloc.setSelectedLocation(
                     //     applicationBloc.searchResults[index].placeId);
-
-                    setState(() {});
                   },
                 );
               },

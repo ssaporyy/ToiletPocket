@@ -1,6 +1,9 @@
 import 'package:ToiletPocket/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+//
+ import 'package:ToiletPocket/models/places.dart';
+
 
 class CarouselWithDotsPage extends StatefulWidget {
   List<String> imgList;
@@ -16,6 +19,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
 
   @override
   Widget build(BuildContext context) {
+
     final List<Widget> imageSliders = widget.imgList
         .map((item) => Container(
           width: 400,height: 250,
@@ -26,10 +30,10 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                 child: Stack(
                   children: [
                     Image.network(
-                      item.isEmpty
-                          ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
-                          : item,
-                      // item,
+                      // item.isEmpty
+                      //     ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
+                      //     : item,
+                      item,
                       fit: BoxFit.cover,
                       width: 400,
                       height: 250,

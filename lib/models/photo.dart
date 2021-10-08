@@ -12,8 +12,9 @@ class Photo {
       height: json['height'],
       width: json['width'],
       htmlAttributions: List<String>.from(json['html_attributions']),
+      // photoReference: json['photo_reference'] != null ? (json['photo_reference' as List]).cast<String>()
+      //     : <String>[],
       photoReference: json['photo_reference'] != null ? json['photo_reference'] : false,
-      // photoReference: json['photo_reference'],
 
     );
   }

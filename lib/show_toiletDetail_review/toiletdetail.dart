@@ -23,10 +23,11 @@ class ToiletDetailState extends State<ToiletDetail> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: MaterialApp( debugShowCheckedModeBanner: false,
-        home: 
-        // appBar: back(context),
-        Stack(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home:
+            // appBar: back(context),
+            Stack(
           children: <Widget>[
             // back(context),
             appbar(context),
@@ -131,7 +132,7 @@ Widget slide(BuildContext context) {
 }
 
 Widget img(BuildContext context) {
-   final _args =
+  final _args =
       ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
   final _place = _args['places'] as Places;
   // final photoReference = _place
@@ -154,18 +155,11 @@ Widget img(BuildContext context) {
     // 'images/toilets/4.jpg',
     // 'images/toilets/5.jpg',
     // 'images/toilets/6.jpg',
-    // photoReference
 
 // ใช้ได้อยู่จ้า
     _place.photos.isEmpty ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg' :'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_place.photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
     // _place.photos.isEmpty ?'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg' :'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_place.photos[1].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
 
-    
-    // photoReference,
-
-    // _place.photos.isEmpty
-    //     ? 'https://shrm-res.cloudinary.com/image/upload/c_crop,h_1574,w_2800,x_0,y_0/w_auto:100,w_1200,q_35,f_auto/v1/Risk%20Management/iStock-182768607_zzxdq5.jpg'
-    //     : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_place.photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
   ];
   return Container(
     padding: EdgeInsets.fromLTRB(0, 0, 20, 5),
@@ -243,6 +237,7 @@ Widget time(BuildContext context) {
     backgroundColor: Colors.white,
     children: [
       Container(
+        width: 500,
         alignment: Alignment.topLeft,
         padding: EdgeInsets.fromLTRB(72, 0, 60, 0),
         child: Column(
@@ -260,10 +255,10 @@ Widget time(BuildContext context) {
                 }
               }()),
               style: TextStyle(
-                wordSpacing: -1.0,
+                wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
-                fontSize: 13.0,
+                fontSize: 12.0,
                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                 fontWeight: FontWeight.w700,
               ),
@@ -279,10 +274,10 @@ Widget time(BuildContext context) {
                 }
               }()),
               style: TextStyle(
-                wordSpacing: -1.0,
+                wordSpacing: 0.0,
                 letterSpacing: 2.0,
                 color: Colors.black,
-                fontSize: 13.0,
+                fontSize: 12.0,
                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                 fontWeight: FontWeight.w700,
               ),
@@ -298,10 +293,10 @@ Widget time(BuildContext context) {
                 }
               }()),
               style: TextStyle(
-                wordSpacing: -1.0,
+                wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
-                fontSize: 13.0,
+                fontSize: 12.0,
                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                 fontWeight: FontWeight.w700,
               ),
@@ -317,10 +312,10 @@ Widget time(BuildContext context) {
                 }
               }()),
               style: TextStyle(
-                wordSpacing: -1.0,
+                wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
-                fontSize: 13.0,
+                fontSize: 12.0,
                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                 fontWeight: FontWeight.w700,
               ),
@@ -336,10 +331,10 @@ Widget time(BuildContext context) {
                 }
               }()),
               style: TextStyle(
-                wordSpacing: -1.0,
+                wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
-                fontSize: 13.0,
+                fontSize: 12.0,
                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                 fontWeight: FontWeight.w700,
               ),
@@ -355,10 +350,10 @@ Widget time(BuildContext context) {
                 }
               }()),
               style: TextStyle(
-                wordSpacing: -1.0,
+                wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
-                fontSize: 13.0,
+                fontSize: 12.0,
                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                 fontWeight: FontWeight.w700,
               ),
@@ -374,10 +369,10 @@ Widget time(BuildContext context) {
                 }
               }()),
               style: TextStyle(
-                wordSpacing: -1.0,
+                wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
-                fontSize: 13.0,
+                fontSize: 12.0,
                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                 fontWeight: FontWeight.w700,
               ),
