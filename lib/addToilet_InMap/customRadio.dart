@@ -1,14 +1,14 @@
 import 'package:ToiletPocket/colors.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
-class customRadio extends StatefulWidget {
+class CustomRadio extends StatefulWidget {
   @override
   _customRadioState createState() => _customRadioState();
 }
 
-class _customRadioState extends State<customRadio> {
+class _customRadioState extends State<CustomRadio> {
 
   List<String> lst = ['ไม่เสียค่าใช้บริการ','เสียค่าใช้บริการ'];
   int selectedIndex = 0;

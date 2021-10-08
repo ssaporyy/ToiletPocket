@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:ToiletPocket/blocs/application_bloc.dart';
-import 'package:ToiletPocket/models/open.dart';
-import 'package:ToiletPocket/models/place_response.dart';
+// import 'package:ToiletPocket/models/open.dart';
+// import 'package:ToiletPocket/models/place_response.dart';
 import 'package:ToiletPocket/models/places.dart';
-import 'package:ToiletPocket/models/result.dart';
+// import 'package:ToiletPocket/models/result.dart';
 import 'package:ToiletPocket/screen/cardLocation.dart';
 import 'package:ToiletPocket/screen/search.dart';
 import 'package:ToiletPocket/services/places_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -19,10 +19,10 @@ import 'package:ToiletPocket/models/place.dart';
 import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:ToiletPocket/services/marker_service.dart';
 
-//
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:ToiletPocket/models/error.dart';
+
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+// import 'package:ToiletPocket/models/error.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -145,6 +145,8 @@ class _HomePageState extends State<HomePage> {
     //new
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     final _place = ModalRoute.of(context)?.settings.arguments as Places;
+
+    
 
     return FutureProvider(
       create: (context) => placesProvider,
@@ -303,7 +305,7 @@ class _HomePageState extends State<HomePage> {
                                                       /**openClose */
                                                       //'',
 
-                                                      '${places[index].openingHours == null || places[index].openingHours.open_now.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
+                                                      '${places[index].openingHours == null || places[index].openingHours.openNow.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
                                                       context),
                                                   onTap: () async {
                                                     final placeDetail =

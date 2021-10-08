@@ -1,15 +1,15 @@
 import 'package:ToiletPocket/addComment/addImgcomment.dart';
-import 'package:ToiletPocket/addToilet_InMap/addImage.dart';
+// import 'package:ToiletPocket/addToilet_InMap/addImage.dart';
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/addToilet_InMap/customRadio.dart';
-import 'package:ToiletPocket/addToilet_InMap/iconSelect.dart';
+// import 'package:ToiletPocket/addToilet_InMap/customRadio.dart';
+// import 'package:ToiletPocket/addToilet_InMap/iconSelect.dart';
 import 'package:ToiletPocket/star.dart';
-import 'package:ToiletPocket/addToilet_InMap/time.dart';
+// import 'package:ToiletPocket/addToilet_InMap/time.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+// import 'package:outline_material_icons/outline_material_icons.dart';
 
 class AddComment extends StatelessWidget {
   @override
@@ -100,7 +100,7 @@ Widget appbar(BuildContext context) {
 @override
 Widget addDetail(BuildContext context) {
   final user = FirebaseAuth.instance.currentUser;
-  double rating = 3.0;
+  // double rating = 3.0;
   return Container(
     padding: EdgeInsets.only(left: 0, top: 20),
     child: SingleChildScrollView(

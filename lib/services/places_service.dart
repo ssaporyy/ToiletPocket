@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:ToiletPocket/models/photo.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:ToiletPocket/models/photo.dart';
 import 'package:ToiletPocket/models/place.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/models/place_search.dart';
-import 'package:ToiletPocket/models/result.dart';
+// import 'package:ToiletPocket/models/result.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;

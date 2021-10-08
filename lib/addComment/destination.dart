@@ -1,7 +1,7 @@
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/star.dart';
 import 'package:flutter/material.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+// import 'package:outline_material_icons/outline_material_icons.dart';
 
 class Destination extends StatelessWidget {
   @override

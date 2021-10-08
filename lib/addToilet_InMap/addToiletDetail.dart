@@ -4,12 +4,12 @@ import 'package:ToiletPocket/addToilet_InMap/customRadio.dart';
 import 'package:ToiletPocket/addToilet_InMap/iconSelect.dart';
 import 'package:ToiletPocket/star.dart';
 import 'package:ToiletPocket/addToilet_InMap/time.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
+// import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class AddToiletDetail extends StatelessWidget {
   @override
@@ -120,7 +120,7 @@ Widget addDetail(BuildContext context) {
                 child: Star()),
             Padding(
               padding: const EdgeInsets.only(left: 0, top: 2),
-              child: ToiletLocation(context),
+              child: toiletLocation(context),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 0, top: 3),
@@ -149,7 +149,7 @@ Widget addDetail(BuildContext context) {
   );
 }
 
-Widget ToiletLocation(BuildContext context) {
+Widget toiletLocation(BuildContext context) {
   return Container(
     alignment: Alignment.centerLeft,
     child: ListTile(
@@ -234,7 +234,7 @@ Widget payment(BuildContext context) {
         size: 30.0,
       ),
       title: Container(
-        child: customRadio(),
+        child: CustomRadio(),
       ),
     ),
   );

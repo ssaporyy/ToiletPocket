@@ -1,8 +1,8 @@
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/models/open.dart';
+// import 'package:ToiletPocket/models/open.dart';
 import 'package:ToiletPocket/models/places.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';

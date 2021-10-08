@@ -1,9 +1,9 @@
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/models/places.dart';
-import 'package:ToiletPocket/models/reviews.dart';
+// import 'package:ToiletPocket/models/reviews.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+// import 'package:outline_material_icons/outline_material_icons.dart';
 // import 'package:toiletpocket/CarouselWithDotsPage.dart';
 
 Widget rate(BuildContext context) {
@@ -163,7 +163,7 @@ Widget comment(BuildContext context) {
 
                         NetworkImage(_placeDetail.reviews.isEmpty
                             ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
-                            : '${_placeDetail.reviews[0].profile_photo_url}'),
+                            : '${_placeDetail.reviews[0].profilePhotoUrl}'),
                     radius: 20,
                   ),
                 ),
@@ -210,7 +210,7 @@ Widget comment(BuildContext context) {
                       // "Watanabe Haruto",
                       _placeDetail.reviews.isEmpty
                           ? 'No name'
-                          : _placeDetail.reviews[0].author_name,
+                          : _placeDetail.reviews[0].authorName,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16.0,

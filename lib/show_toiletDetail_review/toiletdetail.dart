@@ -2,12 +2,12 @@ import 'package:ToiletPocket/Show_toiletDetail_review/CarouselWithDotsPage.dart'
 import 'package:ToiletPocket/Show_toiletDetail_review/review.dart';
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/models/place.dart';
+// import 'package:ToiletPocket/models/place.dart';
 import 'package:ToiletPocket/models/places.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 // import 'package:getwidget/components/carousel/gf_items_carousel.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
@@ -219,9 +219,9 @@ Widget time(BuildContext context) {
       (() {
         if (_placeDetail.openingHours == null) {
           return "ไม่ระบุเวลาทำการ";
-        } else if (_placeDetail.openingHours.open_now.toString() == 'true') {
+        } else if (_placeDetail.openingHours.openNow.toString() == 'true') {
           return "เปิดทำการ";
-        } else if (_placeDetail.openingHours.open_now.toString() == 'false') {
+        } else if (_placeDetail.openingHours.openNow.toString() == 'false') {
           return "ปิดทำการ";
         }
       }()),
@@ -230,7 +230,7 @@ Widget time(BuildContext context) {
         color:
             // Colors.black,
             _placeDetail.openingHours == null ||
-                    _placeDetail.openingHours.open_now.toString() == 'false'
+                    _placeDetail.openingHours.openNow.toString() == 'false'
                 ? Colors.red
                 : Colors.green,
         fontSize: 13.0,
@@ -253,10 +253,10 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekday_text[0] == null) {
+                } else if (_placeDetail.openingHours.weekdayText[0] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekday_text[0] != null) {
-                  return _placeDetail.openingHours.weekday_text[0];
+                } else if (_placeDetail.openingHours.weekdayText[0] != null) {
+                  return _placeDetail.openingHours.weekdayText[0];
                 }
               }()),
               style: TextStyle(
@@ -272,10 +272,10 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekday_text[1] == null) {
+                } else if (_placeDetail.openingHours.weekdayText[1] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekday_text[1] != null) {
-                  return _placeDetail.openingHours.weekday_text[1];
+                } else if (_placeDetail.openingHours.weekdayText[1] != null) {
+                  return _placeDetail.openingHours.weekdayText[1];
                 }
               }()),
               style: TextStyle(
@@ -291,10 +291,10 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekday_text[2] == null) {
+                } else if (_placeDetail.openingHours.weekdayText[2] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekday_text[2] != null) {
-                  return _placeDetail.openingHours.weekday_text[2];
+                } else if (_placeDetail.openingHours.weekdayText[2] != null) {
+                  return _placeDetail.openingHours.weekdayText[2];
                 }
               }()),
               style: TextStyle(
@@ -310,10 +310,10 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekday_text[3] == null) {
+                } else if (_placeDetail.openingHours.weekdayText[3] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekday_text[3] != null) {
-                  return _placeDetail.openingHours.weekday_text[3];
+                } else if (_placeDetail.openingHours.weekdayText[3] != null) {
+                  return _placeDetail.openingHours.weekdayText[3];
                 }
               }()),
               style: TextStyle(
@@ -329,10 +329,10 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekday_text[4] == null) {
+                } else if (_placeDetail.openingHours.weekdayText[4] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekday_text[4] != null) {
-                  return _placeDetail.openingHours.weekday_text[4];
+                } else if (_placeDetail.openingHours.weekdayText[4] != null) {
+                  return _placeDetail.openingHours.weekdayText[4];
                 }
               }()),
               style: TextStyle(
@@ -348,10 +348,10 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekday_text[5] == null) {
+                } else if (_placeDetail.openingHours.weekdayText[5] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekday_text[5] != null) {
-                  return _placeDetail.openingHours.weekday_text[5];
+                } else if (_placeDetail.openingHours.weekdayText[5] != null) {
+                  return _placeDetail.openingHours.weekdayText[5];
                 }
               }()),
               style: TextStyle(
@@ -367,10 +367,10 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekday_text[6] == null) {
+                } else if (_placeDetail.openingHours.weekdayText[6] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekday_text[6] != null) {
-                  return _placeDetail.openingHours.weekday_text[6];
+                } else if (_placeDetail.openingHours.weekdayText[6] != null) {
+                  return _placeDetail.openingHours.weekdayText[6];
                 }
               }()),
               style: TextStyle(
