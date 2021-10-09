@@ -78,7 +78,16 @@ class FirstScreenState extends State<FirstScreen> {
                   ),
                   onPressed: () {
                     // Navigate to the second screen using a named route.
-                    Navigator.pushNamed(context, '/two');
+
+                    // Navigator.pushNamed(context, '/two');
+
+                     final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
+                    provider.signInAnonymously();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) {
+                      return HomePage();
+                    }));
                   },
                 ),
               ),

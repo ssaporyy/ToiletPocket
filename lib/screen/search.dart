@@ -65,7 +65,7 @@ class _SearchState extends State<Search> {
                       Container(
                         child: CircleAvatar(
                           radius: 15.0,
-                          backgroundImage: NetworkImage(user == null
+                          backgroundImage: NetworkImage(user == null || user.isAnonymous
                               ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
                               : (user.photoURL)), // NetworkImage(
                           //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'),
