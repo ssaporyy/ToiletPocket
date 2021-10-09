@@ -115,9 +115,7 @@ Widget rate(BuildContext context) {
         ]),
       ),
       Container(
-        height: MediaQuery.of(context).size.height,
-        child:
-            comment(context),
+        child: comment(context) 
       )
     ]),
   );
@@ -130,6 +128,7 @@ Widget comment(BuildContext context) {
   final _placeDetail = _args['places_detail'] as Places;
   if (_placeDetail.reviews.isEmpty) {
     return Container(
+      alignment: Alignment.topCenter,
       height: 260,
       child: Center(
         child: Text(
@@ -144,121 +143,125 @@ Widget comment(BuildContext context) {
       ),
     );
   }
-  return ListView.builder(
-    physics: NeverScrollableScrollPhysics(),
-    shrinkWrap: true,
-    itemCount: _placeDetail.reviews.length,
-    itemBuilder: (BuildContext context, int index) {
-      return new Container(
-        padding: new EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 0.0),
-        child: new Card(
-          child: Container(
-            // height: 260,
-            padding: EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 0,
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(15, 0, 20, 0),
-                        child: CircleAvatar(
-                          backgroundImage:
-                              // NetworkImage(
-                              //     'https://cdn.readawrite.com/articles/1821/1820201/thumbnail/large.gif?3'),
-                              // AssetImage('images/ruto.jpg'),
+  return Container(
+    child: ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: _placeDetail.reviews.length,
+      itemBuilder: (BuildContext context, int index) {
+        return new Container(
+          padding: new EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 0.0),
+          child: new Card(
+            elevation: 6,
+            shadowColor: ToiletColors.colorBackground,
+            child: Container(
+              // height: 260,
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 0,
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(15, 0, 20, 0),
+                          child: CircleAvatar(
+                            backgroundImage:
+                                // NetworkImage(
+                                //     'https://cdn.readawrite.com/articles/1821/1820201/thumbnail/large.gif?3'),
+                                // AssetImage('images/ruto.jpg'),
 
-                              NetworkImage(_placeDetail.reviews.isEmpty
-                                  ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
-                                  : '${_placeDetail.reviews[index].profilePhotoUrl}'),
-                          radius: 20,
+                                NetworkImage(_placeDetail.reviews.isEmpty
+                                    ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
+                                    : '${_placeDetail.reviews[index].profilePhotoUrl}'),
+                            radius: 20,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              RatingBarIndicator(
-                                rating: _placeDetail.reviews.isEmpty
-                                    ? 0.0
-                                    : _placeDetail.reviews[index].rating
-                                        .toDouble(),
-                                itemBuilder: (context, index) =>
-                                    Icon(Icons.star, color: Colors.amber),
-                                itemCount: 5,
-                                itemSize: 25.0,
-                                direction: Axis.horizontal,
-                              ),
-                              SizedBox(
-                                width: 3,
-                              ),
-                              Text(
-                                // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
-                                _placeDetail.reviews.isEmpty
-                                    ? ''
-                                    : _placeDetail.reviews[index]
-                                        .relative_time_description,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12.0,
-                                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                                  fontWeight: FontWeight.w400,
+                      Expanded(
+                        flex: 4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                RatingBarIndicator(
+                                  rating: _placeDetail.reviews.isEmpty
+                                      ? 0.0
+                                      : _placeDetail.reviews[index].rating
+                                          .toDouble(),
+                                  itemBuilder: (context, index) =>
+                                      Icon(Icons.star, color: Colors.amber),
+                                  itemCount: 5,
+                                  itemSize: 25.0,
+                                  direction: Axis.horizontal,
                                 ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
+                                  _placeDetail.reviews.isEmpty
+                                      ? ''
+                                      : _placeDetail.reviews[index]
+                                          .relative_time_description,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12.0,
+                                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              // "Watanabe Haruto",
+                              _placeDetail.reviews.isEmpty
+                                  ? 'No name'
+                                  : _placeDetail.reviews[index].authorName,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16.0,
+                                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                fontWeight: FontWeight.w600,
                               ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            // "Watanabe Haruto",
-                            _placeDetail.reviews.isEmpty
-                                ? 'No name'
-                                : _placeDetail.reviews[index].authorName,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16.0,
-                              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                              fontWeight: FontWeight.w600,
                             ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
-                            _placeDetail.reviews.isEmpty
-                                ? 'No Comment'
-                                : _placeDetail.reviews[index].text,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0,
-                              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                              fontWeight: FontWeight.w500,
+                            SizedBox(
+                              height: 5,
                             ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                        ],
+                            Text(
+                              // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
+                              _placeDetail.reviews.isEmpty
+                                  ? 'No Comment'
+                                  : _placeDetail.reviews[index].text,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    },
+        );
+      },
+    ),
   );
 }
 

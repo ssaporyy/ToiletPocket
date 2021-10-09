@@ -33,4 +33,14 @@ class GoogleSignInProvider extends ChangeNotifier {
     //new
     FirebaseAuth.instance.signOut();
   }
+
+ Future<void> signInAnonymously() async {
+    try {
+      await FirebaseAuth.instance.signInAnonymously();
+    } catch (e) {
+      print(e); // TODO: show dialog with error
+    }
+  }
+
+
 }

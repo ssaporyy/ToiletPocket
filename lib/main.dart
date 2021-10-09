@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/two',
+        initialRoute: '/one',
         routes: <String, WidgetBuilder>{
           '/one': (context) => FirstScreen(),
           '/two': (context) => HomePage(),

@@ -65,7 +65,7 @@ class Profile extends StatelessWidget {
                   // padding: EdgeInsets.only(top: 100, left: 25),
                   child: ListTile(
                 title: Text(
-                  (user == null ? 'My Name' : '${user.displayName} '),
+                  (user == null|| user.isAnonymous ? 'My Name' : '${user.displayName} '),
                   // '${user.displayName}',
                   // 'Watanabe Haruto (하루토)',
                   style: TextStyle(
@@ -76,7 +76,7 @@ class Profile extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  (user == null ? 'My Email' : '${user.email} '),
+                  (user == null|| user.isAnonymous ? 'My Email' : '${user.email} '),
                   // '${user.email}',
                   // 'Haruto@hotmail.com',
                   style: TextStyle(
@@ -104,7 +104,7 @@ class Profile extends StatelessWidget {
                     child: CircleAvatar(
                       backgroundColor: ToiletColors.colorButton,
                       radius: 55.0,
-                      backgroundImage: NetworkImage(user == null
+                      backgroundImage: NetworkImage(user == null|| user.isAnonymous
                           ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
                           : (user.photoURL)),
                       // backgroundImage: NetworkImage(user.photoURL),
@@ -150,7 +150,7 @@ class Profile extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        (user == null ? 'My Name' : '${user.displayName} '),
+                        (user == null|| user.isAnonymous ? 'My Name' : '${user.displayName} '),
                         // '${user.displayName}',
                         // 'Watanabe Haruto (하루토)',
                         style: TextStyle(
@@ -194,7 +194,7 @@ class Profile extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        (user == null ? 'My Email' : '${user.email} '),
+                        (user == null|| user.isAnonymous ? 'My Email' : '${user.email} '),
                         // '${user.email}',
                         // 'Haruto@hotmail.com',
                         style: TextStyle(
@@ -222,7 +222,7 @@ class Profile extends StatelessWidget {
                                 ToiletColors.colorPurple),
                           ),
                           child: Text(
-                            (user == null ? 'Sign in' : 'Sign Out'),
+                            (user == null|| user.isAnonymous ? 'Sign in' : 'Sign Out'),
                             // 'Sign Out',
                             style: TextStyle(
                               color: Colors.white,
