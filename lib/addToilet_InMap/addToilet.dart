@@ -1,5 +1,12 @@
+import 'dart:async';
+import 'dart:collection';
+
 import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/models/place.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 // import 'package:outline_material_icons/outline_material_icons.dart';
 
 class addToilet extends StatelessWidget {
@@ -15,9 +22,44 @@ class addToilet extends StatelessWidget {
 }
 
 Widget add(BuildContext context) {
+  Completer<GoogleMapController> _mapController = Completer();
+  final currentPosition = Provider.of<Position>(context);
+
+  Set<Circle> myCircles = Set.from([
+    Circle(
+      circleId: CircleId('pin add toilet'),
+      center: LatLng(currentPosition.latitude, currentPosition.longitude),
+      radius: 80,
+      fillColor: Colors.blue.shade100.withOpacity(0.5),
+      strokeColor: Colors.blue.shade100.withOpacity(0.1),
+    )
+  ]);
+
   return SafeArea(
     child: Stack(
-      children: <Widget>[
+      children: [
+        Container(
+          child: GoogleMap(
+            mapType: MapType.normal,
+            myLocationEnabled: true,
+            zoomGesturesEnabled: false,
+            scrollGesturesEnabled: false,
+            initialCameraPosition: CameraPosition(
+              target:
+                  LatLng(currentPosition.latitude, currentPosition.longitude),
+              zoom: 18.0,
+              tilt: 20.0,
+              // bearing: 30,
+            ),
+            onMapCreated: (GoogleMapController controller) {
+              _mapController.complete(controller);
+            },
+            onCameraMove: null,
+            circles: myCircles,
+            // markers: Set<Marker>.of(markers),
+            // myLocationButtonEnabled: false,
+          ),
+        ),
         Align(
           alignment: Alignment.topCenter,
           child: Container(
@@ -53,7 +95,7 @@ Widget add(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 10,top: 0),
+                      padding: const EdgeInsets.only(left: 10, top: 0),
                       child: TextButton(
                         style: TextButton.styleFrom(
                           alignment: Alignment.center,
@@ -124,7 +166,8 @@ Widget add(BuildContext context) {
               width: double.maxFinite,
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(30.0)),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12,
@@ -160,7 +203,8 @@ Widget add(BuildContext context) {
                   ),
                 ),
               ),
-            )),
+            )
+          ),
       ],
     ),
   );
