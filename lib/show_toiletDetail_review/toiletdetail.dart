@@ -7,13 +7,14 @@ import 'package:ToiletPocket/models/places.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 // import 'package:getwidget/components/carousel/gf_items_carousel.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 
 class ToiletDetail extends StatefulWidget {
-  ToiletDetail({Key key}) : super(key: key);
+  ToiletDetail({Key ?key}) : super(key: key);
 
   @override
   ToiletDetailState createState() => ToiletDetailState();
@@ -22,6 +23,7 @@ class ToiletDetail extends StatefulWidget {
 class ToiletDetailState extends State<ToiletDetail> {
   @override
   Widget build(BuildContext context) {
+    // final _marker = ModalRoute.of(context)?.settings.arguments as List<Marker>;
     return SafeArea(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -64,7 +66,7 @@ Widget appbar(BuildContext context) {
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 15.0,
-                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        fontFamily: 'Sukhumvit',
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -144,12 +146,12 @@ Widget img(BuildContext context) {
 //   ];
 
   var imgList = new List<String>.generate(
-    _placeDetail.photos.length,
+    _placeDetail.photos!.length,
     (index) => 
     // _placeDetail.photos.isEmpty
     //     ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
     //     : 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos[index].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
-    'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos[index].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
+    'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos![index].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
   );
   if (imgList.isEmpty) {
     return Image.network(
@@ -180,11 +182,11 @@ Widget toiletLocation(BuildContext context) {
         size: 36.0,
       ),
       title: Text(
-        _place.vicinity,
+        _place.vicinity!,
         style: TextStyle(
           color: Colors.black,
           fontSize: 13.0,
-          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+          fontFamily: 'Sukhumvit' ,
           fontWeight: FontWeight.w700,
         ),
       ),
@@ -204,27 +206,28 @@ Widget time(BuildContext context) {
       color: ToiletColors.colorPurple,
       size: 28.0,
     ),
-    title: Text(
+    title: 
+    Text(
       // _place.openingHours.periods[0].open.time,
       (() {
         if (_placeDetail.openingHours == null) {
           return "ไม่ระบุเวลาทำการ";
-        } else if (_placeDetail.openingHours.openNow.toString() == 'true') {
+        } else if (_placeDetail.openingHours!.openNow.toString() == 'true') {
           return "เปิดทำการ";
-        } else if (_placeDetail.openingHours.openNow.toString() == 'false') {
+        } else if (_placeDetail.openingHours!.openNow.toString() == 'false') {
           return "ปิดทำการ";
         }
-      }()),
+      }()!),
 
       style: TextStyle(
         color:
             // Colors.black,
             _placeDetail.openingHours == null ||
-                    _placeDetail.openingHours.openNow.toString() == 'false'
+                    _placeDetail.openingHours!.openNow.toString() == 'false'
                 ? Colors.red
                 : Colors.green,
         fontSize: 13.0,
-        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+        fontFamily: 'Sukhumvit',
         fontWeight: FontWeight.w700,
       ),
     ),
@@ -244,18 +247,18 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekdayText[0] == null) {
+                } else if (_placeDetail.openingHours!.weekdayText![0] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekdayText[0] != null) {
-                  return _placeDetail.openingHours.weekdayText[0];
+                } else if (_placeDetail.openingHours!.weekdayText![0] != null) {
+                  return _placeDetail.openingHours!.weekdayText![0];
                 }
-              }()),
+              }()!),
               style: TextStyle(
                 wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
                 fontSize: 12.0,
-                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontFamily: 'Sukhumvit',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -263,18 +266,18 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekdayText[1] == null) {
+                } else if (_placeDetail.openingHours!.weekdayText![1] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekdayText[1] != null) {
-                  return _placeDetail.openingHours.weekdayText[1];
+                } else if (_placeDetail.openingHours!.weekdayText![1] != null) {
+                  return _placeDetail.openingHours!.weekdayText![1];
                 }
-              }()),
+              }()!),
               style: TextStyle(
                 wordSpacing: 0.0,
                 letterSpacing: 2.0,
                 color: Colors.black,
                 fontSize: 12.0,
-                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontFamily: 'Sukhumvit',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -282,18 +285,18 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekdayText[2] == null) {
+                } else if (_placeDetail.openingHours!.weekdayText![2] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekdayText[2] != null) {
-                  return _placeDetail.openingHours.weekdayText[2];
+                } else if (_placeDetail.openingHours!.weekdayText![2] != null) {
+                  return _placeDetail.openingHours!.weekdayText![2];
                 }
-              }()),
+              }()!),
               style: TextStyle(
                 wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
                 fontSize: 12.0,
-                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontFamily: 'Sukhumvit',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -301,37 +304,18 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekdayText[3] == null) {
+                } else if (_placeDetail.openingHours!.weekdayText![3] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekdayText[3] != null) {
-                  return _placeDetail.openingHours.weekdayText[3];
+                } else if (_placeDetail.openingHours!.weekdayText![3] != null) {
+                  return _placeDetail.openingHours!.weekdayText![3];
                 }
-              }()),
+              }()!),
               style: TextStyle(
                 wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
                 fontSize: 12.0,
-                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            Text(
-              (() {
-                if (_placeDetail.openingHours == null) {
-                  return "";
-                } else if (_placeDetail.openingHours.weekdayText[4] == null) {
-                  return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekdayText[4] != null) {
-                  return _placeDetail.openingHours.weekdayText[4];
-                }
-              }()),
-              style: TextStyle(
-                wordSpacing: -1.5,
-                letterSpacing: 2.0,
-                color: Colors.black,
-                fontSize: 12.0,
-                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontFamily: 'Sukhumvit',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -339,18 +323,18 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekdayText[5] == null) {
+                } else if (_placeDetail.openingHours!.weekdayText![4] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekdayText[5] != null) {
-                  return _placeDetail.openingHours.weekdayText[5];
+                } else if (_placeDetail.openingHours!.weekdayText![4] != null) {
+                  return _placeDetail.openingHours!.weekdayText![4];
                 }
-              }()),
+              }()!),
               style: TextStyle(
                 wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
                 fontSize: 12.0,
-                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontFamily: 'Sukhumvit',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -358,18 +342,37 @@ Widget time(BuildContext context) {
               (() {
                 if (_placeDetail.openingHours == null) {
                   return "";
-                } else if (_placeDetail.openingHours.weekdayText[6] == null) {
+                } else if (_placeDetail.openingHours!.weekdayText![5] == null) {
                   return "ไม่ระบุเวลาทำการ";
-                } else if (_placeDetail.openingHours.weekdayText[6] != null) {
-                  return _placeDetail.openingHours.weekdayText[6];
+                } else if (_placeDetail.openingHours!.weekdayText![5] != null) {
+                  return _placeDetail.openingHours!.weekdayText![5];
                 }
-              }()),
+              }()!),
               style: TextStyle(
                 wordSpacing: -1.5,
                 letterSpacing: 2.0,
                 color: Colors.black,
                 fontSize: 12.0,
-                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontFamily: 'Sukhumvit',
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Text(
+              (() {
+                if (_placeDetail.openingHours == null) {
+                  return "";
+                } else if (_placeDetail.openingHours!.weekdayText![6] == null) {
+                  return "ไม่ระบุเวลาทำการ";
+                } else if (_placeDetail.openingHours!.weekdayText![6] != null) {
+                  return _placeDetail.openingHours!.weekdayText![6];
+                }
+              }()!),
+              style: TextStyle(
+                wordSpacing: -1.5,
+                letterSpacing: 2.0,
+                color: Colors.black,
+                fontSize: 12.0,
+                fontFamily: 'Sukhumvit' ,
                 fontWeight: FontWeight.w700,
               ),
             ),

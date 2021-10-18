@@ -13,8 +13,8 @@ import 'viewport.dart';
 
 //new
 class Geometry {
-  final Location location;
-  final ViewPort viewPort;
+  final Location? location;
+  final ViewPort? viewPort;
   Geometry({this.location, this.viewPort});
 
   factory Geometry.fromJson(Map<String, dynamic> json){

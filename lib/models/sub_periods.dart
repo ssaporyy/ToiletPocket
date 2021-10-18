@@ -1,8 +1,8 @@
 // import 'package:flutter/foundation.dart';
 
 class SubPeriods {
-  final num day;
-  final String time;
+  final num? day;
+  final String? time;
 
   SubPeriods({this.day, this.time});
 

@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MarkerSService {
 
   LatLngBounds bounds(Set<Marker> markers) {
-    if (markers == null || markers.isEmpty) return null;
+    if (markers == null || markers.isEmpty) return null!;
     return createBounds(markers.map((m) => m.position).toList());
   }
 
@@ -25,13 +25,13 @@ class MarkerSService {
     if (center) markerId = 'center';
 
     return Marker(
-        markerId: MarkerId(markerId),
+        markerId: MarkerId(markerId!),
         draggable: false,
         visible: (center) ? false : true,
         infoWindow: InfoWindow(
             title: place.name, snippet: place.vicinity),
-        position: LatLng(place.geometry.location.lat,
-            place.geometry.location.lng)
+        position: LatLng(place.geometry!.location!.lat!,
+            place.geometry!.location!.lng!)
     );
   }
 

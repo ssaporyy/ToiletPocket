@@ -36,7 +36,7 @@ class Profile extends StatelessWidget {
                   textStyle: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
-                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                    fontFamily: 'Sukhumvit',
                   ),
                 ),
                 onPressed: () {
@@ -54,7 +54,7 @@ class Profile extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 15.0,
-                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        fontFamily: 'Sukhumvit',
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -71,7 +71,7 @@ class Profile extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 23.0,
-                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                    fontFamily: 'Sukhumvit',
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -82,7 +82,7 @@ class Profile extends StatelessWidget {
                   style: TextStyle(
                     color: ToiletColors.colorText,
                     fontSize: 16.0,
-                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                    fontFamily: 'Sukhumvit',
                   ),
                 ),
               )),
@@ -106,7 +106,7 @@ class Profile extends StatelessWidget {
                       radius: 55.0,
                       backgroundImage: NetworkImage(user == null|| user.isAnonymous
                           ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
-                          : (user.photoURL)),
+                          : (user.photoURL!)),
                       // backgroundImage: NetworkImage(user.photoURL),
                       // NetworkImage(
                       //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'
@@ -146,7 +146,7 @@ class Profile extends StatelessWidget {
                         style: TextStyle(
                           color: ToiletColors.colorText,
                           fontSize: 13.0,
-                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                          fontFamily: 'Sukhumvit',
                         ),
                       ),
                       subtitle: Text(
@@ -156,7 +156,7 @@ class Profile extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 19.0,
-                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                          fontFamily: 'Sukhumvit',
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -190,7 +190,7 @@ class Profile extends StatelessWidget {
                         style: TextStyle(
                           color: ToiletColors.colorText,
                           fontSize: 13.0,
-                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                          fontFamily: 'Sukhumvit',
                         ),
                       ),
                       subtitle: Text(
@@ -200,7 +200,7 @@ class Profile extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 19.0,
-                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                          fontFamily: 'Sukhumvit',
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -227,7 +227,7 @@ class Profile extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 19.0,
-                              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                              fontFamily: 'Sukhumvit',
                               fontWeight: FontWeight.w600,
                             ),
                           ),

@@ -2,10 +2,10 @@
 import 'result.dart';
 
 class PlaceResponse {
-  final List<String> htmlAttributions;
-  final List<Result> results;
-  final String status;
-  final String nextPageToken;
+  final List<String>? htmlAttributions;
+  final List<Result>? results;
+  final String? status;
+  final String? nextPageToken;
 
   PlaceResponse({this.htmlAttributions, this.results, this.status, this.nextPageToken});
 

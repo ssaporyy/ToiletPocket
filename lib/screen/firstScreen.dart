@@ -38,7 +38,7 @@ class FirstScreenState extends State<FirstScreen> {
                   'ยินดีต้อนรับ',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                    fontFamily: 'Sukhumvit',
                     color: Colors.black,
                     fontSize: 55,
                   ),
@@ -51,7 +51,7 @@ class FirstScreenState extends State<FirstScreen> {
                   'Toilet Pocket',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                    fontFamily: 'Sukhumvit',
                     color: Colors.black,
                     fontSize: 35,
                   ),
@@ -74,7 +74,7 @@ class FirstScreenState extends State<FirstScreen> {
                   child: Text(
                     'เริ่มต้น',
                     style: TextStyle(
-                        fontFamily: 'Sukhumvit' ?? 'SF-Pro', fontSize: 20),
+                        fontFamily: 'Sukhumvit', fontSize: 20),
                   ),
                   onPressed: () {
                     // Navigate to the second screen using a named route.
@@ -107,7 +107,7 @@ class FirstScreenState extends State<FirstScreen> {
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 35.0,
-                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                  fontFamily: 'Sukhumvit',
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -117,7 +117,7 @@ class FirstScreenState extends State<FirstScreen> {
               style: TextStyle(
                 color: Colors.black54,
                 fontSize: 11.0,
-                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                fontFamily: 'Sukhumvit',
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -144,7 +144,7 @@ class FirstScreenState extends State<FirstScreen> {
                       style: TextStyle(
                         color: ToiletColors.colorButton2,
                         fontSize: 16,
-                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        fontFamily: 'Sukhumvit',
                         fontWeight: FontWeight.w700,
                       )),
                   style: ElevatedButton.styleFrom(
@@ -172,7 +172,7 @@ class FirstScreenState extends State<FirstScreen> {
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 12.0,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                      fontFamily: 'Sukhumvit',
                       // fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -187,7 +187,7 @@ class FirstScreenState extends State<FirstScreen> {
                           color: Colors.black,
                           fontWeight: FontWeight.w600,
                           fontSize: 12.0,
-                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                          fontFamily: 'Sukhumvit',
                         ),
                       ),
                       onPressed: () {

@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 class Addimgcomment extends StatefulWidget {
-  Addimgcomment({Key key}) : super(key: key);
+  Addimgcomment({Key ?key}) : super(key: key);
   @override
   _AddimgcommentState createState() => _AddimgcommentState();
 }
@@ -125,7 +125,7 @@ class _AddimgcommentState extends State<Addimgcomment> {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 7.5,
-                            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                            fontFamily: 'Sukhumvit',
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -134,7 +134,7 @@ class _AddimgcommentState extends State<Addimgcomment> {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 7.5,
-                            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                            fontFamily: 'Sukhumvit',
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -143,7 +143,7 @@ class _AddimgcommentState extends State<Addimgcomment> {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 7.5,
-                            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                            fontFamily: 'Sukhumvit',
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -152,7 +152,7 @@ class _AddimgcommentState extends State<Addimgcomment> {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 7.5,
-                            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                            fontFamily: 'Sukhumvit',
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -161,7 +161,7 @@ class _AddimgcommentState extends State<Addimgcomment> {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 7.5,
-                            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                            fontFamily: 'Sukhumvit',
                             fontWeight: FontWeight.w500,
                           ),
                         ),

@@ -22,22 +22,22 @@ class ApplicationBloc with ChangeNotifier {
   final markerSService = MarkerSService();
 
   //Variables
-  Position currentLocation;
-  List<PlaceSearch> searchResults;
-  StreamController<Place> selectedLocation =
+  Position? currentLocation;
+  List<PlaceSearch>? searchResults;
+  StreamController<Place>? selectedLocation =
       StreamController<Place>.broadcast();
   // StreamController<Place> selectedLocation = StreamController<Place>();
-  StreamController<LatLngBounds> bounds =
+  StreamController<LatLngBounds>? bounds =
       StreamController<LatLngBounds>.broadcast();
   // StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>();
-  Place selectedLocationStatic;
-  String placeType;
+  Place? selectedLocationStatic;
+  String? placeType;
   // List<Places> placeResults;
-  List<Place> placeResults;
-  List<Marker> markers = List<Marker>();
+  List<Place>? placeResults;
+  List<Marker>? markers = <Marker>[];
   //new
-  List<Places> places;
-  List<Photo> photos;
+  List<Places>? places;
+  List<Photo>? photos;
 
   ApplicationBloc() {
     setCurrentLocation();
@@ -50,7 +50,7 @@ class ApplicationBloc with ChangeNotifier {
       name: null,
       geometry: Geometry(
         location: Location(
-            lat: currentLocation.latitude, lng: currentLocation.longitude),
+            lat: currentLocation!.latitude, lng: currentLocation!.longitude),
       ),
     );
     notifyListeners();
@@ -64,10 +64,11 @@ class ApplicationBloc with ChangeNotifier {
   setSelectedLocation(String placeId) async {
     var sLocation = await placesService.getPlace(placeId);
     //new
+    BuildContext context;
     var markers =
-        (places != null) ? markerService.getMarkers(places) : List<Marker>();
+        (places != null) ? markerService.getMarkers(places!) : <Marker>[];
     //
-    selectedLocation.add(sLocation);
+    selectedLocation!.add(sLocation);
     selectedLocationStatic = sLocation;
     searchResults = null;
     notifyListeners();
@@ -82,46 +83,46 @@ class ApplicationBloc with ChangeNotifier {
   // }
 
   clearSelectedLocation() {
-    selectedLocation.add(null);
+    selectedLocation!.add(null!);
     selectedLocationStatic = null;
     searchResults = null;
     placeType = null;
     notifyListeners();
   }
 
-  togglePlaceType(String value, bool selected) async {
-    if (selected) {
-      placeType = value;
-    } else {
-      placeType = null;
-    }
+  // togglePlaceType(String value, bool selected) async {
+  //   if (selected) {
+  //     placeType = value;
+  //   } else {
+  //     placeType = null;
+  //   }
 
-    if (placeType != null) {
-      var places = await placesService.getPlaceSs(
-          selectedLocationStatic.geometry.location.lat,
-          selectedLocationStatic.geometry.location.lng,
-          placeType);
-      markers = [];
-      if (places.length > 0) {
-        var newMarker = markerSService.createMarkerFromPlace(places[0], false);
-        markers.add(newMarker);
-      }
+  //   if (placeType != null) {
+  //     var places = await placesService.getPlaceSs(
+  //         selectedLocationStatic!.geometry!.location!.lat!,
+  //         selectedLocationStatic!.geometry!.location!.lng!,
+  //         placeType!);
+  //     markers = [];
+  //     if (places.length > 0) {
+  //       var newMarker = markerSService.createMarkerFromPlace(places[0], false);
+  //       markers!.add(newMarker);
+  //     }
 
-      var locationMarker =
-          markerSService.createMarkerFromPlace(selectedLocationStatic, true);
-      markers.add(locationMarker);
+  //     var locationMarker =
+  //         markerSService.createMarkerFromPlace(selectedLocationStatic!, true);
+  //     markers!.add(locationMarker);
 
-      var _bounds = markerSService.bounds(Set<Marker>.of(markers));
-      bounds.add(_bounds);
+  //     // var _bounds = markerSServicebounds(Set<Marker>.of(markers!));
+  //     // bounds!.add(_bounds);
 
-      notifyListeners();
-    }
-  }
+  //     notifyListeners();
+  //   }
+  // }
 
   @override
   void dispose() {
-    selectedLocation.close();
-    bounds.close();
+    selectedLocation!.close();
+    bounds!.close();
     super.dispose();
   }
 }

@@ -1,6 +1,6 @@
 class Open {
-  int day;
-  String time;
+  int? day;
+  String? time;
 
   Open({this.day, this.time});
 

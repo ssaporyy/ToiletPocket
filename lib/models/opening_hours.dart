@@ -4,9 +4,9 @@ import 'package:ToiletPocket/models/periods.dart';
 // import 'package:flutter/foundation.dart';
 
 class OpeningHours {
-  final bool openNow;
-  final List<String> weekdayText;
-  final List<Periods> periods;
+  final bool? openNow;
+  final List<String>? weekdayText;
+  final List<Periods>? periods;
   OpeningHours({
     this.openNow,
     this.weekdayText,

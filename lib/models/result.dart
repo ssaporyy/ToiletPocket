@@ -5,23 +5,23 @@ import 'opening_hours.dart';
 import 'photo.dart';
 
 class Result {
-  final Geometry geometry; //
+  final Geometry? geometry; //
   //new
   // final BitmapDescriptor icon;
   // final int userRatingCount;
-  final String icon; //
-  final String id;
-  final String name; //
-  final List<Photo> photos;
-  final String placeId;
-  final double rating; //
-  final String reference;
-  final String scope;
-  final List<String> types;
-  final int userRatingsTotal;
-  final String vicinity; //
+  final String? icon; //
+  final String? id;
+  final String? name; //
+  final List<Photo>? photos;
+  final String? placeId;
+  final double? rating; //
+  final String? reference;
+  final String? scope;
+  final List<String>? types;
+  final int? userRatingsTotal;
+  final String? vicinity; //
   //
-  OpeningHours openingHours;
+  OpeningHours? openingHours;
 
   Result({
     this.geometry,

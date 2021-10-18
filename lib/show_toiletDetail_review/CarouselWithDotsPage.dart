@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 
 class CarouselWithDotsPage extends StatefulWidget {
-  List<String> imgList;
+  List<String> ?imgList;
 
   CarouselWithDotsPage({this.imgList});
 
@@ -20,7 +20,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
   @override
   Widget build(BuildContext context) {
 
-    final List<Widget> imageSliders = widget.imgList
+    final List<Widget> imageSliders = widget.imgList!
         .map((item) => Container(
           width: 400,height: 250,
               child: ClipRRect(
@@ -109,8 +109,8 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: widget.imgList.map((url) {
-            int index = widget.imgList.indexOf(url);
+          children: widget.imgList!.map((url) {
+            int index = widget.imgList!.indexOf(url);
             return Container(
               width: 8,
               height: 8,

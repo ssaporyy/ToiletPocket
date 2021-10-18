@@ -1,9 +1,9 @@
 import 'package:ToiletPocket/models/geometry.dart';
 
 class Place {
-  final Geometry geometry;
-  final String name;
-  final String vicinity;
+  final Geometry? geometry;
+  final String? name;
+  final String? vicinity;
 
   Place({this.geometry,this.name,this.vicinity});
 

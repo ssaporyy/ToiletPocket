@@ -6,25 +6,25 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'opening_hours.dart';
 
 class Places {
-  final String name;
-  final double rating;
-  final int userRatingCount;
-  final String vicinity;
-  final Geometry geometry;
-  final BitmapDescriptor icon;
+  final String? name;
+  final double? rating;
+  final int? userRatingCount;
+  final String? vicinity;
+  final Geometry? geometry;
+  final BitmapDescriptor? icon;
   //new
   // final String id;
-  final List<Photo> photos;
-  final String placeId;
-  final String reference;
-  final String scope;
-  final List<String> types;
-  final int userRatingsTotal;
+  final List<Photo>? photos;
+  final String? placeId;
+  final String? reference;
+  final String? scope;
+  final List<String>? types;
+  final int? userRatingsTotal;
  
   //
   // List<OpeningHour> openingHours;
-  final OpeningHours openingHours;
- final List<Reviews> reviews;
+  final OpeningHours? openingHours;
+ final List<Reviews>? reviews;
  
   Places({
     this.geometry,

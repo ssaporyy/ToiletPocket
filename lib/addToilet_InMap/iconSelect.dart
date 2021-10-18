@@ -176,8 +176,8 @@ class SelectIcon extends StatefulWidget {
 }
 
 class _SelectIconState extends State<SelectIcon> {
-  List<Company> _companies;
-  List<String> _filters;
+  List<Company>? _companies;
+  List<String>? _filters;
 
   @override
   void initState() {
@@ -196,7 +196,7 @@ class _SelectIconState extends State<SelectIcon> {
   }
 
   Iterable<Widget> get companyWidgets sync* {
-    for (Company company in _companies) {
+    for (Company company in _companies!) {
       yield Padding(
         padding: const EdgeInsets.only(left: 3),
         child: FilterChip(
@@ -219,20 +219,20 @@ class _SelectIconState extends State<SelectIcon> {
               color: Colors.black,
               // fontWeight: FontWeight.w600,
               fontSize: 10,
-              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+              fontFamily: 'Sukhumvit',
             ),
           ),
-          selected: _filters.contains(company.name),
+          selected: _filters!.contains(company.name),
           onSelected: (bool selected) {
             setState(() {
               if (selected) {
-                _filters.add(company.name);
+                _filters!.add(company.name);
               } else {
-                _filters.removeWhere((String name) {
+                _filters!.removeWhere((String name) {
                   return name == company.name;
                 });
               }
-              print('Selected: ${_filters.join(', ')}');
+              print('Selected: ${_filters!.join(', ')}');
             });
           },
         ),

@@ -25,7 +25,7 @@ import 'package:ToiletPocket/services/marker_service.dart';
 // import 'package:ToiletPocket/models/error.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key ?key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -33,8 +33,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Completer<GoogleMapController> _mapController = Completer();
-  StreamSubscription locationSubscription;
-  StreamSubscription boundsSubscription;
+  StreamSubscription ?locationSubscription;
+  StreamSubscription ?boundsSubscription;
   final _locationController = TextEditingController();
   final placesService = PlacesService();
 
@@ -45,16 +45,16 @@ class _HomePageState extends State<HomePage> {
 
     //Listen for selected Location
     locationSubscription =
-        applicationBloc.selectedLocation.stream.listen((place) {
+        applicationBloc.selectedLocation!.stream.listen((place) {
       if (place != null) {
-        _locationController.text = place.name;
+        _locationController.text = place.name!;
         _goToPlace(place);
         // applicationBloc.clearSelectedLocation();
       } else
         _locationController.text = "";
     });
 
-    applicationBloc.bounds.stream.listen((bounds) async {
+    applicationBloc.bounds!.stream.listen((bounds) async {
       final GoogleMapController controller = await _mapController.future;
       controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
     });
@@ -69,8 +69,8 @@ class _HomePageState extends State<HomePage> {
         Provider.of<ApplicationBloc>(context, listen: false);
     applicationBloc.dispose();
     _locationController.dispose();
-    locationSubscription.cancel();
-    boundsSubscription.cancel();
+    locationSubscription!.cancel();
+    boundsSubscription!.cancel();
     super.dispose();
   }
 
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target:
-              LatLng(place.geometry.location.lat, place.geometry.location.lng),
+              LatLng(place.geometry!.location!.lat!, place.geometry!.location!.lng!),
           zoom: 16.0,
           tilt: 50.0,
         ),
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
 
   void _currentLocation() async {
     final GoogleMapController controller = await _mapController.future;
-    LocationData _currentPosition;
+    LocationData? _currentPosition;
     var location = new Location();
     try {
       _currentPosition = await location.getLocation();
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
         bearing: 0,
-        target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
+        target: LatLng(_currentPosition!.latitude!, _currentPosition.longitude!),
         zoom: 16.0,
         tilt: 50.0,
       ),
@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                   builder: (_, places, __) {
                     var markers = (places != null)
                         ? markerService.getMarkers(places)
-                        : List<Marker>();
+                        : <Marker>[];
 
                     return (places != null)
                         ? Stack(
@@ -266,10 +266,10 @@ class _HomePageState extends State<HomePage> {
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (context, index) {
                                             final photoReference = places[index]
-                                                    .photos
+                                                    .photos!
                                                     .isEmpty
                                                 ? ''
-                                                : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
+                                                : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos![0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
                                             // print(
                                             //   'lat:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lat}',
                                             // );
@@ -282,13 +282,13 @@ class _HomePageState extends State<HomePage> {
                                                 currentPosition.latitude,
                                                 currentPosition.longitude,
                                                 places[index]
-                                                    .geometry
-                                                    .location
-                                                    .lat,
+                                                    .geometry!
+                                                    .location!
+                                                    .lat!,
                                                 places[index]
-                                                    .geometry
-                                                    .location
-                                                    .lng,
+                                                    .geometry!
+                                                    .location!
+                                                    .lng!,
                                                     
                                               ),
                                               child: Padding(
@@ -315,27 +315,27 @@ class _HomePageState extends State<HomePage> {
                                                       (applicationBloc.searchResults !=
                                                                   null &&
                                                               applicationBloc
-                                                                      .searchResults.length !=
+                                                                      .searchResults!.length !=
                                                                   0)
                                                           ? applicationBloc
-                                                              .selectedLocationStatic
-                                                              .geometry
-                                                              .location
-                                                              .lat
+                                                              .selectedLocationStatic!
+                                                              .geometry!
+                                                              .location!
+                                                              .lat!
                                                           : currentPosition
                                                               .latitude,
                                                       (applicationBloc
                                                                       .searchResults !=
                                                                   null &&
                                                               applicationBloc
-                                                                      .searchResults
+                                                                      .searchResults!
                                                                       .length !=
                                                                   0)
                                                           ? applicationBloc
-                                                              .selectedLocationStatic
-                                                              .geometry
-                                                              .location
-                                                              .lng
+                                                              .selectedLocationStatic!
+                                                              .geometry!
+                                                              .location!
+                                                              .lng!
                                                           : currentPosition
                                                               .longitude,
                                                       // currentPosition.latitude,
@@ -351,14 +351,16 @@ class _HomePageState extends State<HomePage> {
                                                       /**openClose */
                                                       //'',
 
-                                                      '${places[index].openingHours == null || places[index].openingHours.openNow.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
+                                                      '${places[index].openingHours == null || places[index].openingHours!.openNow.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
                                                       context),
+
+                                                      // tap to detail !!
                                                   onTap: () async {
                                                     final placeDetail =
                                                         await placesService
                                                             .getPlaceDetail(
                                                                 places[index]
-                                                                    .placeId);
+                                                                    .placeId!);
 
                                                     Navigator.pushNamed(
                                                       context,

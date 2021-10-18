@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Search extends StatefulWidget {
-  const Search({Key key}) : super(key: key);
+  const Search({Key ?key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
@@ -48,7 +48,7 @@ class _SearchState extends State<Search> {
                 hintText: 'ค้นหาห้องน้ำ',
                 /*'Search',*/
                 hintStyle: TextStyle(
-                    fontSize: 15.0, fontFamily: 'Sukhumvit' ?? 'SF-Pro'),
+                    fontSize: 15.0, fontFamily: 'Sukhumvit'),
                 icon: Icon(
                   Icons.search,
                   color: Colors.black54,
@@ -65,9 +65,9 @@ class _SearchState extends State<Search> {
                       Container(
                         child: CircleAvatar(
                           radius: 15.0,
-                          backgroundImage: NetworkImage(user == null || user.isAnonymous
+                          backgroundImage: NetworkImage(user == null || user!.isAnonymous
                               ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
-                              : (user.photoURL)), // NetworkImage(
+                              : (user!.photoURL!)), // NetworkImage(
                           //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'),
                           // AssetImage('images/ruto.jpg'),
                         ),
@@ -85,7 +85,7 @@ class _SearchState extends State<Search> {
           height: 10,
         ),
         if (applicationBloc.searchResults != null &&
-            applicationBloc.searchResults.length != 0)
+            applicationBloc.searchResults!.length != 0)
           Container(
             height: 300.0,
             decoration: BoxDecoration(
@@ -104,7 +104,7 @@ class _SearchState extends State<Search> {
                       ))
                 ]),
             child: ListView.separated(
-              itemCount: applicationBloc.searchResults.length,
+              itemCount: applicationBloc.searchResults!.length,
               // itemCount: 0,
               padding: EdgeInsets.all(10),
               itemBuilder: (context, index) {
@@ -112,14 +112,14 @@ class _SearchState extends State<Search> {
                   title: Text(
                     applicationBloc
                         // .searchResults[index].name,
-                        .searchResults[index]
-                        .description,
+                        .searchResults![index]
+                        .description!,
                     style: TextStyle(color: Colors.black),
                   ),
                   // กดแล้วเปลี่ยนหน้าแผนที่ไปหมุดสถานที่ที่เสิร์จ
                   onTap: () {
                     applicationBloc.setSelectedLocation(
-                        applicationBloc.searchResults[index].placeId);
+                        applicationBloc.searchResults![index].placeId!);
                     // print(
                     //   'lat:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lat}',
                     // );

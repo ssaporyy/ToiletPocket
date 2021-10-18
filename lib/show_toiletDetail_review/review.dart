@@ -10,7 +10,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 Widget rate(BuildContext context) {
   final _args =
-      ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
+      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
   final _place = _args['places'] as Places;
   return Container(
     child: Column(children: [
@@ -30,7 +30,7 @@ Widget rate(BuildContext context) {
                 style: TextStyle(
                   color: Colors.black87,
                   fontSize: 14.0,
-                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                  fontFamily: 'Sukhumvit',
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -51,7 +51,7 @@ Widget rate(BuildContext context) {
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
-                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                          fontFamily: 'Sukhumvit',
                           fontWeight: FontWeight.w500,
                         ),
                       )
@@ -60,7 +60,7 @@ Widget rate(BuildContext context) {
                 ),
                 Container(
                   child: RatingBarIndicator(
-                    rating: _place.rating,
+                    rating: _place.rating!,
                     itemBuilder: (context, index) =>
                         Icon(Icons.star, color: Colors.amber),
                     itemCount: 5,
@@ -77,7 +77,7 @@ Widget rate(BuildContext context) {
                         style: TextStyle(
                             color: Colors.black54,
                             fontSize: 16.0,
-                            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                            fontFamily: 'Sukhumvit',
                             fontWeight: FontWeight.normal),
                       )
                     ],
@@ -89,23 +89,23 @@ Widget rate(BuildContext context) {
                   (() {
                     if (_place.rating == 0.0) {
                       return "-";
-                    } else if (_place.rating <= 1.0) {
+                    } else if (_place.rating! <= 1.0) {
                       return "แย่";
-                    } else if (_place.rating <= 2.0) {
+                    } else if (_place.rating! <= 2.0) {
                       return "ควรปรับปรุง";
-                    } else if (_place.rating <= 3.0) {
+                    } else if (_place.rating! <= 3.0) {
                       return "พอใช้";
-                    } else if (_place.rating <= 4.0) {
+                    } else if (_place.rating! <= 4.0) {
                       return "ดี";
-                    } else if (_place.rating <= 5.0) {
+                    } else if (_place.rating! <= 5.0) {
                       return "ดีเยี่ยม";
                     }
-                  }()),
+                  }()!),
                   // "ดี",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16.0,
-                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                    fontFamily: 'Sukhumvit',
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -126,7 +126,7 @@ Widget comment(BuildContext context) {
       ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
   final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
-  if (_placeDetail.reviews.isEmpty) {
+  if (_placeDetail.reviews!.isEmpty) {
     return Container(
       alignment: Alignment.topCenter,
       height: 260,
@@ -136,7 +136,7 @@ Widget comment(BuildContext context) {
           style: TextStyle(
             color: Colors.black,
             fontSize: 16.0,
-            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+            fontFamily: 'Sukhumvit',
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -147,7 +147,7 @@ Widget comment(BuildContext context) {
     child: ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: _placeDetail.reviews.length,
+      itemCount: _placeDetail.reviews!.length,
       itemBuilder: (BuildContext context, int index) {
         return new Container(
           padding: new EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 0.0),
@@ -174,9 +174,9 @@ Widget comment(BuildContext context) {
                                 //     'https://cdn.readawrite.com/articles/1821/1820201/thumbnail/large.gif?3'),
                                 // AssetImage('images/ruto.jpg'),
 
-                                NetworkImage(_placeDetail.reviews.isEmpty
+                                NetworkImage(_placeDetail.reviews!.isEmpty
                                     ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
-                                    : '${_placeDetail.reviews[index].profilePhotoUrl}'),
+                                    : '${_placeDetail.reviews![index].profilePhotoUrl}'),
                             radius: 20,
                           ),
                         ),
@@ -189,9 +189,9 @@ Widget comment(BuildContext context) {
                             Row(
                               children: <Widget>[
                                 RatingBarIndicator(
-                                  rating: _placeDetail.reviews.isEmpty
+                                  rating: _placeDetail.reviews!.isEmpty
                                       ? 0.0
-                                      : _placeDetail.reviews[index].rating
+                                      : _placeDetail.reviews![index].rating!
                                           .toDouble(),
                                   itemBuilder: (context, index) =>
                                       Icon(Icons.star, color: Colors.amber),
@@ -204,14 +204,14 @@ Widget comment(BuildContext context) {
                                 ),
                                 Text(
                                   // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
-                                  _placeDetail.reviews.isEmpty
+                                  _placeDetail.reviews!.isEmpty
                                       ? ''
-                                      : _placeDetail.reviews[index]
-                                          .relative_time_description,
+                                      : _placeDetail.reviews![index]
+                                          .relative_time_description!,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12.0,
-                                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                    fontFamily: 'Sukhumvit',
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
@@ -222,13 +222,13 @@ Widget comment(BuildContext context) {
                             ),
                             Text(
                               // "Watanabe Haruto",
-                              _placeDetail.reviews.isEmpty
+                              _placeDetail.reviews!.isEmpty
                                   ? 'No name'
-                                  : _placeDetail.reviews[index].authorName,
+                                  : _placeDetail.reviews![index].authorName!,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16.0,
-                                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                fontFamily: 'Sukhumvit',
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -237,13 +237,13 @@ Widget comment(BuildContext context) {
                             ),
                             Text(
                               // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
-                              _placeDetail.reviews.isEmpty
+                              _placeDetail.reviews!.isEmpty
                                   ? 'No Comment'
-                                  : _placeDetail.reviews[index].text,
+                                  : _placeDetail.reviews![index].text!,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14.0,
-                                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                fontFamily: 'Sukhumvit',
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -301,7 +301,7 @@ Widget nameAndreview() {
           style: TextStyle(
             color: Colors.black,
             fontSize: 16.0,
-            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+            fontFamily: 'Sukhumvit',
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -310,7 +310,7 @@ Widget nameAndreview() {
           style: TextStyle(
             color: Colors.black,
             fontSize: 13.0,
-            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+            fontFamily: 'Sukhumvit',
             fontWeight: FontWeight.w500,
           ),
         )

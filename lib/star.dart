@@ -60,7 +60,7 @@ class _StarState extends State<Star> {
                                 ? 'แย่'
                                 : 'คะแนนความพึงพอใจ',
             style: TextStyle(
-              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+              fontFamily: 'Sukhumvit',
               color: Colors.black,
               fontSize: 15,
             ),

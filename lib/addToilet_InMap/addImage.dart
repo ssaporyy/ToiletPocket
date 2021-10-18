@@ -98,7 +98,7 @@ import 'dart:async';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 class addImage extends StatefulWidget {
-  addImage({Key key}) : super(key: key);
+  addImage({Key ?key}) : super(key: key);
   @override
   _addImageState createState() => _addImageState();
 }

@@ -104,7 +104,7 @@ Widget add(BuildContext context) {
                           textStyle: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
-                            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                            fontFamily: 'Sukhumvit',
                           ),
                         ),
                         onPressed: () {
@@ -122,7 +122,7 @@ Widget add(BuildContext context) {
                               style: TextStyle(
                                 color: Colors.blue,
                                 fontSize: 15.0,
-                                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                fontFamily: 'Sukhumvit',
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -141,7 +141,7 @@ Widget add(BuildContext context) {
                         color: Colors.black,
                         // fontWeight: FontWeight.w600,
                         fontSize: 25,
-                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        fontFamily: 'Sukhumvit',
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -198,7 +198,7 @@ Widget add(BuildContext context) {
                       color: Colors.white,
                       // fontWeight: FontWeight.w600,
                       fontSize: 18,
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                      fontFamily: 'Sukhumvit',
                     ),
                   ),
                 ),
