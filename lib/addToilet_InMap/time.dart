@@ -10,7 +10,7 @@ class _TimeselectState extends State<Timeselect> {
   TimeOfDay _time2 = TimeOfDay(hour: 0, minute: 00);
 
   void _selectTime() async {
-    final TimeOfDay? newTime = await showTimePicker(
+    final TimeOfDay newTime = await showTimePicker(
       context: context,
       initialTime: _time,
     );
@@ -25,7 +25,7 @@ class _TimeselectState extends State<Timeselect> {
     }
   }
   void _selectTime2() async {
-    final TimeOfDay? newTime = await showTimePicker(
+    final TimeOfDay newTime = await showTimePicker(
       context: context,
       initialTime: _time2,
     );
@@ -58,7 +58,7 @@ class _TimeselectState extends State<Timeselect> {
                     color: Colors.red,
                     // fontWeight: FontWeight.w600,
                     fontSize: 11,
-                    fontFamily: 'Sukhumvit',
+                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                   ),
                 ),
                 SizedBox(
@@ -88,7 +88,7 @@ class _TimeselectState extends State<Timeselect> {
                     color: Colors.red,
                     // fontWeight: FontWeight.w600,
                     fontSize: 11,
-                    fontFamily: 'Sukhumvit',
+                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                   ),
                 ),
                 SizedBox(

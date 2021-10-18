@@ -1,11 +1,11 @@
 
 class Error {
-  final String? errorMessage;
-  final List<dynamic>? htmlAttributions;
-  final List<dynamic>? results;
-  final String? status;
+  final String errorMessage;
+  final List<dynamic> htmlAttributions;
+  final List<dynamic> results;
+  final String status;
 
-  String? getErrorMessage() {
+  String getErrorMessage() {
     return errorMessage;
   }
 

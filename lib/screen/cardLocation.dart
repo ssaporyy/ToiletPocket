@@ -115,7 +115,7 @@ Widget boxes(
                                     style: TextStyle(
                                       color: ToiletColors.colorText,
                                       fontSize: 30.0,
-                                      fontFamily: 'Sukhumvit',
+                                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                                       // fontWeight: FontWeight.normal
                                     ),
                                   ),
@@ -234,7 +234,7 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
           style: TextStyle(
               color: Color(0xff6200ee),
               fontSize: 40.0,
-              fontFamily: 'Sukhumvit',
+              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
               fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 20.0),
@@ -258,7 +258,7 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
                   style: TextStyle(
                       color: Colors.black54,
                       fontSize: 35.0,
-                      fontFamily: 'Sukhumvit',
+                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                       fontWeight: FontWeight.normal),
                 )
               ],
@@ -283,7 +283,7 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
                               style: TextStyle(
                                   color: Colors.black54,
                                   fontSize: 30.0,
-                                  fontFamily: 'Sukhumvit',
+                                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                                   fontWeight: FontWeight.normal),
                             )
                           : Container();
@@ -314,7 +314,7 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
                 style: TextStyle(
                     color: openClose == 'ปิดทำการ' ? Colors.red : Colors.green,
                     fontSize: 30.0,
-                    fontFamily: 'Sukhumvit',
+                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                     fontWeight: FontWeight.normal),
               ),
               SizedBox(width: 50.0),
@@ -326,7 +326,7 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
                           style: TextStyle(
                               color: Colors.blue,
                               fontSize: 30.0,
-                              fontFamily: 'Sukhumvit',
+                              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                               fontWeight: FontWeight.normal),
                         )
                       : Container();

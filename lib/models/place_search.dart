@@ -1,6 +1,6 @@
 class PlaceSearch {
-  final String? description;
-  final String? placeId;
+  final String description;
+  final String placeId;
   //new
   // final String name;
 

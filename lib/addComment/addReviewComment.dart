@@ -63,7 +63,7 @@ Widget appbar(BuildContext context) {
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: 15.0,
-                    fontFamily: 'Sukhumvit',
+                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -113,7 +113,7 @@ Widget addDetail(BuildContext context) {
               color: Colors.black,
               fontWeight: FontWeight.w400,
               fontSize: 18,
-              fontFamily: 'Sukhumvit',
+              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
             ),
           ),
           SizedBox(
@@ -141,7 +141,7 @@ Widget addDetail(BuildContext context) {
                       // AssetImage('images/ruto.jpg'),
                       NetworkImage(user == null
                           ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
-                          : (user.photoURL!)),
+                          : (user.photoURL)),
                 ),
               ),
               SizedBox(
@@ -153,7 +153,7 @@ Widget addDetail(BuildContext context) {
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18.0,
-                  fontFamily: 'Sukhumvit',
+                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -176,7 +176,7 @@ Widget addDetail(BuildContext context) {
                   textInputAction: TextInputAction.done,
                   style: TextStyle(
                     fontSize: 13,
-                    fontFamily: 'Sukhumvit',
+                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                     fontWeight: FontWeight.w500,
                   ),
                   maxLines: 4,
@@ -184,7 +184,7 @@ Widget addDetail(BuildContext context) {
                     hintText: "แสดงความคิดเห็น",
                     hintStyle: TextStyle(
                         fontSize: 12,
-                        fontFamily: 'Sukhumvit',
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                         fontWeight: FontWeight.w500,
                         color: Colors.black45),
                     border: OutlineInputBorder(),
@@ -242,7 +242,7 @@ Widget confirm(BuildContext context) {
           color: Colors.white,
           // fontWeight: FontWeight.w600,
           fontSize: 15,
-          fontFamily: 'Sukhumvit',
+          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
         ),
       ),
     ),

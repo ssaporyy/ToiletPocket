@@ -61,7 +61,7 @@ class _customRadioState extends State<CustomRadio> {
         onPressed: () => changeIndex(index),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         borderSide: BorderSide(color: selectedIndex == index ? ToiletColors.colorPurple : Colors.grey,width: 2),
-        child: Text(txt,style: TextStyle(color: selectedIndex == index ?ToiletColors.colorPurple : Colors.grey,fontFamily: 'Sukhumvit',fontSize: 12),),
+        child: Text(txt,style: TextStyle(color: selectedIndex == index ?ToiletColors.colorPurple : Colors.grey,fontFamily: 'Sukhumvit' ?? 'SF-Pro',fontSize: 12),),
 
       ),
     );

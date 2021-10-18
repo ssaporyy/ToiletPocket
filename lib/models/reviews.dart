@@ -1,12 +1,12 @@
 class Reviews {
-  final String? authorName;
-  final String? authorUrl;
-  final String? language;
-  final String? profilePhotoUrl;
-  final num? rating;
-  final String? relative_time_description;
-  final String? text;
-  final num? time;
+  final String authorName;
+  final String authorUrl;
+  final String language;
+  final String profilePhotoUrl;
+  final num rating;
+  final String relative_time_description;
+  final String text;
+  final num time;
 
   Reviews({this.authorName, this.authorUrl, this.language, this.profilePhotoUrl, this.rating, this.relative_time_description, this.text, this.time});
 

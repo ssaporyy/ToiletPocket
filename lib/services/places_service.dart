@@ -63,7 +63,7 @@ class PlacesService {
     final response = await http.get(Uri.parse(_url));
     final json = convert.jsonDecode(response.body);
     final jsonResult = json['result'] as Map<String, dynamic>;
-    return Places.fromJson(jsonResult, null!);
+    return Places.fromJson(jsonResult, null);
   }
 
 //เสิร์จขึ้นหลายที่

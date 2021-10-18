@@ -1,8 +1,8 @@
 import 'package:ToiletPocket/models/sub_periods.dart';
 
 class Periods {
-  final SubPeriods? close;
-  final SubPeriods? open;
+  final SubPeriods close;
+  final SubPeriods open;
 
   Periods({this.close, this.open});
 

@@ -54,7 +54,7 @@ Widget appbar(BuildContext context) {
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 15.0,
-                        fontFamily: 'Sukhumvit',
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -108,7 +108,7 @@ Widget addDetail(BuildContext context) {
                 color: Colors.black,
                 fontWeight: FontWeight.w400,
                 fontSize: 20,
-                fontFamily: 'Sukhumvit',
+                fontFamily: 'Sukhumvit' ?? 'SF-Pro',
               ),
             ),
             SizedBox(
@@ -163,7 +163,7 @@ Widget toiletLocation(BuildContext context) {
         style: TextStyle(
           color: Colors.black,
           fontSize: 11.0,
-          fontFamily: 'Sukhumvit',
+          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -260,7 +260,7 @@ Widget confirm() {
           color: Colors.white,
           // fontWeight: FontWeight.w600,
           fontSize: 18,
-          fontFamily: 'Sukhumvit',
+          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
         ),
       ),
     ),
