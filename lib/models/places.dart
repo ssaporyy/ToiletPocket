@@ -20,12 +20,12 @@ class Places {
   final String scope;
   final List<String> types;
   final int userRatingsTotal;
- 
+
   //
   // List<OpeningHour> openingHours;
   final OpeningHours openingHours;
- final List<Reviews> reviews;
- 
+  final List<Reviews> reviews;
+
   Places({
     this.geometry,
     this.name,
@@ -64,7 +64,7 @@ class Places {
             ? OpeningHours.fromJson(
                 json['opening_hours'] as Map<String, dynamic>)
             : null,
-            //
+        //
         reviews = json['reviews'] != null
             ? json['reviews'].map<Reviews>((i) => Reviews.fromJson(i)).toList()
             : [],

@@ -9,7 +9,6 @@ import 'package:ToiletPocket/screen/cardLocation.dart';
 import 'package:ToiletPocket/screen/search.dart';
 import 'package:ToiletPocket/services/places_service.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -20,9 +19,6 @@ import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:ToiletPocket/services/marker_service.dart';
 
 
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
-// import 'package:ToiletPocket/models/error.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -49,7 +45,6 @@ class _HomePageState extends State<HomePage> {
       if (place != null) {
         _locationController.text = place.name;
         _goToPlace(place);
-        // applicationBloc.clearSelectedLocation();
       } else
         _locationController.text = "";
     });
@@ -59,8 +54,7 @@ class _HomePageState extends State<HomePage> {
       controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
     });
     super.initState();
-    // //new
-    // setCustomMapPin();
+ 
   }
 
   @override
@@ -107,18 +101,17 @@ class _HomePageState extends State<HomePage> {
       ),
     ));
   }
-  // Update the position on CameraMove
-//  _onCameraMove(CameraPosition position) {
-//    LatLng _lastMapPosition = _center;
-// static const LatLng _center = LatLng(currentPosition.latitude,currentPosition.longitude);
-//     _lastMapPosition = position.target;
-//   }
 
-  // Future<void> _gotoLocation(double lat,double long) async {
-  //   final GoogleMapController controller = await _mapController.future;
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(lat, long), zoom: 15,tilt: 50.0,
-  //     bearing: 45.0,)));
-  // }
+
+  Future<void> _gotoLocation(double lat, double long) async {
+    final GoogleMapController controller = await _mapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      target: LatLng(lat, long),
+      zoom: 15,
+      tilt: 50.0,
+      bearing: 45.0,
+    )));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,8 +122,7 @@ class _HomePageState extends State<HomePage> {
     //new
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     final _place = ModalRoute.of(context)?.settings.arguments as Places;
-
-    
+    List<Marker> _marker = <Marker>[];
 
     return FutureProvider(
       create: (context) => placesProvider,
@@ -141,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                   builder: (_, places, __) {
                     var markers = (places != null)
                         ? markerService.getMarkers(places)
-                        : List<Marker>();
+                        : _marker;
 
                     return (places != null)
                         ? Stack(
@@ -160,11 +152,7 @@ class _HomePageState extends State<HomePage> {
                                     tilt: 50.0,
                                     // bearing: 30,
                                   ),
-                                  // //new
-                                  // onCameraMove:
-                                  //     (CameraPosition cameraPosition) {
-
-                                  //     },
+                                  
                                   onCameraMove: (position) {
                                     print(position.target);
                                   },
@@ -179,18 +167,7 @@ class _HomePageState extends State<HomePage> {
                                   onMapCreated:
                                       (GoogleMapController controller) {
                                     _mapController.complete(controller);
-                                    // print(
-                                    //   currentPosition.latitude,
-                                    // );
-                                    // print(
-                                    //   currentPosition.longitude,
-                                    // );
-                                    // print(
-                                    // 'lat:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lat}');
-
-                                    // print(
-                                    //   'lng:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lng}',
-                                    // );
+                                  
                                   },
                                   markers: Set<Marker>.of(markers),
                                   myLocationButtonEnabled: false,
@@ -242,14 +219,7 @@ class _HomePageState extends State<HomePage> {
                                       },
                                     ),
                                   ),
-                                  // FloatingActionButton(
-                                  //     backgroundColor: Colors.blue,
-                                  //     onPressed: () {},
-                                  //     child: Image.asset(
-                                  //       'images/toiletPlus.png',
-                                  //       fit: BoxFit.cover,
-                                  //       height: 20,
-                                  //     )),
+                                
                                 ),
                               ),
                               Align(
@@ -289,55 +259,24 @@ class _HomePageState extends State<HomePage> {
                                                     .geometry
                                                     .location
                                                     .lng,
-                                                    
                                               ),
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(10.0),
                                                 child: GestureDetector(
                                                   child: boxes(
-                                                      //ระเบิด !!!! .photos[0] ถ้าไม่มีรูปอยู่ใน list เรียกรูปออกมาไม่ได้ = ERROR !!!!!
-                                                      //"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
                                                       photoReference,
                                                       // '',
-                                                      // applicationBloc
-                                                      //         .selectedLocationStatic
-                                                      //         .geometry
-                                                      //         .location
-                                                      //         .lat,
-                                                      //         applicationBloc
-                                                      //         .selectedLocationStatic
-                                                      //         .geometry
-                                                      //         .location
-                                                      //         .lng,
-                                                      // 13.1667,100.9333,
 
-                                                      (applicationBloc.searchResults !=
-                                                                  null &&
-                                                              applicationBloc
-                                                                      .searchResults.length !=
-                                                                  0)
-                                                          ? applicationBloc
-                                                              .selectedLocationStatic
-                                                              .geometry
-                                                              .location
-                                                              .lat
-                                                          : currentPosition
-                                                              .latitude,
-                                                      (applicationBloc
-                                                                      .searchResults !=
-                                                                  null &&
-                                                              applicationBloc
-                                                                      .searchResults
-                                                                      .length !=
-                                                                  0)
-                                                          ? applicationBloc
-                                                              .selectedLocationStatic
-                                                              .geometry
-                                                              .location
-                                                              .lng
-                                                          : currentPosition
-                                                              .longitude,
+                                                      // 13.1667,100.9333,
+                                                      places[index]
+                                                          .geometry
+                                                          .location
+                                                          .lat,
+                                                      places[index]
+                                                          .geometry
+                                                          .location
+                                                          .lng,
                                                       // currentPosition.latitude,
                                                       // currentPosition.longitude,
                                                       "${places[index].name}",
@@ -369,8 +308,8 @@ class _HomePageState extends State<HomePage> {
                                                             placeDetail,
                                                       },
                                                     );
+
                                                   },
-                                                  
                                                 ),
                                               ),
                                             );
@@ -388,19 +327,6 @@ class _HomePageState extends State<HomePage> {
                                 child: Search(),
                               ),
 
-                              // Align(
-                              //   alignment: Alignment.bottomRight,
-                              //   child: Padding(
-                              //     padding: EdgeInsets.all(10),
-                              //     child: FloatingActionButton.extended(
-                              //       onPressed: () {
-                              //         searchNearby(lat, lng);
-                              //       },
-                              //       label: Text('Places Nearby'),
-                              //       icon: Icon(Icons.place),
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           )
                         : Center(child: CircularProgressIndicator());
@@ -414,60 +340,206 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // void searchNearby(double lat, double lng) async {
-  //   final applicationBloc = Provider.of<ApplicationBloc>(context);
-  //   double lat = applicationBloc.currentLocation.longitude;
-  //   double lng = applicationBloc.currentLocation.latitude;
-  //   // static double latitude = applicationBloc.currentLocation.longitude;
-  //   // static double longitude = applicationBloc.currentLocation.latitude;
-  //   setState(() {
-  //     markers.clear();
-  //   });
-  //   dynamic /*String */ url =
-  //       '$baseUrl?key=$_API_KEY&location=$lat,$lng&radius=1500&keyword=toilets';
-  //   print(url);
-  //   final response = await http.get(url);
+  Widget boxes(
+  String _image,
+  double lat,
+  double long,
+  String toiletName,
+  score,
+  rating,
+  address,
+  openClose,
+  BuildContext context,
+) {
 
-  //   if (response.statusCode == 200) {
-  //     final data = json.decode(response.body);
-  //     _handleResponse(data);
-  //   } else {
-  //     throw Exception('An error occurred getting places nearby');
-  //   }
+  return Container(
+    child: new FittedBox(
+      fit: BoxFit.cover,
+      child: Material(
+          color: Colors.white,
+          elevation: 10.0,
+          borderRadius: BorderRadius.circular(24.0),
+          shadowColor: Color(0x802196F3),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: 850,
+                height: 400,
+                // height: MediaQuery.of(context).size.width + 5,
+                // width: MediaQuery.of(context).size.width / 3,
+                child: ClipRRect(
+                  borderRadius: new BorderRadius.only(
+                    topRight: Radius.circular(15.0),
+                    topLeft: Radius.circular(15.0),
+                    bottomRight: Radius.circular(0.0),
+                    bottomLeft: Radius.circular(0.0),
+                  ),
+                  child: Image(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                      _image.isEmpty
+                          ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
+                          : _image,
+                    ),
+                    // errorBuilder: (context, exception, stackTrack) => Container(
+                    //   color: ToiletColors.colorButton,
+                    //   child: Icon(
+                    //     Icons.collections,
+                    //     size: 100,
+                    //     color: ToiletColors.colorPurple,
+                    //   ),
+                    // ),
+                  ),
+                ),
+              ),
+              Container(
+                width: 800,
+                height: 450,
+                // height: MediaQuery.of(context).size.width + 5,
+                padding: const EdgeInsets.only(
+                    bottom: 40, top: 15, left: 20, right: 20),
+                margin: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: myDetailsContainer1(toiletName, score, rating,
+                          address, openClose, context),
+                    ),
+                    Container(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 90,
+                            width: 240,
+                            child: RaisedButton(
+                              color: ToiletColors.colorButton,
+                              onPressed: () {
+                                //กดไปหน้า นำทาง
+                                _gotoLocation(lat,long); /*เลื่อนไปmarkerอันเดียวกับการ์ด*/
+                              },
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15),
+                                  bottom: Radius.circular(15),
+                                ),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.directions,
+                                    color: ToiletColors.colorText,
+                                    size: 35,
+                                  ),
+                                  SizedBox(width: 15.0),
+                                  Text(
+                                    'เส้นทาง',
+                                    style: TextStyle(
+                                      color: ToiletColors.colorText,
+                                      fontSize: 30.0,
+                                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                      // fontWeight: FontWeight.normal
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              elevation: 1,
+                              padding: new EdgeInsets.fromLTRB(28, 7, 28, 7),
+                            ),
+                          ),
+                          // SizedBox(width: 50.0),
+                          Container(
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 85.0,
+                                  height: 80.0,
+                                  child: RaisedButton(
+                                    color: ToiletColors.colorButton,
+                                    onPressed: () {},
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(30),
+                                        bottom: Radius.circular(30),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.smoking_rooms_rounded,
+                                      color: ToiletColors.colorText,
+                                      size: 35,
+                                    ),
+                                    elevation: 1,
+                                    padding:
+                                        new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                  ),
+                                ),
+                                SizedBox(width: 15.0),
+                                Container(
+                                  width: 85.0,
+                                  height: 80.0,
+                                  child: RaisedButton(
+                                    color: ToiletColors.colorButton,
+                                    onPressed: () {},
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(30),
+                                        bottom: Radius.circular(30),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.accessible,
+                                      color: ToiletColors.colorText,
+                                      size: 35,
+                                    ),
+                                    elevation: 1,
+                                    padding:
+                                        new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                  ),
+                                ),
+                                SizedBox(width: 15.0),
+                                Container(
+                                  width: 85.0,
+                                  height: 80.0,
+                                  child: RaisedButton(
+                                    color: ToiletColors.colorButton,
+                                    onPressed: () {},
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(30),
+                                        bottom: Radius.circular(30),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.wc,
+                                      color: ToiletColors.colorText,
+                                      size: 35,
+                                    ),
+                                    elevation: 1,
+                                    padding:
+                                        new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
+    ),
+  );
+}
 
-  //   // make sure to hide searching
-  //   setState(() {
-  //     searching = false;
-  //   });
-  // }
 
-  // void _handleResponse(data) {
-  //   // bad api key or otherwise
-  //   if (data['status'] == "REQUEST_DENIED") {
-  //     setState(() {
-  //       error = Error.fromJson(data);
-  //     });
-  //     // success
-  //   } else if (data['status'] == "OK") {
-  //     setState(() {
-  //       places = PlaceResponse.parseResults(data['results']);
-  //       for (int i = 0; i < places.length; i++) {
-  //         markers.add(
-  //           Marker(
-  //             markerId: MarkerId(places[i].placeId),
-  //             // icon: BitmapDescriptor.defaultMarkerWithHue(198.0),
-  //             icon: pinLocationIcon,
-  //             position: LatLng(places[i].geometry.location.lat,
-  //                 places[i].geometry.location.lng),
-  //             infoWindow: InfoWindow(
-  //                 title: places[i].name, snippet: places[i].vicinity),
-  //             onTap: () {},
-  //           ),
-  //         );
-  //       }
-  //     });
-  //   } else {
-  //     print(data);
-  //   }
-  // }
 }

@@ -10,7 +10,6 @@ import 'package:ToiletPocket/models/place_search.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:ToiletPocket/services/marker_service.dart';
-import 'package:ToiletPocket/services/markers_service.dart';
 import 'package:ToiletPocket/services/places_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -18,8 +17,7 @@ class ApplicationBloc with ChangeNotifier {
   final geoLocatorService = GeoLocatorService();
   final placesService = PlacesService();
   final markerService = MarkerService();
-  //new
-  final markerSService = MarkerSService();
+
 
   //Variables
   Position currentLocation;
@@ -89,34 +87,7 @@ class ApplicationBloc with ChangeNotifier {
     notifyListeners();
   }
 
-  togglePlaceType(String value, bool selected) async {
-    if (selected) {
-      placeType = value;
-    } else {
-      placeType = null;
-    }
-
-    if (placeType != null) {
-      var places = await placesService.getPlaceSs(
-          selectedLocationStatic.geometry.location.lat,
-          selectedLocationStatic.geometry.location.lng,
-          placeType);
-      markers = [];
-      if (places.length > 0) {
-        var newMarker = markerSService.createMarkerFromPlace(places[0], false);
-        markers.add(newMarker);
-      }
-
-      var locationMarker =
-          markerSService.createMarkerFromPlace(selectedLocationStatic, true);
-      markers.add(locationMarker);
-
-      var _bounds = markerSService.bounds(Set<Marker>.of(markers));
-      bounds.add(_bounds);
-
-      notifyListeners();
-    }
-  }
+  
 
   @override
   void dispose() {
