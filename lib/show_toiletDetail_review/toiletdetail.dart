@@ -131,7 +131,7 @@ Widget slide(BuildContext context) {
 
 Widget img(BuildContext context) {
   final _args =
-      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+      ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
   final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
 
@@ -167,7 +167,7 @@ Widget img(BuildContext context) {
 
 Widget toiletLocation(BuildContext context) {
   final _args =
-      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+      ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
   final _place = _args['places'] as Places;
   return Container(
     alignment: Alignment.centerLeft,
@@ -192,7 +192,7 @@ Widget toiletLocation(BuildContext context) {
 
 Widget time(BuildContext context) {
   final _args =
-      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+      ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
   final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
 

@@ -32,7 +32,7 @@ class ApplicationBloc with ChangeNotifier {
   String placeType;
   // List<Places> placeResults;
   List<Place> placeResults;
-  List<Marker> markers = List<Marker>();
+  List<Marker> markers = <Marker>[];
   //new
   List<Places> places;
   List<Photo> photos;
@@ -63,7 +63,7 @@ class ApplicationBloc with ChangeNotifier {
     var sLocation = await placesService.getPlace(placeId);
     //new
     var markers =
-        (places != null) ? markerService.getMarkers(places) : List<Marker>();
+        (places != null) ? markerService.getMarkers(places) : <Marker>[];
     //
     selectedLocation.add(sLocation);
     selectedLocationStatic = sLocation;

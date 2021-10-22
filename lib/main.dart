@@ -1,5 +1,5 @@
 import 'package:ToiletPocket/Show_toiletDetail_review/toiletdetail.dart';
-import 'package:ToiletPocket/addComment/destination.dart';
+import 'package:ToiletPocket/screen/endNavigation.dart';
 import 'package:ToiletPocket/addToilet_InMap/addToilet.dart';
 import 'package:ToiletPocket/addToilet_InMap/addToiletDetail.dart';
 import 'package:ToiletPocket/blocs/application_bloc.dart';
@@ -8,7 +8,7 @@ import 'package:ToiletPocket/addComment/addReviewComment.dart';
 import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:ToiletPocket/screen/firstScreen.dart';
 import 'package:ToiletPocket/screen/homepage.dart';
-import 'package:ToiletPocket/screen/navigation.dart';
+import 'package:ToiletPocket/screen/startNavigation.dart';
 import 'package:ToiletPocket/screen/profile.dart';
 import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:ToiletPocket/services/places_service.dart';

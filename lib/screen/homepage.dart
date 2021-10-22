@@ -103,13 +103,13 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  Future<void> _gotoLocation(double lat, double long) async {
+  Future<void> _gotoMarker(double lat, double long) async {
     final GoogleMapController controller = await _mapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       target: LatLng(lat, long),
-      zoom: 15,
+      zoom: 16,
       tilt: 50.0,
-      bearing: 45.0,
+      // bearing: 45.0,
     )));
   }
 
@@ -419,8 +419,13 @@ class _HomePageState extends State<HomePage> {
                             child: RaisedButton(
                               color: ToiletColors.colorButton,
                               onPressed: () {
+                                setState(() {
+                                  
+                                });
+                                // Navigator.pushNamed(context,'/eight');
                                 //กดไปหน้า นำทาง
-                                _gotoLocation(lat,long); /*เลื่อนไปmarkerอันเดียวกับการ์ด*/
+                                _gotoMarker(lat,long);
+                                 /*เลื่อนไปmarkerอันเดียวกับการ์ด*/
                               },
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(

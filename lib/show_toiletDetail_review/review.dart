@@ -123,7 +123,7 @@ Widget rate(BuildContext context) {
 
 Widget comment(BuildContext context) {
   final _args =
-      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+      ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
   final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
   if (_placeDetail.reviews.isEmpty) {
@@ -207,7 +207,7 @@ Widget comment(BuildContext context) {
                                   _placeDetail.reviews.isEmpty
                                       ? ''
                                       : _placeDetail.reviews[index]
-                                          .relative_time_description,
+                                          .relativeTimeDescription,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12.0,
