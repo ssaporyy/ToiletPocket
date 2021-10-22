@@ -31,7 +31,6 @@ class ToiletDetailState extends State<ToiletDetail> {
           children: <Widget>[
             // back(context),
             appbar(context),
-            // slide(context),
           ],
         ),
       ),
@@ -40,46 +39,45 @@ class ToiletDetailState extends State<ToiletDetail> {
 }
 
 Widget appbar(BuildContext context) {
-  back(height) => PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, height + 180),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(
-                  top: 30.0, left: 30.0, right: 30.0, bottom: 30.0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/two');
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.arrow_back_ios_rounded,
-                      size: 18,
-                      color: Colors.black87,
-                    ),
-                    Text(
-                      'กลับ',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 15.0,
-                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-
   return MaterialApp(
     home: Scaffold(
       backgroundColor: ToiletColors.colorBackground,
-      appBar: back(AppBar().preferredSize.height),
+      // appBar: back(AppBar().preferredSize.height),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(10.0),
+        child: AppBar(
+          flexibleSpace: Column(
+            
+            children: [
+              SizedBox(height: 9,),
+              Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.arrow_back_ios),
+                  color: Colors.black87,
+                ),
+                Text(
+                  'กลับ',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 15.0,
+                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            ]),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          brightness: Brightness.light,
+        ),
+      ),
+     
       body: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -145,11 +143,11 @@ Widget img(BuildContext context) {
 
   var imgList = new List<String>.generate(
     _placeDetail.photos.length,
-    (index) => 
-    // _placeDetail.photos.isEmpty
-    //     ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
-    //     : 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos[index].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
-    'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos[index].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
+    (index) =>
+        // _placeDetail.photos.isEmpty
+        //     ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
+        //     : 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos[index].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
+        'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos[index].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
   );
   if (imgList.isEmpty) {
     return Image.network(

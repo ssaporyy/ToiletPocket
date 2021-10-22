@@ -8,6 +8,7 @@ import 'package:ToiletPocket/addComment/addReviewComment.dart';
 import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:ToiletPocket/screen/firstScreen.dart';
 import 'package:ToiletPocket/screen/homepage.dart';
+import 'package:ToiletPocket/screen/navigation.dart';
 import 'package:ToiletPocket/screen/profile.dart';
 import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:ToiletPocket/services/places_service.dart';
@@ -78,7 +79,8 @@ class MyApp extends StatelessWidget {
           '/five': (context) => addToilet(),
           '/six': (context) => AddToiletDetail(),
           '/seven': (context) => AddComment(),
-          '/eight': (context) => Destination(),
+          '/eight': (context) => Navigation(),
+          '/nine': (context) => Destination(),
         },
       ),
     );
