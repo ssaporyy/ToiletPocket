@@ -1,6 +1,12 @@
+import 'dart:async';
+
 import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/star.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 // import 'package:outline_material_icons/outline_material_icons.dart';
 
 class Navigation extends StatelessWidget {
@@ -14,8 +20,32 @@ class Navigation extends StatelessWidget {
 }
 
 Widget add(BuildContext context) {
+  Completer<GoogleMapController> _mapController = Completer();
+  final currentPosition = Provider.of<Position>(context);
+  final _args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+  final _place = _args['places'] as Places;
+
+
   return Stack(
-    children: <Widget>[
+    children: [
+      Container(
+        child: GoogleMap(
+          mapType: MapType.normal,
+          myLocationEnabled: true,
+          zoomGesturesEnabled: false,
+          scrollGesturesEnabled: false,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(currentPosition.latitude, currentPosition.longitude),
+            zoom: 18.0,
+            tilt: 20.0,
+            // bearing: 30,
+          ),
+          onMapCreated: (GoogleMapController controller) {
+            _mapController.complete(controller);
+          },
+        ),
+      ),
+
       Align(
         alignment: Alignment.topCenter,
         child: Container(
@@ -78,8 +108,7 @@ Widget add(BuildContext context) {
           width: MediaQuery.of(context).size.width,
           child: Stack(
             children: [
-              
-               Positioned(
+              Positioned(
                 bottom: 0,
                 child: Container(
                   height: 250,
@@ -103,11 +132,15 @@ Widget add(BuildContext context) {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      SizedBox(height: 1,),
+                      SizedBox(
+                        height: 1,
+                      ),
                       Column(
                         children: [
                           Text(
-                            'ชื่อห้องน้ำ',
+                            'ชื่อห้องน้ำ'
+                          //  _place.name
+                           ,
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 13.0,
@@ -149,8 +182,7 @@ Widget add(BuildContext context) {
                               borderRadius: BorderRadius.circular(10.0),
                               side:
                                   BorderSide(color: ToiletColors.colorButton2)),
-                          onPressed: () {
-                          },
+                          onPressed: () {},
                           padding: EdgeInsets.all(10.0),
                           color: ToiletColors.colorButton2,
                           textColor: Colors.white,
