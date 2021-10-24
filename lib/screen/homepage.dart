@@ -341,20 +341,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget boxes(
-    String _image,
-    double lat,
-    double long,
-    String toiletName,
-    score,
-    rating,
-    address,
-    openClose,
-    BuildContext context) {
-    final _args =
-      ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-      final _place = _args['places'] as Places;
-      final _placeDetail = _args['places_detail'] as Places;
-      
+  String _image,
+  double lat,
+  double long,
+  String toiletName,
+  score,
+  rating,
+  address,
+  openClose,
+  BuildContext context,
+) {
 
   return Container(
     child: new FittedBox(
@@ -423,14 +419,7 @@ class _HomePageState extends State<HomePage> {
                             child: RaisedButton(
                               color: ToiletColors.colorButton,
                               onPressed: () {
-                                Navigator.pushNamed(context,
-                                                      '/eight',
-                                                      // arguments: {
-                                                      //   'places': places[index],
-                                                      //   'places_detail':
-                                                      //       placeDetail,
-                                                      // },
-                                                    );
+                                Navigator.pushNamed(context,'/eight');
                                 //กดไปหน้า นำทาง
                                 // _gotoMarker(lat,long);
                                  /*เลื่อนไปmarkerอันเดียวกับการ์ด*/
