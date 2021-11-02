@@ -20,7 +20,6 @@ import 'package:provider/provider.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
-
 Future main() async {
   //
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +61,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ApplicationBloc(),
         ), //new
-        ChangeNotifierProvider(create:  (context) => GoogleSignInProvider()),
+        ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
       ],
       child: MaterialApp(
         title: 'Toilet App',
@@ -70,7 +69,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/two',
+        initialRoute: '/seven',
         routes: <String, WidgetBuilder>{
           '/one': (context) => FirstScreen(),
           '/two': (context) => HomePage(),

@@ -52,6 +52,8 @@ dependencies:
 
   multi_image_picker: ^4.8.1
 
+  form_field_validator: ^1.1.0
+  intl: ^0.17.0
   http: ^0.13.3
   uuid: ^3.0.4
   

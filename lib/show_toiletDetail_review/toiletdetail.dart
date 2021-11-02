@@ -27,11 +27,13 @@ class ToiletDetailState extends State<ToiletDetail> {
         debugShowCheckedModeBanner: false,
         home:
             // appBar: back(context),
-            Stack(
-          children: <Widget>[
-            // back(context),
-            appbar(context),
-          ],
+            SafeArea(
+          child: Stack(
+            children: <Widget>[
+              // back(context),
+              appbar(context),
+            ],
+          ),
         ),
       ),
     );
@@ -43,41 +45,39 @@ Widget appbar(BuildContext context) {
     home: Scaffold(
       backgroundColor: ToiletColors.colorBackground,
       // appBar: back(AppBar().preferredSize.height),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(10.0),
-        child: AppBar(
-          flexibleSpace: Column(
-            
-            children: [
-              SizedBox(height: 9,),
-              Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: Icon(Icons.arrow_back_ios),
-                  color: Colors.black87,
-                ),
-                Text(
-                  'กลับ',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 15.0,
-                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
+      extendBodyBehindAppBar: false,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        titleSpacing: 0,
+        leadingWidth: 0,
+        title: InkWell(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            'กลับ',
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 15.0,
+              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+              fontWeight: FontWeight.w500,
             ),
-            ]),
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          brightness: Brightness.light,
+          ),
+        ),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: IconButton(
+            // 1
+            icon: Icon(Icons.arrow_back_ios_new_rounded),
+            color: Colors.black87, iconSize: 19,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
       ),
-     
+
       body: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
