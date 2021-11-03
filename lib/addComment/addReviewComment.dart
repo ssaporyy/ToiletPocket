@@ -8,6 +8,12 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as Path;
+
 class AddComment extends StatefulWidget {
   const AddComment({Key key}) : super(key: key);
 
@@ -27,7 +33,75 @@ class _AddCommentState extends State<AddComment> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CollectionReference addComment =
       FirebaseFirestore.instance.collection('comment');
+  CollectionReference imgRef =
+      FirebaseFirestore.instance.collection('imageComment');
   double rating = 3.0;
+
+  bool uploading = false;
+  double val = 0;
+  // CollectionReference imgRef;
+  firebase_storage.Reference ref;
+
+  List<File> _image = [];
+  final picker = ImagePicker();
+
+  chooseImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    setState(() {
+      _image.add(File(pickedFile?.path));
+    });
+    if (pickedFile.path == null) retrieveLostData();
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostData response = await picker.getLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    if (response.file != null) {
+      setState(() {
+        _image.add(File(response.file.path));
+      });
+    } else {
+      print(response.file);
+    }
+  }
+
+  Future uploadFile() async {
+    String timestamp;
+    DateTime now = DateTime.now();
+    String formatDate = DateFormat('d MMM, hh:mm a').format(now);
+    timestamp = formatDate;
+
+    int i = 1;
+
+    for (var img in _image) {
+      setState(() {
+        val = i / _image.length;
+      });
+      ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('images/${Path.basename(img.path)}');
+      await ref.putFile(img).whenComplete(() async {
+        await ref.getDownloadURL().then((value) {
+          imgRef.add({
+            'url': value,
+            'time': timestamp,
+            'uid': user.uid,
+            'userName': user.displayName,
+          });
+          i++;
+        });
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // imgRef = FirebaseFirestore.instance.collection('imageURLs');
+  }
+
   @override
   Widget build(BuildContext context) {
     String timestamp;
@@ -178,6 +252,9 @@ class _AddCommentState extends State<AddComment> {
                                                 ),
                                               ]),
                                         ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
                                         //star ดาว
                                         Container(
                                             height: 70,
@@ -243,6 +320,9 @@ class _AddCommentState extends State<AddComment> {
                                                 ],
                                               ),
                                             )),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
                                         Padding(
                                           padding: EdgeInsets.only(left: 0),
                                           child: Container(
@@ -294,14 +374,486 @@ class _AddCommentState extends State<AddComment> {
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 20, top: 0),
-                                          child: addPhotocomment(context),
+                                          padding:
+                                              const EdgeInsets.only(left: 25),
+                                          child: Container(
+                                            color: Colors.white,
+                                            alignment: Alignment.topLeft,
+                                            child: Container(
+                                              height: 165,
+                                              width: 280,
+                                              alignment: Alignment.topLeft,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  //  Expanded(
+                                                  //   child: buildGridView(),
+                                                  // ),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        // padding: EdgeInsets.only(top: 36),
+                                                        alignment:
+                                                            Alignment.topLeft,
+                                                        child: Container(
+                                                          height: 83,
+                                                          width: 120,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            color: ToiletColors
+                                                                .colorButton,
+                                                          ),
+                                                          child: IconButton(
+                                                            icon: Icon(
+                                                              Icons.add,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            highlightColor:
+                                                                Colors.white,
+                                                            onPressed: () {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) =>
+                                                                        AlertDialog(
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(10.0))),
+                                                                  title: Text(
+                                                                      "Add Images"),
+                                                                  content:
+                                                                      Container(
+                                                                    height: 180,
+                                                                    width: 350,
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          200,
+                                                                      width:
+                                                                          120,
+                                                                      child:
+                                                                          Expanded(
+                                                                        child: GridView
+                                                                            .builder(
+                                                                          gridDelegate:
+                                                                              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+                                                                          itemBuilder:
+                                                                              (BuildContext context, int index) {
+                                                                            return index == 0
+                                                                                ? Center(
+                                                                                    child: IconButton(icon: Icon(Icons.add), onPressed: () => !uploading ? chooseImage() : null),
+                                                                                  )
+                                                                                : Container(
+                                                                                    margin: EdgeInsets.all(3),
+                                                                                    decoration: BoxDecoration(image: DecorationImage(image: FileImage(_image[index - 1]), fit: BoxFit.cover)),
+                                                                                  );
+                                                                          },
+                                                                          itemCount:
+                                                                              _image.length + 1,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  actions: [
+                                                                    FlatButton(
+                                                                      textColor:
+                                                                          Color(
+                                                                              0xFF6200EE),
+                                                                      onPressed: () => Navigator.pop(
+                                                                          context,
+                                                                          false),
+                                                                      child: Text(
+                                                                          'CANCEL'),
+                                                                    ),
+                                                                    FlatButton(
+                                                                      textColor:
+                                                                          Color(
+                                                                              0xFF6200EE),
+                                                                      // onPressed:
+                                                                      //     () {
+                                                                      //   Navigator.of(context)
+                                                                      //       .pop();
+                                                                      // },
+                                                                      onPressed:
+                                                                          () {
+                                                                        setState(
+                                                                            () {
+                                                                          uploading =
+                                                                              true;
+                                                                        });
+                                                                        uploadFile().whenComplete(() =>
+                                                                            Navigator.of(context).pop());
+                                                                      },
+                                                                      child: Text(
+                                                                          'CONFIRM'),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 25,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                "แย่",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 7.5,
+                                                                  fontFamily:
+                                                                      'Sukhumvit' ??
+                                                                          'SF-Pro',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "ควรปรับปรุง",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 7.5,
+                                                                  fontFamily:
+                                                                      'Sukhumvit' ??
+                                                                          'SF-Pro',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "พอใช้",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 7.5,
+                                                                  fontFamily:
+                                                                      'Sukhumvit' ??
+                                                                          'SF-Pro',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "ดี",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 7.5,
+                                                                  fontFamily:
+                                                                      'Sukhumvit' ??
+                                                                          'SF-Pro',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "ดีเยี่ยม",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 7.5,
+                                                                  fontFamily:
+                                                                      'Sukhumvit' ??
+                                                                          'SF-Pro',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            width: 25,
+                                                          ),
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                              .amber[
+                                                                          100],
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                              .amber[
+                                                                          100],
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                              .amber[
+                                                                          100],
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                              .amber[
+                                                                          100],
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 2,
+                                                              ),
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                              .amber[
+                                                                          100],
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                              .amber[
+                                                                          100],
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                              .amber[
+                                                                          100],
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 2,
+                                                              ),
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                              .amber[
+                                                                          100],
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                              .amber[
+                                                                          100],
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 2,
+                                                              ),
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                              .amber[
+                                                                          100],
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 2,
+                                                              ),
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      size: 12),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                         ),
-
+                                        // Padding(
+                                        //   padding:
+                                        //       const EdgeInsets.only(left: 25),
+                                        //   child: addPhotocomment(context),
+                                        // ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              top: 0, bottom: 20),
+                                              top: 3, bottom: 20),
                                           child:
                                               // confirm(context),
                                               Container(
@@ -321,6 +873,7 @@ class _AddCommentState extends State<AddComment> {
                                                 if (fromKey.currentState
                                                     .validate()) {
                                                   fromKey.currentState.save();
+                                                  uploading = true;
                                                   await addComment.add({
                                                     'usercomment':
                                                         userComment.review,
@@ -333,6 +886,7 @@ class _AddCommentState extends State<AddComment> {
                                                   });
                                                   fromKey.currentState.reset();
                                                 }
+
                                                 Navigator.pushNamed(
                                                     context, '/o');
                                               },
