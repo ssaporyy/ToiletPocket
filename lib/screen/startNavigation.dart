@@ -1,17 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:typed_data';
 
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
+// import 'package:ToiletPocket/models/location.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/screen/homepage.dart';
 import 'package:ToiletPocket/services/places_service.dart';
 import 'package:ToiletPocket/star.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 // import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:flutter/services.dart' as rootBundle;
@@ -24,10 +29,92 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  StreamSubscription _locationSubscription;
+  GoogleMapController _controller;
+  Location _locationTracker = Location();
+  Marker marker;
+  Circle circle;
   @override
   void initState() {
     super.initState();
   }
+
+  Future<Uint8List> getMarker() async{
+    ByteData byteData = await DefaultAssetBundle.of(context).load("images/navigation.png");
+    return byteData.buffer.asUint8List();
+  }
+  
+  void updateMarker(LocationData newLocalData, Uint8List imgData){
+    LatLng latlng = LatLng(newLocalData.latitude,newLocalData.longitude);
+    this.setState(() {
+      marker = Marker(
+        markerId: MarkerId("my location"),
+        position: latlng,
+        rotation: newLocalData.heading,
+        draggable: false,
+        zIndex: 3,
+        flat: true,
+        icon: BitmapDescriptor.fromBytes(imgData)
+      );
+    });
+  }
+
+  void getCurrentLocation() async {
+    try{
+      Uint8List imgData= await getMarker();
+      var location = await _locationTracker.getLocation();
+
+      updateMarker(location, imgData);
+
+      if(_locationSubscription != null){
+        _locationSubscription.cancel();
+      }
+
+      _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData) {
+        if(_controller != null){
+          _controller.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
+            target: LatLng(newLocalData.latitude,newLocalData.longitude),
+            zoom: 16.0,
+            tilt: 50.0, )));
+            updateMarker(newLocalData, imgData);
+        }
+      });
+    } on PlatformException catch (e){
+      if(e.code == "PERMISSION_DENIED"){
+        debugPrint("Permission Denied");
+      }
+    }
+  }
+  @override
+  void dispose(){
+    if(_locationSubscription != null){
+      _locationSubscription.cancel();
+    }
+    super.dispose();
+  }
+
+  Position _currentPosition;
+  String _currentAddress = '';
+
+  // final startAddressController = TextEditingController();
+  // final destinationAddressController = TextEditingController();
+
+  final startAddressFocusNode = FocusNode();
+  final desrinationAddressFocusNode = FocusNode();
+
+  String _startAddress = '';
+  String _destinationAddress = '';
+  String _placeDistance;
+
+  // Set<Marker> markers = {};
+
+  PolylinePoints polylinePoints;
+  Map<PolylineId, Polyline> polylines = {};
+  List<LatLng> polylineCoordinates = [];
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
 
   Widget _textField({
     TextEditingController controller,
@@ -87,7 +174,7 @@ class _NavigationState extends State<Navigation> {
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _place = _args['places'] as Places;
-    Set<Marker> markers = {};
+    // Set<Marker> markers = {};
     var width = MediaQuery.of(context).size.width;
     final startAddressController = GoogleMapController;
 
@@ -98,11 +185,14 @@ class _NavigationState extends State<Navigation> {
             Container(
               child: GoogleMap(
                 mapType: MapType.normal,
-                myLocationEnabled: false,
+                myLocationEnabled: true,
                 zoomGesturesEnabled: false,
                 scrollGesturesEnabled: false,
                 zoomControlsEnabled: false,
                 compassEnabled: false,
+
+                markers: Set.of((marker != null)? [marker] : []),
+
                 initialCameraPosition: CameraPosition(
                   target: LatLng(
                       currentPosition.latitude, currentPosition.longitude),
@@ -111,9 +201,9 @@ class _NavigationState extends State<Navigation> {
                   // bearing: 30,
                 ),
                 onMapCreated: (GoogleMapController controller) {
-                  _mapController.complete(controller);
+                  _controller = controller;
                 },
-                markers: Set<Marker>.of(markers),
+                // markers: Set<Marker>.of(markers),
               ),
             ),
             SafeArea(
@@ -141,14 +231,13 @@ class _NavigationState extends State<Navigation> {
                           SizedBox(height: 10),
                           _textField(
                               // label: 'Start',
-                              hint: 'wasan',
+                              hint: 'my location',
                               prefixIcon: Icon(Icons.looks_one),
                               suffixIcon: IconButton(
                                 icon: Icon(Icons.my_location),
-                                // onPressed: () {
-                                //   startAddressController = _currentAddress;
-                                //   _startAddress = _currentAddress;
-                                // },
+                                onPressed: () {
+                                 getCurrentLocation();
+                                },
                               ),
                               // controller: startAddressController,
                               // focusNode: startAddressFocusNode,
@@ -161,7 +250,7 @@ class _NavigationState extends State<Navigation> {
                           SizedBox(height: 10),
                           _textField(
                               // label: 'Destination',
-                              hint: 'Choose destination',
+                              hint: '${_place.name}',
                               prefixIcon: Icon(Icons.looks_two),
                               // controller: destinationAddressController,
                               // focusNode: desrinationAddressFocusNode,
