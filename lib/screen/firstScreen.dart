@@ -81,7 +81,7 @@ class FirstScreenState extends State<FirstScreen> {
 
                     // Navigator.pushNamed(context, '/two');
 
-                     final provider = Provider.of<GoogleSignInProvider>(context,
+                    final provider = Provider.of<GoogleSignInProvider>(context,
                         listen: false);
                     provider.signInAnonymously();
                     Navigator.pushReplacement(context,
@@ -192,6 +192,14 @@ class FirstScreenState extends State<FirstScreen> {
                       ),
                       onPressed: () {
                         //กดแล้วไปสร้างบัญชีกูเกิ้ล
+                        final provider = Provider.of<GoogleSignInProvider>(
+                            context,
+                            listen: false);
+                        provider.login();
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return HomePage();
+                        }));
                       },
                       child: const Text('สร้าง'),
                     ),

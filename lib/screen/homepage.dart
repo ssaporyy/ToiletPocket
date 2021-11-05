@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
 
     return FutureProvider(
       create: (context) => placesProvider,
-      child: SafeArea(
+      child: Container(
         child: Scaffold(
           body: (currentPosition != null)
               ? Consumer<List<Places>>(
