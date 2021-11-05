@@ -27,13 +27,11 @@ class ToiletDetailState extends State<ToiletDetail> {
         debugShowCheckedModeBanner: false,
         home:
             // appBar: back(context),
-            SafeArea(
-          child: Stack(
-            children: <Widget>[
-              // back(context),
-              appbar(context),
-            ],
-          ),
+            Stack(
+          children: <Widget>[
+            // back(context),
+            appbar(context),
+          ],
         ),
       ),
     );
@@ -41,69 +39,136 @@ class ToiletDetailState extends State<ToiletDetail> {
 }
 
 Widget appbar(BuildContext context) {
-  return MaterialApp(
-    home: Scaffold(
-      backgroundColor: ToiletColors.colorBackground,
-      // appBar: back(AppBar().preferredSize.height),
-      extendBodyBehindAppBar: false,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        titleSpacing: 0,
-        leadingWidth: 0,
-        title: InkWell(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(
-            'กลับ',
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: 15.0,
-              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-              fontWeight: FontWeight.w500,
+  return Scaffold(
+    backgroundColor: ToiletColors.colorBackground,
+    body: Container(
+      child: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 0.0, left: 13.0, right: 0.0),
+            child: Container(
+              padding: EdgeInsets.only(top: 30.0),
+              child: InkWell(
+                onTap: () {
+                  // Navigator.pushNamed(context, '/two');
+                  Navigator.of(context).pop();
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.arrow_back_ios_rounded,
+                      size: 18,
+                      color: Colors.black87,
+                    ),
+                    Text(
+                      'กลับ',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 15.0,
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            // 1
-            icon: Icon(Icons.arrow_back_ios_new_rounded),
-            color: Colors.black87, iconSize: 19,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-      ),
-
-      body: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: ToiletColors.colorBackground
-                  .withOpacity(0.9), //color of shadow
-              spreadRadius: 5, //spread radius
-              blurRadius: 7, // blur radius
-              offset: Offset(0, 2), // changes position of shadow
-              //first paramerter of offset is left-right
-              //second parameter is top to down
+          Padding(
+            padding: const EdgeInsets.only(top: 80),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: ToiletColors.colorBackground
+                        .withOpacity(0.9), //color of shadow
+                    spreadRadius: 5, //spread radius
+                    blurRadius: 7, // blur radius
+                    offset: Offset(0, 2), // changes position of shadow
+                    //first paramerter of offset is left-right
+                    //second parameter is top to down
+                  ),
+                  //you can set more BoxShadow() here
+                ],
+              ),
+              child: Container(
+                  padding: EdgeInsets.only(top: 27), child: slide(context)),
+              // Testpage(),
             ),
-            //you can set more BoxShadow() here
-          ],
-        ),
-        child:
-            Container(padding: EdgeInsets.only(top: 27), child: slide(context)),
-        // Testpage(),
+          ),
+        ],
       ),
     ),
   );
+  // MaterialApp(
+  //   home: Scaffold(
+  //     backgroundColor: ToiletColors.colorBackground,
+  //     // appBar: back(AppBar().preferredSize.height),
+  //     extendBodyBehindAppBar: false,
+  //     appBar: AppBar(
+  //       backgroundColor: Colors.transparent,
+  //       elevation: 0,
+  //       titleSpacing: 0,
+  //       leadingWidth: 0,
+  //       title: InkWell(
+  //         onTap: () {
+  //           Navigator.of(context).pop();
+  //         },
+  //         child: Text(
+  //           'กลับ',
+  //           style: TextStyle(
+  //             color: Colors.black87,
+  //             fontSize: 15.0,
+  //             fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+  //             fontWeight: FontWeight.w500,
+  //           ),
+  //         ),
+  //       ),
+  //       leading: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: IconButton(
+  //           // 1
+  //           icon: Icon(Icons.arrow_back_ios_new_rounded),
+  //           color: Colors.black87, iconSize: 19,
+  //           onPressed: () {
+  //             Navigator.of(context).pop();
+  //           },
+  //         ),
+  //       ),
+  //     ),
+
+  //     body: Container(
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.only(
+  //           topLeft: Radius.circular(30),
+  //           topRight: Radius.circular(30),
+  //         ),
+  //         color: Colors.white,
+  //         boxShadow: [
+  //           BoxShadow(
+  //             color: ToiletColors.colorBackground
+  //                 .withOpacity(0.9), //color of shadow
+  //             spreadRadius: 5, //spread radius
+  //             blurRadius: 7, // blur radius
+  //             offset: Offset(0, 2), // changes position of shadow
+  //             //first paramerter of offset is left-right
+  //             //second parameter is top to down
+  //           ),
+  //           //you can set more BoxShadow() here
+  //         ],
+  //       ),
+  //       child:
+  //           Container(padding: EdgeInsets.only(top: 27), child: slide(context)),
+  //       // Testpage(),
+  //     ),
+  //   ),
+  // );
 }
 
 Widget slide(BuildContext context) {

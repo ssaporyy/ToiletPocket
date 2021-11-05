@@ -34,6 +34,7 @@ class _NavigationState extends State<Navigation> {
   Location _locationTracker = Location();
   Marker marker;
   Circle circle;
+
   @override
   void initState() {
     super.initState();

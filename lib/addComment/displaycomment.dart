@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class DisplayScreen extends StatefulWidget {
   @override
@@ -24,37 +23,39 @@ class _DisplayScreenState extends State<DisplayScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return ListView(
-                    children: snapshot.data.docs.map((document) {
-                      return Container(
-                        child: ListTile(
-                          leading: Container(
-                            child: CircleAvatar(
-                              radius: 15,
-                              child: document['imgURL'] != null
-                                  ? Image.network(
-                                      document['imgURL'],
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.network(
-                                      'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'),
+                  return Flexible(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: snapshot.data.docs.map((document) {
+                        return Container(
+                          child: ListTile(
+                            leading: Container(
+                              child: CircleAvatar(
+                                radius: 15,
+                                child: document['imgURL'] != null
+                                    ? Image.network(
+                                        document['imgURL'],
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.network(
+                                        'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'),
+                              ),
                             ),
+                            title: Text(document['time']
+                                    .toString() /* '${formatter.format(myDatetime)}'*/ +
+                                ' ' +
+                                document['userName']),
+                            subtitle:
+                                Text('comment = ' + document['usercomment']),
+                            trailing: Text(document['rating'].toString()),
                           ),
-                          title: Text(document['time']
-                                  .toString() /* '${formatter.format(myDatetime)}'*/ +
-                              ' ' +
-                              document['userName']),
-                          subtitle:
-                              Text('comment = ' + document['usercomment']),
-                          trailing: Text(document['rating'].toString()),
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      }).toList(),
+                    ),
                   );
                 }
               },
             ),
-            
           ],
         ),
       ),

@@ -18,7 +18,6 @@ class ApplicationBloc with ChangeNotifier {
   final placesService = PlacesService();
   final markerService = MarkerService();
 
-
   //Variables
   Position currentLocation;
   List<PlaceSearch> searchResults;
@@ -36,6 +35,8 @@ class ApplicationBloc with ChangeNotifier {
   //new
   List<Places> places;
   List<Photo> photos;
+
+  List<String> urlImg = [];
 
   ApplicationBloc() {
     setCurrentLocation();
@@ -87,7 +88,10 @@ class ApplicationBloc with ChangeNotifier {
     notifyListeners();
   }
 
-  
+  getImages(url) {
+    this.urlImg = url;
+    notifyListeners();
+  }
 
   @override
   void dispose() {
