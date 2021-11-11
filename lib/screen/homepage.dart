@@ -420,7 +420,9 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.pushNamed(
                                     context,
                                     '/eight',
-                                    arguments: {'places':push},
+                                    arguments: {'places':push
+
+                                    },
                                   );
                                 },
                                 // onPressed: () async {

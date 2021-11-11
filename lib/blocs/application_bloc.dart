@@ -36,7 +36,6 @@ class ApplicationBloc with ChangeNotifier {
   List<Places> places;
   List<Photo> photos;
 
-  List<String> urlImg = [];
 
   ApplicationBloc() {
     setCurrentLocation();
@@ -88,10 +87,6 @@ class ApplicationBloc with ChangeNotifier {
     notifyListeners();
   }
 
-  getImages(url) {
-    this.urlImg = url;
-    notifyListeners();
-  }
 
   @override
   void dispose() {

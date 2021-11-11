@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as Path;
 import 'package:provider/provider.dart';
 
@@ -21,9 +22,9 @@ class _AddImage1State extends State<AddImage1> {
 
   List<File> _image = [];
   final picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
     return AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -78,7 +79,8 @@ class _AddImage1State extends State<AddImage1> {
             setState(() {
               uploading = true;
             });
-            uploadFile().whenComplete(() => Navigator.of(context).pop());
+            uploadInfo().whenComplete(() => Navigator.of(context).pop());
+            // uploadFile().whenComplete(() => Navigator.of(context).pop());
           },
           child: Text('CONFIRM'),
         ),
@@ -96,6 +98,8 @@ class _AddImage1State extends State<AddImage1> {
 
   Future<void> retrieveLostData() async {
     final LostData response = await picker.getLostData();
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
+
     if (response.isEmpty) {
       return;
     }
@@ -108,28 +112,59 @@ class _AddImage1State extends State<AddImage1> {
     }
   }
 
-  Future uploadFile() async {
-    int i = 1;
+  Future uploadInfo() async {
+    // int i = 1;
+    String timestamp;
 
+    DateTime now = DateTime.now();
+    String formatDate = DateFormat('d MMM, hh:mm a').format(now);
+    timestamp = formatDate;
+
+    List<String> imageUrlList = [];
     for (var img in _image) {
-      setState(() {
-        val = i / _image.length;
-      });
       ref = firebase_storage.FirebaseStorage.instance
           .ref()
           .child('images/${Path.basename(img.path)}');
-      await ref.putFile(img).whenComplete(() async {
-        await ref.getDownloadURL().then((value) {
-          imgRef.add({'url': value});
-          i++;
-        });
-      });
+      await ref.putFile(img);
+      final String downloadUrl = await ref.getDownloadURL();
+      imageUrlList.add(downloadUrl);
     }
+    imgRef.add({
+      'url': imageUrlList,
+      'time': timestamp,
+    });
   }
+
+  // Future uploadFile() async {
+  //   int i = 1;
+  //   String timestamp;
+
+  //   DateTime now = DateTime.now();
+  //   String formatDate = DateFormat('d MMM, hh:mm a').format(now);
+  //   timestamp = formatDate;
+  //   for (var img in _image) {
+  //     setState(() {
+  //       val = i / _image.length;
+  //     });
+  //     ref = firebase_storage.FirebaseStorage.instance
+  //         .ref()
+  //         .child('images/${Path.basename(img.path)}');
+
+  //     await ref.putFile(img).whenComplete(() async {
+  //       await ref.getDownloadURL().then((value) {
+  //         imgRef.add({
+  //           'url': value,
+  //           'time': timestamp,
+  //         });
+  //         i++;
+  //       });
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
-    imgRef = FirebaseFirestore.instance.collection('imageURLs');
+    imgRef = FirebaseFirestore.instance.collection('imageComment');
   }
 }

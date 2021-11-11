@@ -46,7 +46,14 @@ class _AddCommentState extends State<AddComment> {
   List<File> _image = [];
   final picker = ImagePicker();
 
+  @override
+  void initState() {
+    super.initState();
+    imgRef = FirebaseFirestore.instance.collection('imageComment');
+  }
+
   chooseImage() async {
+    WidgetsFlutterBinding.ensureInitialized();
     final pickedFile = await picker.getImage(source: ImageSource.camera);
     setState(() {
       _image.add(File(pickedFile?.path));
@@ -56,6 +63,10 @@ class _AddCommentState extends State<AddComment> {
 
   Future<void> retrieveLostData() async {
     final LostData response = await picker.getLostData();
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
+
+    WidgetsFlutterBinding.ensureInitialized();
+
     if (response.isEmpty) {
       return;
     }
@@ -68,39 +79,27 @@ class _AddCommentState extends State<AddComment> {
     }
   }
 
-  Future uploadFile() async {
+  Future uploadInfo() async {
+    // int i = 1;
     String timestamp;
+
     DateTime now = DateTime.now();
     String formatDate = DateFormat('d MMM, hh:mm a').format(now);
     timestamp = formatDate;
-
-    int i = 1;
-
+    
+    List<String> imageUrlList = [];
     for (var img in _image) {
-      setState(() {
-        val = i / _image.length;
-      });
       ref = firebase_storage.FirebaseStorage.instance
           .ref()
           .child('images/${Path.basename(img.path)}');
-      await ref.putFile(img).whenComplete(() async {
-        await ref.getDownloadURL().then((value) {
-          imgRef.add({
-            'url': value,
-            'time': timestamp,
-            'uid': user.uid,
-            'userName': user.displayName,
-          });
-          i++;
-        });
-      });
+      await ref.putFile(img);
+      final String downloadUrl = await ref.getDownloadURL();
+      imageUrlList.add(downloadUrl);
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    imgRef = FirebaseFirestore.instance.collection('imageURLs');
+    imgRef.add({
+      'url': imageUrlList,
+      'time': timestamp,
+    });
   }
 
   @override
@@ -111,7 +110,7 @@ class _AddCommentState extends State<AddComment> {
     String formatDate = DateFormat('d MMM, hh:mm a').format(now);
     timestamp = formatDate;
 
-    
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
 
     return FutureBuilder(
         future: firebase,
@@ -172,7 +171,7 @@ class _AddCommentState extends State<AddComment> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 20, right: 20, bottom: 43, top: 120),
+                          left: 20, right: 20, bottom: 55, top: 120),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
@@ -373,7 +372,7 @@ class _AddCommentState extends State<AddComment> {
                                       color: Colors.white,
                                       alignment: Alignment.topLeft,
                                       child: Container(
-                                        height: 115,
+                                        height: 100,
                                         width: 280,
                                         alignment: Alignment.topLeft,
                                         child: Column(
@@ -403,11 +402,103 @@ class _AddCommentState extends State<AddComment> {
                                                       ),
                                                       highlightColor:
                                                           Colors.white,
+                                                      // onPressed: ()=>!uploading ? chooseImage() : null,
                                                       onPressed: () {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: (context) =>
-                                                                AddImage1());
+                                                        tripEditModalBottomSheet(
+                                                            context);
+
+                                                        // showDialog(
+                                                        //     context: context,
+                                                        //     builder: (context) =>
+                                                        //         // AddImage1()
+                                                        //         // showAlertImgDialog(context)
+                                                        //         );
+
+                                                        // showDialog(
+                                                        //     context: context,
+                                                        //     builder: (context) =>
+                                                        //       AlertDialog(
+                                                        //         shape: RoundedRectangleBorder(
+                                                        //             borderRadius:
+                                                        //                 BorderRadius.all(
+                                                        //                     Radius.circular(10.0))),
+                                                        //         title: Text(
+                                                        //             "Add Images"),
+                                                        //         content:
+                                                        //             Container(
+                                                        //           alignment:
+                                                        //               Alignment
+                                                        //                   .topLeft,
+                                                        //           height: 180,
+                                                        //           width: 200,
+                                                        //           child: Row(
+                                                        //             children: [
+                                                        //               Expanded(
+                                                        //                 child: GridView
+                                                        //                     .builder(
+                                                        //                   shrinkWrap:
+                                                        //                       true,
+                                                        //                   gridDelegate:
+                                                        //                       SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+                                                        //                   itemBuilder:
+                                                        //                       (BuildContext context, int index) {
+                                                        //                     return index == 0
+                                                        //                         ? Center(
+                                                        //                             child: IconButton(icon: Icon(Icons.add), onPressed: () => !uploading ? chooseImage() : null),
+                                                        //                           )
+                                                        //                         : Container(
+                                                        //                             margin: EdgeInsets.all(3),
+                                                        //                             decoration: BoxDecoration(image: DecorationImage(image: FileImage(_image[index - 1]), fit: BoxFit.cover)),
+                                                        //                           );
+                                                        //                   },
+                                                        //                   itemCount:
+                                                        //                       _image.length + 1,
+                                                        //                 ),
+                                                        //               ),
+                                                        //             ],
+                                                        //           ),
+                                                        //         ),
+                                                        //         actions: [
+                                                        //           FlatButton(
+                                                        //             textColor:
+                                                        //                 Color(
+                                                        //                     0xFF6200EE),
+                                                        //             onPressed: () =>
+                                                        //                 Navigator.pop(
+                                                        //                     context,
+                                                        //                     false),
+                                                        //             child: Text(
+                                                        //                 'CANCEL'),
+                                                        //           ),
+                                                        //           FlatButton(
+                                                        //             textColor:
+                                                        //                 Color(
+                                                        //                     0xFF6200EE),
+                                                        //             // onPressed:
+                                                        //             //     () {
+                                                        //             //   Navigator.of(context)
+                                                        //             //       .pop();
+                                                        //             // },
+                                                        //             onPressed:
+                                                        //                 () {
+                                                        //               setState(
+                                                        //                   () {
+                                                        //                 uploading =
+                                                        //                     true;
+                                                        //               });
+                                                        //               // uploadInfo().whenComplete(() =>
+                                                        //               //     Navigator.of(context).pop());
+                                                        //               // uploadFile().whenComplete(() => Navigator.of(context).pop());
+                                                        //               Navigator.pop(
+                                                        //                   context,
+                                                        //                   true);
+                                                        //             },
+                                                        //             child: Text(
+                                                        //                 'CONFIRM'),
+                                                        //           ),
+                                                        //         ],
+                                                        //       ),
+                                                        //     );
                                                       },
                                                     ),
                                                   ),
@@ -685,11 +776,12 @@ class _AddCommentState extends State<AddComment> {
                                   // ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 0, bottom: 20),
+                                        top: 0, bottom: 0),
                                     child:
                                         // confirm(context),
                                         Container(
                                       margin: EdgeInsets.only(top: 0),
+                                      alignment: Alignment.center,
                                       width: 120,
                                       child: MaterialButton(
                                         // RaisedButton(
@@ -701,15 +793,29 @@ class _AddCommentState extends State<AddComment> {
                                                     ToiletColors.colorButton2)),
                                         onPressed: () async {
                                           //ยืนยัน
+                                          List<String> imageUrlList = [];
+                                          
                                           if (fromKey.currentState.validate()) {
                                             fromKey.currentState.save();
+                                            for (var img in _image) {
+                                              ref = firebase_storage
+                                                  .FirebaseStorage.instance
+                                                  .ref()
+                                                  .child(
+                                                      'images/${Path.basename(img.path)}');
+                                              await ref.putFile(img);
+                                              final String downloadUrl =
+                                                  await ref.getDownloadURL();
+                                              imageUrlList.add(downloadUrl);
+                                            }
                                             await addComment.add({
                                               'usercomment': userComment.review,
                                               'uid': user.uid,
-                                              'imgURL': user.photoURL,
+                                              'imgprofileURL': user.photoURL,
                                               'userName': user.displayName,
                                               'time': timestamp,
                                               'rating': rating,
+                                              'imgAddcomment': imageUrlList
                                             });
                                             fromKey.currentState.reset();
                                           }
@@ -751,6 +857,186 @@ class _AddCommentState extends State<AddComment> {
             ),
           );
         });
+  }
+
+  void tripEditModalBottomSheet(context) {
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          height: MediaQuery.of(context).size.height * .52,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Text("Add Images"),
+                    Spacer(),
+                    IconButton(
+                      icon: Icon(
+                        Icons.cancel,
+                        color: ToiletColors.colorButton2,
+                        size: 25,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                        itemBuilder: (BuildContext context, int index) {
+                          return index == 0
+                              ? Center(
+                                  child: IconButton(
+                                      icon: Icon(Icons.add),
+                                      onPressed: () =>
+                                          !uploading ? chooseImage() : null),
+                                )
+                              : Container(
+                                  margin: EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: FileImage(_image[index - 1]),
+                                          fit: BoxFit.cover)),
+                                );
+                        },
+                        itemCount: _image.length + 1,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
+                    ),
+                    MaterialButton(
+                      // RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(13.0),
+                          side: BorderSide(color: ToiletColors.colorButton2)),
+                      onPressed: () async {
+                        //ยืนยัน
+                        Navigator.of(context).pop();
+                      },
+
+                      padding: EdgeInsets.all(10.0),
+                      color: ToiletColors.colorButton2,
+                      textColor: Colors.white,
+                      child: Text(
+                        "ยืนยัน",
+                        style: TextStyle(
+                          color: Colors.white,
+                          // fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        ),
+                      ),
+                    ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     Navigator.of(context).pop();
+                    //   },
+                    //   child: Text(
+                    //     "ยืนยัน",
+                    //     style: TextStyle(
+                    //       color: Colors.white,
+                    //       // fontWeight: FontWeight.w600,
+                    //       fontSize: 15,
+                    //       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                    //     ),
+                    //   ),
+                    //   style: ElevatedButton.styleFrom(
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(12), // <-- Radius
+                    //     ),
+                    //   ),
+                    // )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  showAlertImgDialog(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+      title: Text("Add Images"),
+      content: Container(
+        alignment: Alignment.topLeft,
+        height: 180,
+        width: 200,
+        child: Row(
+          children: [
+            Expanded(
+              child: GridView.builder(
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3),
+                itemBuilder: (BuildContext context, int index) {
+                  return index == 0
+                      ? Center(
+                          child: IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () =>
+                                  !uploading ? chooseImage() : null),
+                        )
+                      : Container(
+                          margin: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: FileImage(_image[index - 1]),
+                                  fit: BoxFit.cover)),
+                        );
+                },
+                itemCount: _image.length + 1,
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        FlatButton(
+          textColor: Color(0xFF6200EE),
+          onPressed: () => Navigator.pop(context, false),
+          child: Text('CANCEL'),
+        ),
+        FlatButton(
+          textColor: Color(0xFF6200EE),
+          // onPressed:
+          //     () {
+          //   Navigator.of(context)
+          //       .pop();
+          // },
+          onPressed: () {
+            setState(() {
+              uploading = true;
+            });
+            uploadInfo().whenComplete(() => Navigator.of(context).pop());
+            // uploadFile().whenComplete(() => Navigator.of(context).pop());
+          },
+          child: Text('CONFIRM'),
+        ),
+      ],
+    );
   }
 }
 
