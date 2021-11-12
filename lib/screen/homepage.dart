@@ -208,9 +208,12 @@ class _HomePageState extends State<HomePage> {
                                         fit: BoxFit.cover,
                                         height: 20,
                                       ),
-                                      onPressed: () {
+                                      onPressed: () async{
                                         // Navigate to the second screen using a named route.
-                                        Navigator.pushNamed(context, '/five');
+                                        
+                                        Navigator.pushNamed(context, '/five',arguments: {
+                                                        'currentlocation': applicationBloc.currentLocation,
+                                                      },);
                                       },
                                     ),
                                   ),

@@ -69,14 +69,14 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/five',
+        initialRoute: '/two',
         routes: <String, WidgetBuilder>{
           '/one': (context) => FirstScreen(),
           '/two': (context) => HomePage(),
           '/o': (context) => DisplayScreen(),
           '/third': (context) => ToiletDetail(),
           '/four': (context) => Profile(),
-          '/five': (context) => addToilet(),
+          '/five': (context) => AddToilet(),
           '/six': (context) => AddToiletDetail(),
           '/seven': (context) => AddComment(),
           '/eight': (context) => Navigation(),

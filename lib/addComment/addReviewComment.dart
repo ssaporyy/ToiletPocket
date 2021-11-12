@@ -397,7 +397,7 @@ class _AddCommentState extends State<AddComment> {
                                                     ),
                                                     child: IconButton(
                                                       icon: Icon(
-                                                        Icons.add,
+                                                        Icons.add_a_photo,
                                                         color: Colors.white,
                                                       ),
                                                       highlightColor:
