@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/models/place.dart';
 // import 'package:ToiletPocket/models/location.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/screen/homepage.dart';
@@ -21,6 +22,7 @@ import 'package:provider/provider.dart';
 // import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:flutter/services.dart' as rootBundle;
 
+// const LatLng SOURCE_LOCATION = LatLng(LocationData source);
 class Navigation extends StatefulWidget {
   const Navigation({Key key}) : super(key: key);
 
@@ -29,93 +31,152 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
-  StreamSubscription _locationSubscription;
-  GoogleMapController _controller;
-  Location _locationTracker = Location();
-  Marker marker;
-  Circle circle;
+  Completer<GoogleMapController> _controller = Completer();
+  BitmapDescriptor sourceIcon;
+  BitmapDescriptor destinationIcon;
+  StreamSubscription locationSubscription;
 
+  LatLng currentLocation;
+  LatLng destinationLocation;
+
+  Set<Marker> _markers = Set<Marker>();
+  Set<Polyline> _polylines = Set<Polyline>();
+  List<LatLng> polylineCoordinates = [];
+  PolylinePoints polylinePoints;
+
+  // StreamSubscription _locationSubscription;  Location _locationTracker = Location();
   @override
   void initState() {
     super.initState();
-  }
 
-  Future<Uint8List> getMarker() async{
-    ByteData byteData = await DefaultAssetBundle.of(context).load("images/navigation.png");
-    return byteData.buffer.asUint8List();
-  }
-  
-  void updateMarker(LocationData newLocalData, Uint8List imgData){
-    LatLng latlng = LatLng(newLocalData.latitude,newLocalData.longitude);
-    this.setState(() {
-      marker = Marker(
-        markerId: MarkerId("my location"),
-        position: latlng,
-        rotation: newLocalData.heading,
-        draggable: false,
-        zIndex: 3,
-        flat: true,
-        icon: BitmapDescriptor.fromBytes(imgData)
-      );
+    polylinePoints = PolylinePoints();
+
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
+    locationSubscription =
+        applicationBloc.selectedLocation.stream.listen((place) {
+      if (place != null) {
+        //set intitial location
+        setIntitialLocation(place);
+
+        //set marker icon
+        // this.setSourceAndDestinationMarkerIcons();
+      }
     });
   }
 
-  void getCurrentLocation() async {
-    try{
-      Uint8List imgData= await getMarker();
-      var location = await _locationTracker.getLocation();
+  void setSourceAndDestinationMarkerIcons(BuildContext context) async {
+    sourceIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(55, 55)), 'images/navigation.png');
 
-      updateMarker(location, imgData);
-
-      if(_locationSubscription != null){
-        _locationSubscription.cancel();
-      }
-
-      _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData) {
-        if(_controller != null){
-          _controller.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
-            target: LatLng(newLocalData.latitude,newLocalData.longitude),
-            zoom: 16.0,
-            tilt: 50.0, )));
-            updateMarker(newLocalData, imgData);
-        }
-      });
-    } on PlatformException catch (e){
-      if(e.code == "PERMISSION_DENIED"){
-        debugPrint("Permission Denied");
-      }
-    }
-  }
-  @override
-  void dispose(){
-    if(_locationSubscription != null){
-      _locationSubscription.cancel();
-    }
-    super.dispose();
+    destinationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(55, 55)), 'images/flush.png');
   }
 
-  Position _currentPosition;
-  String _currentAddress = '';
+  void _currentLocation() async {
+    final GoogleMapController controller = await _controller.future;
+    LocationData _currentPosition;
+    var location = new Location();
+    try {
+      _currentPosition = await location.getLocation();
+    } on Exception {
+      _currentPosition = null;
+    }
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+        bearing: 0,
+        target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
+        zoom: 18.0,
+        tilt: 20.0,
+      ),
+    ));
+  }
+
+  void setIntitialLocation(Place place) {
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
+
+    currentLocation =
+        LatLng(applicationBloc.currentLocation.latitude,applicationBloc.currentLocation.longitude);
+        
+    destinationLocation =
+        LatLng(place.geometry.location.lat, place.geometry.location.lng);
+  }
+
+  // Future<Uint8List> getMarker() async{
+  //   ByteData byteData = await DefaultAssetBundle.of(context).load("images/navigation.png",);
+  //   return byteData.buffer.asUint8List();
+  // }
+
+  // void updateMarker(LocationData newLocalData, Uint8List imgData){
+  //   LatLng latlng = LatLng(newLocalData.latitude,newLocalData.longitude);
+  //   this.setState(() {
+  //     marker = Marker(
+  //       markerId: MarkerId("my location"),
+  //       position: latlng,
+  //       rotation: newLocalData.heading,
+  //       draggable: false,
+  //       zIndex: 3,
+  //       flat: true,
+  //       icon: BitmapDescriptor.fromBytes(imgData)
+  //     );
+  //   });
+  // }
+
+  // void getCurrentLocation() async {
+  //   try{
+  //     Uint8List imgData= await getMarker();
+  //     var location = await _locationTracker.getLocation();
+
+  //     updateMarker(location, imgData);
+
+  //     if(_locationSubscription != null){
+  //       _locationSubscription.cancel();
+  //     }
+
+  //     _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData) {
+  //       if(_controller != null){
+  //         _controller.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
+  //           target: LatLng(newLocalData.latitude,newLocalData.longitude),
+  //           zoom: 16.0,
+  //           tilt: 50.0, )));
+  //           updateMarker(newLocalData, imgData);
+  //       }
+  //     });
+  //   } on PlatformException catch (e){
+  //     if(e.code == "PERMISSION_DENIED"){
+  //       debugPrint("Permission Denied");
+  //     }
+  //   }
+  // }
+  // @override
+  // void dispose(){
+  //   if(_locationSubscription != null){
+  //     _locationSubscription.cancel();
+  //   }
+  //   super.dispose();
+  // }
+
+  // Position _currentPosition;
+  // String _currentAddress = '';
 
   // final startAddressController = TextEditingController();
   // final destinationAddressController = TextEditingController();
 
-  final startAddressFocusNode = FocusNode();
-  final desrinationAddressFocusNode = FocusNode();
+  // final startAddressFocusNode = FocusNode();
+  // final desrinationAddressFocusNode = FocusNode();
 
-  String _startAddress = '';
-  String _destinationAddress = '';
-  String _placeDistance;
+  // String _startAddress = '';
+  // String _destinationAddress = '';
+  // String _placeDistance;
 
   // Set<Marker> markers = {};
 
-  PolylinePoints polylinePoints;
-  Map<PolylineId, Polyline> polylines = {};
-  List<LatLng> polylineCoordinates = [];
+  // PolylinePoints polylinePoints;
+  // Map<PolylineId, Polyline> polylines = {};
+  // List<LatLng> polylineCoordinates = [];
 
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-
+  // final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Widget _textField({
     TextEditingController controller,
@@ -170,8 +231,12 @@ class _NavigationState extends State<Navigation> {
 
   @override
   Widget build(BuildContext context) {
-    Completer<GoogleMapController> _mapController = Completer();
-    final currentPosition = Provider.of<Position>(context);
+    this.setSourceAndDestinationMarkerIcons(context);
+
+    // Completer<GoogleMapController> _mapController = Completer();
+    // final currentPosition = Provider.of<Position>(context);
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
+
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _place = _args['places'] as Places;
@@ -188,21 +253,24 @@ class _NavigationState extends State<Navigation> {
                 mapType: MapType.normal,
                 myLocationEnabled: true,
                 zoomGesturesEnabled: false,
-                scrollGesturesEnabled: false,
-                zoomControlsEnabled: false,
+                scrollGesturesEnabled: true,
+                zoomControlsEnabled: true,
                 compassEnabled: false,
-
-                markers: Set.of((marker != null)? [marker] : []),
-
+                tiltGesturesEnabled: false,
+                markers: _markers,
+                polylines: _polylines,
                 initialCameraPosition: CameraPosition(
                   target: LatLng(
-                      currentPosition.latitude, currentPosition.longitude),
+                      applicationBloc.currentLocation.latitude, applicationBloc.currentLocation.longitude),
                   zoom: 18.0,
                   tilt: 20.0,
                   // bearing: 30,
                 ),
                 onMapCreated: (GoogleMapController controller) {
-                  _controller = controller;
+                  _controller.complete(controller);
+
+                  showPinOnMap();
+                  setPolylines();
                 },
                 // markers: Set<Marker>.of(markers),
               ),
@@ -237,7 +305,7 @@ class _NavigationState extends State<Navigation> {
                               suffixIcon: IconButton(
                                 icon: Icon(Icons.my_location),
                                 onPressed: () {
-                                 getCurrentLocation();
+                                  _currentLocation();
                                 },
                               ),
                               // controller: startAddressController,
@@ -510,5 +578,52 @@ class _NavigationState extends State<Navigation> {
             ),
           ],
         ));
+  }
+  void showPinOnMap(){
+    setState(() {
+      _markers.add(Marker(
+      markerId: MarkerId('sourcePin'),
+      position: currentLocation,
+      icon: sourceIcon.toJson(),
+      
+    ));
+
+    _markers.add(Marker(
+      markerId: MarkerId('destinationPin'),
+      position: destinationLocation,
+      icon: destinationIcon.toJson(),
+    ));
+    });
+  }
+
+  void setPolylines() async{
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      "<AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno>",
+      PointLatLng(
+        currentLocation.latitude, 
+        currentLocation.longitude
+      ),
+      PointLatLng(
+        destinationLocation.latitude, 
+        destinationLocation.longitude
+      ),
+    );
+
+    if (result.status == 'OK') {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+
+      setState(() {
+        _polylines.add(
+          Polyline(
+            width: 20,
+            polylineId: PolylineId('polyLine'),
+            color: Color(0xFF08A5CB),
+            points: polylineCoordinates
+          )
+        );
+      });
+    }
   }
 }

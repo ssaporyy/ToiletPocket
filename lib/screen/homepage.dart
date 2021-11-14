@@ -284,10 +284,9 @@ class _HomePageState extends State<HomePage> {
                                                       /*address*/ places[index]
                                                           .vicinity,
                                                       places[index],
-
+                                                      places,
                                                       /**openClose */
                                                       //'',
-
                                                       '${places[index].openingHours == null || places[index].openingHours.openNow.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
                                                       context),
                                                   onTap: () async {
@@ -345,6 +344,7 @@ class _HomePageState extends State<HomePage> {
     rating,
     address,
     push,
+    navigate,
     openClose,
     BuildContext context,
   ) {
@@ -423,9 +423,9 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.pushNamed(
                                     context,
                                     '/eight',
-                                    arguments: {'places':push
+                                    arguments: {'places':push,
+                                    'current':navigate,},
 
-                                    },
                                   );
                                 },
                                 // onPressed: () async {
