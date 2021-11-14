@@ -86,7 +86,7 @@ class _AddCommentState extends State<AddComment> {
     DateTime now = DateTime.now();
     String formatDate = DateFormat('d MMM, hh:mm a').format(now);
     timestamp = formatDate;
-    
+
     List<String> imageUrlList = [];
     for (var img in _image) {
       ref = firebase_storage.FirebaseStorage.instance
@@ -794,7 +794,7 @@ class _AddCommentState extends State<AddComment> {
                                         onPressed: () async {
                                           //ยืนยัน
                                           List<String> imageUrlList = [];
-                                          
+
                                           if (fromKey.currentState.validate()) {
                                             fromKey.currentState.save();
                                             for (var img in _image) {
@@ -838,7 +838,7 @@ class _AddCommentState extends State<AddComment> {
                                       ),
                                     ),
                                   ),
-                                  // SizedBox(height: 50,),
+                                  SizedBox(height: 20,),
                                 ],
                               ),
                             ),
@@ -946,26 +946,10 @@ class _AddCommentState extends State<AddComment> {
                         ),
                       ),
                     ),
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     Navigator.of(context).pop();
-                    //   },
-                    //   child: Text(
-                    //     "ยืนยัน",
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //       // fontWeight: FontWeight.w600,
-                    //       fontSize: 15,
-                    //       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                    //     ),
-                    //   ),
-                    //   style: ElevatedButton.styleFrom(
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(12), // <-- Radius
-                    //     ),
-                    //   ),
-                    // )
                   ],
+                ),
+                SizedBox(
+                  height: 20,
                 ),
               ],
             ),

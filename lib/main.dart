@@ -9,6 +9,7 @@ import 'package:ToiletPocket/addComment/addReviewComment.dart';
 import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:ToiletPocket/screen/firstScreen.dart';
 import 'package:ToiletPocket/screen/homepage.dart';
+import 'package:ToiletPocket/screen/loginwithGoogle.dart';
 import 'package:ToiletPocket/screen/startNavigation.dart';
 import 'package:ToiletPocket/screen/profile.dart';
 import 'package:ToiletPocket/services/geolocator_service.dart';
@@ -69,7 +70,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/two',
+        initialRoute: '/ten',
         routes: <String, WidgetBuilder>{
           '/one': (context) => FirstScreen(),
           '/two': (context) => HomePage(),
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
           '/seven': (context) => AddComment(),
           '/eight': (context) => Navigation(),
           '/nine': (context) => Destination(),
+          '/ten': (context) => LoginGoogle(),
           // '/n': (context) => (),
         },
       ),

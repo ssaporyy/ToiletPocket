@@ -1,6 +1,7 @@
 import 'package:ToiletPocket/addToilet_InMap/addImage.dart';
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:ToiletPocket/star2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,14 +50,14 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
   TimeOfDay _time = TimeOfDay(hour: 0, minute: 00);
   TimeOfDay _time2 = TimeOfDay(hour: 0, minute: 00);
 
+  double rating = 3.0;
+
   List<String> lst = ['ไม่เสียค่าใช้บริการ', 'เสียค่าใช้บริการ'];
   int selectedIndex = 0;
 
-  List<IconData> iconList = [
-    Icons.settings,
-    Icons.bookmark,
-    Icons.account_circle
-  ];
+  List<Company> _companies;
+  List<String> _filters;
+
   int secondaryIndex = 0;
 
   void changeIndex(int index) {
@@ -96,9 +97,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
       });
     }
   }
-
-  List<Company> _companies;
-  List<String> _filters;
 
   @override
   void initState() {
@@ -222,7 +220,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
 
   @override
   Widget build(BuildContext context) {
-    double rating = 3.0;
     String timestamp;
 
     DateTime now = DateTime.now();
@@ -559,8 +556,7 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                         color: ToiletColors.colorPurple,
                                         size: 30.0,
                                       ),
-                                      title:
-                                          Container(
+                                      title: Container(
                                         alignment: Alignment.topLeft,
                                         child: Container(
                                           height: 83,
@@ -642,23 +638,35 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                         //ยืนยัน
 
                                         List<String> imageUrlList = [];
+
+                                        if (user.isAnonymous) {
+                                            final provider = Provider.of<
+                                                    GoogleSignInProvider>(
+                                                context,
+                                                listen: false);
+                                            provider.login();
+                                            // return Navigator.pop(context, true);
+                                            user.refreshToken;
+                                          }
+
                                         if (fromKey.currentState.validate()) {
                                           fromKey.currentState.save();
                                           for (var img in _image) {
-                                              ref = firebase_storage
-                                                  .FirebaseStorage.instance
-                                                  .ref()
-                                                  .child(
-                                                      'images/${Path.basename(img.path)}');
-                                              await ref.putFile(img);
-                                              final String downloadUrl =
-                                                  await ref.getDownloadURL();
-                                              imageUrlList.add(downloadUrl);
-                                            }
-
+                                            ref = firebase_storage
+                                                .FirebaseStorage.instance
+                                                .ref()
+                                                .child(
+                                                    'images/${Path.basename(img.path)}');
+                                            await ref.putFile(img);
+                                            final String downloadUrl =
+                                                await ref.getDownloadURL();
+                                            imageUrlList.add(downloadUrl);
+                                          }
+                                          
                                           await addToilets.add({
                                             'name': userAddToilet.placesname,
                                             'userName': user.displayName,
+                                            'email':user.email,
                                             'time': timestamp,
                                             'rating': rating,
                                             'openToilet': _time.format(context),
@@ -671,12 +679,24 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                 : 'เสียค่าบริการ',
                                             'currentlocation':
                                                 "${_currentlocation.latitude},${_currentlocation.longitude}",
-                                            'imgAddtoilet': imageUrlList,
+                                            'imgAddtoilet': imageUrlList.isEmpty
+                                                ? 'no photo'
+                                                : imageUrlList,
                                           });
+
                                           fromKey.currentState.reset();
+                                          //   if (user.isAnonymous) {
+                                          //   final provider =
+                                          //       Provider.of<GoogleSignInProvider>(
+                                          //           context,
+                                          //           listen: false);
+                                          //   provider.login();
+                                          //   // return Navigator.pop(context, true);
+                                          // }
                                         }
 
                                         // Navigator.pushNamed(context, '/o');
+
                                         Navigator.of(context).pop();
                                       },
                                       padding: EdgeInsets.all(10.0),

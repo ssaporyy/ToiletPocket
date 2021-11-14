@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class LoginGoogle extends StatefulWidget {
   @override
   LoginGoogleState createState() => LoginGoogleState();
@@ -16,6 +15,24 @@ class LoginGoogleState extends State<LoginGoogle> {
   launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url, forceWebView: true);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+    _launchURLBrowser() async {
+    const url = 'https://flutterdevs.com/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _launchURLApp() async {
+    const url = 'https://flutterdevs.com/';
+    if (await canLaunch(url)) {
+      await launch(url, forceSafariVC: true, forceWebView: true);
     } else {
       throw 'Could not launch $url';
     }
@@ -159,19 +176,21 @@ class LoginGoogleState extends State<LoginGoogle> {
                             fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                           ),
                         ),
-                        onPressed: () {
-                          //กดแล้วไปสร้างบัญชีกูเกิ้ล
-                          // final provider = Provider.of<GoogleSignInProvider>(
-                          //     context,
-                          //     listen: false);
-                          // provider.login();
-                          // Navigator.pushReplacement(context,
-                          //     MaterialPageRoute(builder: (context) {
-                          //   return HomePage();
-                          // }));
-                          const url = 'https://google.com';
-                          launchURL(url);
-                        },
+                        // onPressed: () {
+                        //   //กดแล้วไปสร้างบัญชีกูเกิ้ล
+                        //   // final provider = Provider.of<GoogleSignInProvider>(
+                        //   //     context,
+                        //   //     listen: false);
+                        //   // provider.login();
+                        //   // Navigator.pushReplacement(context,
+                        //   //     MaterialPageRoute(builder: (context) {
+                        //   //   return HomePage();
+                        //   // }));
+                        //   const url = 'https://google.com';
+                        //   // launchURL(url);
+                        //   launch(url, forceWebView: true);
+                        // },
+                        onPressed: _launchURLApp,
                         child: const Text('สร้าง'),
                       ),
                     ),
