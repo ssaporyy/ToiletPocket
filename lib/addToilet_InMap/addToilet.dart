@@ -197,7 +197,10 @@ class _AddToiletState extends State<AddToilet> {
                           side: BorderSide(color: ToiletColors.colorButton2)),
                       onPressed: () {
                         //ไปหน้าใส่รายละเอียด
-                        
+                        if(user.isAnonymous){
+                          return
+                          Navigator.pushNamed(context,'/ten');
+                        }else
                         Navigator.pushNamed(
                           context,
                           '/six',

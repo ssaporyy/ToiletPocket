@@ -79,6 +79,8 @@ class ApplicationBloc with ChangeNotifier {
   //   notifyListeners();
   // }
 
+   
+
   clearSelectedLocation() {
     selectedLocation.add(null);
     selectedLocationStatic = null;

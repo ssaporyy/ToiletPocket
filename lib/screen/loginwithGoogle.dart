@@ -1,8 +1,10 @@
+import 'package:ToiletPocket/addToilet_InMap/addToiletDetail.dart';
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:ToiletPocket/screen/homepage.dart';
 import 'package:ToiletPocket/screen/showUp.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,7 +22,7 @@ class LoginGoogleState extends State<LoginGoogle> {
     }
   }
 
-    _launchURLBrowser() async {
+  _launchURLBrowser() async {
     const url = 'https://flutterdevs.com/';
     if (await canLaunch(url)) {
       await launch(url);
@@ -40,6 +42,7 @@ class LoginGoogleState extends State<LoginGoogle> {
 
   @override
   Widget build(BuildContext context) {
+    final currentPosition = Provider.of<Position>(context);
     int delayAmount = 1500;
     return Material(
         child: Stack(children: <Widget>[
@@ -48,6 +51,37 @@ class LoginGoogleState extends State<LoginGoogle> {
           'images/signUp.png',
           width: 500,
           fit: BoxFit.fill,
+        ),
+      ),
+      Container(
+        padding: EdgeInsets.only(top: 43.0, left: 20.0, right: 0.0),
+        child: Container(
+          padding: EdgeInsets.only(top: 30.0),
+          child: InkWell(
+            onTap: () {
+              // Navigator.pushNamed(context, '/two');
+              Navigator.of(context).pop();
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.arrow_back_ios_rounded,
+                  size: 18,
+                  color: Colors.blue,
+                ),
+                Text(
+                  'กลับ',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 15.0,
+                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
       ShowUp(
@@ -115,10 +149,15 @@ class LoginGoogleState extends State<LoginGoogle> {
                             context,
                             listen: false);
                         provider.login();
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return HomePage();
-                        }));
+                        // Navigator.pushReplacement(context,
+                        //     MaterialPageRoute(builder: (context) {
+                        //   return AddToiletDetail();
+                        // }));
+                        Navigator.pushNamed(
+                          context,
+                          '/six',
+                          arguments: {'currentlocation': currentPosition},
+                        );
                       },
                       label: Text('Continue with Google',
                           style: TextStyle(

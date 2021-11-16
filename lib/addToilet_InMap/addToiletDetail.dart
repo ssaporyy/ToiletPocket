@@ -639,15 +639,15 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
 
                                         List<String> imageUrlList = [];
 
-                                        if (user.isAnonymous) {
-                                            final provider = Provider.of<
-                                                    GoogleSignInProvider>(
-                                                context,
-                                                listen: false);
-                                            provider.login();
-                                            // return Navigator.pop(context, true);
-                                            user.refreshToken;
-                                          }
+                                        // if (user.isAnonymous) {
+                                        //     final provider = Provider.of<
+                                        //             GoogleSignInProvider>(
+                                        //         context,
+                                        //         listen: false);
+                                        //     provider.login();
+                                        //     // return Navigator.pop(context, true);
+                                        //     user.refreshToken;
+                                        //   }
 
                                         if (fromKey.currentState.validate()) {
                                           fromKey.currentState.save();
@@ -677,11 +677,12 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                     selectedIndex < 1
                                                 ? 'ไม่เสียค่าบริการ'
                                                 : 'เสียค่าบริการ',
-                                            'currentlocation':
-                                                "${_currentlocation.latitude},${_currentlocation.longitude}",
+                                           'currentlocationLat':
+                                                _currentlocation.latitude,
+                                            'currentlocationLong':_currentlocation.longitude,
                                             'imgAddtoilet': imageUrlList.isEmpty
                                                 ? 'no photo'
-                                                : imageUrlList,
+                                                : imageUrlList,                                            
                                           });
 
                                           fromKey.currentState.reset();
@@ -696,8 +697,9 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                         }
 
                                         // Navigator.pushNamed(context, '/o');
+                                        Navigator.pushNamed(context, '/n');
 
-                                        Navigator.of(context).pop();
+                                        // Navigator.of(context).pop();
                                       },
                                       padding: EdgeInsets.all(10.0),
                                       color: ToiletColors.colorButton2,

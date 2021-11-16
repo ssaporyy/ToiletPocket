@@ -1,3 +1,5 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -34,13 +36,14 @@ class GoogleSignInProvider extends ChangeNotifier {
     FirebaseAuth.instance.signOut();
   }
 
- Future<void> signInAnonymously() async {
+  Future<void> signInAnonymously() async {
     try {
       await FirebaseAuth.instance.signInAnonymously();
     } catch (e) {
       print(e); // TODO: show dialog with error
     }
   }
+
 
 
 }

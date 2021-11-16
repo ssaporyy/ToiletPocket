@@ -1,5 +1,6 @@
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/star.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:outline_material_icons/outline_material_icons.dart';
 
@@ -14,6 +15,7 @@ class Destination extends StatelessWidget {
 }
 
 Widget add(BuildContext context) {
+  final user = FirebaseAuth.instance.currentUser;
   return Stack(
     children: <Widget>[
       Align(
@@ -154,9 +156,10 @@ Widget add(BuildContext context) {
                                 return AlertDialog(
                                   actionsAlignment: MainAxisAlignment.center,
                                   actions: <Widget>[
-                                      SizedBox(height: 10,),
-                                    Column(
-                                      children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Column(children: [
                                       Text(
                                         "รีวิวและประเมินห้องน้ำ",
                                         style: TextStyle(
@@ -166,7 +169,9 @@ Widget add(BuildContext context) {
                                           fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                                         ),
                                       ),
-                                      SizedBox(height: 10,),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
                                       Container(height: 80, child: Star()),
                                       Row(
                                           mainAxisAlignment:
@@ -197,8 +202,12 @@ Widget add(BuildContext context) {
                                                 ),
                                                 onPressed: () {
                                                   // Navigate to the second screen using a named route.
-                                                  Navigator.pushNamed(
-                                                      context, '/seven');
+                                                  if (user.isAnonymous) {
+                                                    return Navigator.pushNamed(
+                                                        context, '/ten');
+                                                  } else
+                                                    Navigator.pushNamed(
+                                                        context, '/seven');
                                                 },
                                               ),
                                             ),
@@ -259,7 +268,7 @@ Widget add(BuildContext context) {
                   ),
                 ),
               ),
-               
+
               //  Positioned(
               //   bottom: 0,
               //   child: Container(
@@ -349,7 +358,7 @@ Widget add(BuildContext context) {
               //     ),
               //   ),
               // ),
-              
+
               Positioned(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
