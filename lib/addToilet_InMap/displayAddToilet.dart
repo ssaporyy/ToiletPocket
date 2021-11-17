@@ -55,36 +55,36 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
                               '${document['currentlocationLong']}');
                           //images/flush.png
 
-                          final Set<Marker> markers = new Set();
+                          // final Set<Marker> markers = new Set();
 
-                          markers.add(Marker(
-                            //add first marker
-                            markerId: MarkerId('addToilet'),
-                            position: LatLng(
-                                document['currentlocationLat'],
-                                document[
-                                    'currentlocationLong']), //position of marker
-                            infoWindow: InfoWindow(
-                              //popup info
-                              title: document['name'],
-                            ),
-                            icon:
-                                BitmapDescriptor.defaultMarker, //Icon for Marker
-                          ));
+                          // markers.add(Marker(
+                          //   //add first marker
+                          //   markerId: MarkerId('addToilet'),
+                          //   position: LatLng(
+                          //       document['currentlocationLat'],
+                          //       document[
+                          //           'currentlocationLong']), //position of marker
+                          //   infoWindow: InfoWindow(
+                          //     //popup info
+                          //     title: document['name'],
+                          //   ),
+                          //   icon:
+                          //       BitmapDescriptor.defaultMarker, //Icon for Marker
+                          // ));
 
-                          // Marker userAddMarker() {
-                          //   return Marker(
-                          //       markerId: MarkerId('addToilet'),
-                          //       position: LatLng(document['currentlocationLat'],
-                          //           document['currentlocationLong']),
-                          //       icon: customIcon,
-                          //       // BitmapDescriptor.defaultMarkerWithHue(150.0),
-                          //       infoWindow: InfoWindow(title: document['name']));
-                          // }
+                          Marker userAddMarker() {
+                            return Marker(
+                                markerId: MarkerId('addToilet'),
+                                position: LatLng(document['currentlocationLat'],
+                                    document['currentlocationLong']),
+                                icon: customIcon,
+                                // BitmapDescriptor.defaultMarkerWithHue(150.0),
+                                infoWindow: InfoWindow(title: document['name']));
+                          }
 
-                          // Set<Marker> mySet() {
-                          //   return <Marker>[userAddMarker()].toSet();
-                          // }
+                          Set<Marker> mySet() {
+                            return <Marker>[userAddMarker()].toSet();
+                          }
 
                           return Container(
                             height: 250,
@@ -99,8 +99,8 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
                               ),
                               mapType: MapType.normal,
                               onMapCreated: (controller) {},
-                              markers: markers,
-                              // markers: mySet(),
+                              // markers: markers,
+                              markers: mySet(),
                             ),
                             // ListTile(
                             //   leading:  Container(

@@ -44,6 +44,10 @@ class _NavigationState extends State<Navigation> {
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
 
+  //  
+
+//add your lat and lng where you wants to draw polyline
+
   // StreamSubscription _locationSubscription;  Location _locationTracker = Location();
   @override
   void initState() {
@@ -76,9 +80,17 @@ class _NavigationState extends State<Navigation> {
   void _currentLocation() async {
     final GoogleMapController controller = await _controller.future;
     LocationData _currentPosition;
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
+
+    final _args =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final _currentlocation = _args['current'] as Places;
+
+    final _place = _args['places'] as Places;
     var location = new Location();
     try {
       _currentPosition = await location.getLocation();
+      // _currentPosition = await location.getLocation();
     } on Exception {
       _currentPosition = null;
     }
@@ -86,7 +98,9 @@ class _NavigationState extends State<Navigation> {
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
         bearing: 0,
-        target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
+        target: LatLng(applicationBloc.currentLocation.latitude,
+            applicationBloc.currentLocation.longitude),
+        // target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
         zoom: 18.0,
         tilt: 20.0,
       ),
@@ -95,12 +109,20 @@ class _NavigationState extends State<Navigation> {
 
   void setIntitialLocation(Place place) {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
+    final _args =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final _currentlocation = _args['current'] as Places;
+    final _place = _args['places'] as Places;
 
-    currentLocation =
-        LatLng(applicationBloc.currentLocation.latitude,applicationBloc.currentLocation.longitude);
-        
+    currentLocation = LatLng(applicationBloc.currentLocation.latitude,
+        applicationBloc.currentLocation.longitude);
+    // currentLocation = LatLng(applicationBloc.currentLocation.latitude,
+    //     applicationBloc.currentLocation.longitude);
+
     destinationLocation =
-        LatLng(place.geometry.location.lat, place.geometry.location.lng);
+        LatLng(_place.geometry.location.lat, _place.geometry.location.lng);
+    // destinationLocation =
+    //     LatLng(place.geometry.location.lat, place.geometry.location.lng);
   }
 
   // Future<Uint8List> getMarker() async{
@@ -239,10 +261,39 @@ class _NavigationState extends State<Navigation> {
 
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final _currentlocation = _args['current'] as Places;
     final _place = _args['places'] as Places;
     // Set<Marker> markers = {};
     var width = MediaQuery.of(context).size.width;
     final startAddressController = GoogleMapController;
+
+    Marker sourcePin() {
+      return Marker(
+        markerId: MarkerId('sourcepin'),
+        position: LatLng(applicationBloc.currentLocation.latitude,
+            applicationBloc.currentLocation.longitude),
+        icon: BitmapDescriptor.defaultMarker,
+        // icon: sourceIcon,
+        // BitmapDescriptor.defaultMarkerWithHue(150.0),
+        // infoWindow: InfoWindow(title: document['name'])
+      );
+    }
+
+    Marker destinationPin() {
+      return Marker(
+        markerId: MarkerId('destinationpin'),
+        position:
+            LatLng(_place.geometry.location.lat, _place.geometry.location.lng),
+        icon: BitmapDescriptor.defaultMarker,
+        // icon: sourceIcon,
+        // BitmapDescriptor.defaultMarkerWithHue(150.0),
+        // infoWindow: InfoWindow(title: document['name'])
+      );
+    }
+
+    Set<Marker> mySet() {
+      return <Marker>[sourcePin(), destinationPin()].toSet();
+    }
 
     return Scaffold(
         backgroundColor: ToiletColors.colorBackground,
@@ -252,17 +303,18 @@ class _NavigationState extends State<Navigation> {
               child: GoogleMap(
                 mapType: MapType.normal,
                 myLocationEnabled: true,
-                zoomGesturesEnabled: false,
+                zoomGesturesEnabled: true,
                 scrollGesturesEnabled: true,
-                zoomControlsEnabled: true,
+                zoomControlsEnabled: false,
                 compassEnabled: false,
                 tiltGesturesEnabled: false,
-                markers: _markers,
+                markers: mySet(),
+                /*_markers,*/
                 polylines: _polylines,
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                      applicationBloc.currentLocation.latitude, applicationBloc.currentLocation.longitude),
-                  zoom: 18.0,
+                  target: LatLng(applicationBloc.currentLocation.latitude,
+                      applicationBloc.currentLocation.longitude),
+                  zoom: 13.6,
                   tilt: 20.0,
                   // bearing: 30,
                 ),
@@ -484,7 +536,15 @@ class _NavigationState extends State<Navigation> {
                                       borderRadius: BorderRadius.circular(10.0),
                                       side: BorderSide(
                                           color: ToiletColors.colorButton2)),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    print(
+                                        '${applicationBloc.currentLocation.latitude}'
+                                        '++++++'
+                                        '${applicationBloc.currentLocation.longitude}');
+                                    print('${_place.geometry.location.lat}'
+                                        '++++++'
+                                        '${_place.geometry.location.lng}');
+                                  },
                                   padding: EdgeInsets.all(10.0),
                                   color: ToiletColors.colorButton2,
                                   textColor: Colors.white,
@@ -579,50 +639,57 @@ class _NavigationState extends State<Navigation> {
           ],
         ));
   }
-  void showPinOnMap(){
+
+  void showPinOnMap() {
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
+    final _args =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final _currentlocation = _args['current'] as Places;
+    final _place = _args['places'] as Places;
     setState(() {
       _markers.add(Marker(
-      markerId: MarkerId('sourcePin'),
-      position: currentLocation,
-      icon: sourceIcon.toJson(),
-      
-    ));
+        markerId: MarkerId('sourcePin'),
+        position: LatLng(applicationBloc.currentLocation.latitude,
+            applicationBloc.currentLocation.longitude),
+        icon: sourceIcon.toJson(),
+      ));
 
-    _markers.add(Marker(
-      markerId: MarkerId('destinationPin'),
-      position: destinationLocation,
-      icon: destinationIcon.toJson(),
-    ));
+      _markers.add(Marker(
+        markerId: MarkerId('destinationPin'),
+        position:
+            LatLng(_place.geometry.location.lat, _place.geometry.location.lng),
+        icon: destinationIcon.toJson(),
+      ));
     });
   }
 
-  void setPolylines() async{
+  void setPolylines() async {
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
+    final _args =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final _currentlocation = _args['current'] as Places;
+
+    final _place = _args['places'] as Places;
+
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      "<AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno>",
-      PointLatLng(
-        currentLocation.latitude, 
-        currentLocation.longitude
-      ),
-      PointLatLng(
-        destinationLocation.latitude, 
-        destinationLocation.longitude
-      ),
+      "AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
+      PointLatLng(applicationBloc.currentLocation.latitude,
+          applicationBloc.currentLocation.longitude),
+      PointLatLng(_place.geometry.location.lat, _place.geometry.location.lng),
     );
 
     if (result.status == 'OK') {
       result.points.forEach((PointLatLng point) {
+        print("printtttttttttttttt"'${point.latitude}' "${point.longitude}");
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
 
       setState(() {
-        _polylines.add(
-          Polyline(
+        _polylines.add(Polyline(
             width: 20,
             polylineId: PolylineId('polyLine'),
             color: Color(0xFF08A5CB),
-            points: polylineCoordinates
-          )
-        );
+            points: polylineCoordinates));
       });
     }
   }

@@ -284,7 +284,7 @@ class _HomePageState extends State<HomePage> {
                                                       /*address*/ places[index]
                                                           .vicinity,
                                                       places[index],
-                                                      places,
+                                                      places[index],
                                                       /**openClose */
                                                       //'',
                                                       '${places[index].openingHours == null || places[index].openingHours.openNow.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
