@@ -235,62 +235,65 @@ class _NavigationState extends State<Navigation> {
                 },
               ),
             ),
-            SafeArea(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20.0),
-                      ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 100.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white70,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
                     ),
-                    width: width * 0.9,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            'Places',
-                            style: TextStyle(fontSize: 20.0),
+                  ),
+                  width: width * 0.9,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          'Destination',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                            fontWeight: FontWeight.w600,
                           ),
-                          SizedBox(height: 10),
-                          _textField(
-                              hint: 'my location',
-                              prefixIcon: Icon(
-                                Icons.looks_one,
-                                color: Colors.blue[400],
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(Icons.my_location),
-                                onPressed: () {
-                                  _currentLocation();
-                                },
-                              ),
-                              width: width,
-                              locationCallback: (String value) {
-                                setState(() {});
-                              }),
-                          SizedBox(height: 10),
-                          _textField(
-                              hint: '${_place.name}',
-                              prefixIcon: Icon(
-                                Icons.looks_two,
-                                color: Colors.blue[400],
-                              ),
-                              width: width,
-                              locationCallback: (String value) {
-                                setState(() {
-                                  // _destinationAddress = value;
-                                });
-                              }),
-                          SizedBox(height: 10),
-                          SizedBox(height: 5),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 10),
+                        _textField(
+                            hint: 'my location',
+                            prefixIcon: Icon(
+                              Icons.looks_one,
+                              color: Colors.blue[400],
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.my_location,
+                                  color: Colors.blue[400]),
+                              onPressed: () {
+                                _currentLocation();
+                              },
+                            ),
+                            width: width,
+                            locationCallback: (String value) {
+                              setState(() {});
+                            }),
+                        SizedBox(height: 10),
+                        _textField(
+                            hint: '${_place.name}',
+                            prefixIcon: Icon(
+                              Icons.looks_two,
+                              color: Colors.blue[400],
+                            ),
+                            width: width,
+                            locationCallback: (String value) {
+                              setState(() {
+                                // _destinationAddress = value;
+                              });
+                            }),
+                        SizedBox(height: 10),
+                        SizedBox(height: 5),
+                      ],
                     ),
                   ),
                 ),
