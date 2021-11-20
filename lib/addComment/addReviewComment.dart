@@ -334,7 +334,7 @@ class _AddCommentState extends State<AddComment> {
                                         child: Form(
                                           key: fromKey,
                                           child: TextFormField(
-                                            autofocus: true,
+                                            autofocus: false,
                                             textCapitalization:
                                                 TextCapitalization.words,
                                             textInputAction:

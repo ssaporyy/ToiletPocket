@@ -1,9 +1,7 @@
 import 'dart:io';
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 
 class DisplayScreen extends StatefulWidget {
   @override
@@ -51,6 +49,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                         // ];
                         // print('img = -----------------' + '$img');
                         // List<String> imageList = document['imgAddcomment'];
+                        final imageList = document['imgAddcomment'] as List;
                         return Container(
                           child: ListTile(
                             leading: Container(
@@ -69,41 +68,53 @@ class _DisplayScreenState extends State<DisplayScreen> {
                                     .toString() /* '${formatter.format(myDatetime)}'*/ +
                                 ' ' +
                                 document['userName']),
-                            subtitle:
-                                Text('comment = ' + document['usercomment']),
-                                // Container(
-                                //     height: 170.0,
-                                //     padding: EdgeInsets.only(left: 10.0),
-                                //     child: ListView.builder(
-                                //       itemBuilder: (context, index) {
-                                //         return Padding(
-                                //             padding: EdgeInsets.only(
-                                //                 right: 15.0,
-                                //                 top: 10.0,
-                                //                 bottom: 10.0),
-                                //             child: Container(
-                                //               width: 100.0,
-                                //               decoration: BoxDecoration(
-                                //                   borderRadius:
-                                //                       BorderRadius.circular(
-                                //                           5.0),
-                                //                   color: Colors.black12,
-                                //                   image: DecorationImage(
-                                //                       image: NetworkImage(img.toString()),
-                                //                       fit: BoxFit.cover),
-                                //                   shape: BoxShape.rectangle,
-                                //                   boxShadow: [
-                                //                     BoxShadow(
-                                //                       blurRadius: 5.0,
-                                //                       color: Colors.black38,
-                                //                     )
-                                //                   ]),
-                                //             ));
-                                //       },
-                                //       scrollDirection: Axis.horizontal,
-                                //       itemCount: 20,
-                                //       addAutomaticKeepAlives: true,
-                                //     )),
+                            // subtitle: Column(
+                            //   children: [
+                            //     Text('comment = ' + document['usercomment']),
+                            //     Text('comment = ' + document['usercomment']),
+                            //     Text('comment = ' + document['usercomment']),
+                            //   ],
+                            // ),
+                            subtitle: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: imageList.length,
+                                itemBuilder: (context, index) =>
+                                    Image.network(imageList[index])
+                                // Text(imageList[index] ?? ''),
+                                ),
+                            // Container(
+                            //     height: 170.0,
+                            //     padding: EdgeInsets.only(left: 10.0),
+                            //     child: ListView.builder(
+                            //       itemBuilder: (context, index) {
+                            //         return Padding(
+                            //             padding: EdgeInsets.only(
+                            //                 right: 15.0,
+                            //                 top: 10.0,
+                            //                 bottom: 10.0),
+                            //             child: Container(
+                            //               width: 100.0,
+                            //               decoration: BoxDecoration(
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(
+                            //                           5.0),
+                            //                   color: Colors.black12,
+                            //                   image: DecorationImage(
+                            //                       image: NetworkImage(img.toString()),
+                            //                       fit: BoxFit.cover),
+                            //                   shape: BoxShape.rectangle,
+                            //                   boxShadow: [
+                            //                     BoxShadow(
+                            //                       blurRadius: 5.0,
+                            //                       color: Colors.black38,
+                            //                     )
+                            //                   ]),
+                            //             ));
+                            //       },
+                            //       scrollDirection: Axis.horizontal,
+                            //       itemCount: 20,
+                            //       addAutomaticKeepAlives: true,
+                            //     )),
                             //     ListView.builder(
                             //   itemBuilder: (BuildContext ctx, int index) {
                             //     return Padding(
@@ -185,8 +196,8 @@ class _DisplayScreenState extends State<DisplayScreen> {
                             //     // ),
                             //   ],
                             // ),
-                            // subtitle: 
-                             
+                            // subtitle:
+
                             trailing: Text(document['rating'].toString()),
                           ),
                         );

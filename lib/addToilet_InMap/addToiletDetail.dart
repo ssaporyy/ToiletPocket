@@ -399,7 +399,7 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                         child: Form(
                                           key: fromKey,
                                           child: TextFormField(
-                                            autofocus: true,
+                                            autofocus: false,
                                             textCapitalization:
                                                 TextCapitalization.words,
                                             textInputAction:
@@ -662,11 +662,11 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                 await ref.getDownloadURL();
                                             imageUrlList.add(downloadUrl);
                                           }
-                                          
-                                          await addToilets.add({
+
+                                          final _result = await addToilets.add({
                                             'name': userAddToilet.placesname,
                                             'userName': user.displayName,
-                                            'email':user.email,
+                                            'email': user.email,
                                             'time': timestamp,
                                             'rating': rating,
                                             'openToilet': _time.format(context),
@@ -677,14 +677,15 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                     selectedIndex < 1
                                                 ? 'ไม่เสียค่าบริการ'
                                                 : 'เสียค่าบริการ',
-                                           'currentlocationLat':
+                                            'currentlocationLat':
                                                 _currentlocation.latitude,
-                                            'currentlocationLong':_currentlocation.longitude,
+                                            'currentlocationLong':
+                                                _currentlocation.longitude,
                                             'imgAddtoilet': imageUrlList.isEmpty
                                                 ? 'no photo'
-                                                : imageUrlList,                                            
+                                                : imageUrlList,
                                           });
-
+                                                                                    print(_result.id);
                                           fromKey.currentState.reset();
                                           //   if (user.isAnonymous) {
                                           //   final provider =

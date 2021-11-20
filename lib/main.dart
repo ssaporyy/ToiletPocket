@@ -1,7 +1,6 @@
 import 'package:ToiletPocket/Show_toiletDetail_review/toiletdetail.dart';
 import 'package:ToiletPocket/addComment/displaycomment.dart';
 import 'package:ToiletPocket/addToilet_InMap/displayAddToilet.dart';
-import 'package:ToiletPocket/screen/endNavigation.dart';
 import 'package:ToiletPocket/addToilet_InMap/addToilet.dart';
 import 'package:ToiletPocket/addToilet_InMap/addToiletDetail.dart';
 import 'package:ToiletPocket/blocs/application_bloc.dart';
@@ -82,9 +81,9 @@ class MyApp extends StatelessWidget {
           '/six': (context) => AddToiletDetail(),
           '/seven': (context) => AddComment(),
           '/eight': (context) => Navigation(),
-          '/nine': (context) => Destination(),
           '/ten': (context) => LoginGoogle(),
           '/n': (context) => DisplayAddToilets(),
+          // '/n': (context) => Direction(),
         },
       ),
     );

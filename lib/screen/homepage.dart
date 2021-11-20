@@ -208,12 +208,17 @@ class _HomePageState extends State<HomePage> {
                                         fit: BoxFit.cover,
                                         height: 20,
                                       ),
-                                      onPressed: () async{
+                                      onPressed: () async {
                                         // Navigate to the second screen using a named route.
-                                        
-                                        Navigator.pushNamed(context, '/five',arguments: {
-                                                        'currentlocation': applicationBloc.currentLocation,
-                                                      },);
+
+                                        Navigator.pushNamed(
+                                          context,
+                                          '/five',
+                                          arguments: {
+                                            'currentlocation':
+                                                applicationBloc.currentLocation,
+                                          },
+                                        );
                                       },
                                     ),
                                   ),
@@ -284,7 +289,8 @@ class _HomePageState extends State<HomePage> {
                                                       /*address*/ places[index]
                                                           .vicinity,
                                                       places[index],
-                                                      places[index],
+                                                      // places[index],
+                                                      currentPosition,
                                                       /**openClose */
                                                       //'',
                                                       '${places[index].openingHours == null || places[index].openingHours.openNow.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
@@ -423,9 +429,10 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.pushNamed(
                                     context,
                                     '/eight',
-                                    arguments: {'places':push,
-                                    'current':navigate,},
-
+                                    arguments: {
+                                      'places': push,
+                                      'current': navigate,
+                                    },
                                   );
                                 },
                                 // onPressed: () async {

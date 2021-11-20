@@ -5,24 +5,16 @@ import 'dart:typed_data';
 
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/models/place.dart';
-// import 'package:ToiletPocket/models/location.dart';
 import 'package:ToiletPocket/models/places.dart';
-import 'package:ToiletPocket/screen/homepage.dart';
-import 'package:ToiletPocket/services/places_service.dart';
 import 'package:ToiletPocket/star.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-// import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:flutter/services.dart' as rootBundle;
 
-// const LatLng SOURCE_LOCATION = LatLng(LocationData source);
 class Navigation extends StatefulWidget {
   const Navigation({Key key}) : super(key: key);
 
@@ -44,28 +36,12 @@ class _NavigationState extends State<Navigation> {
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
 
-  //  
-
-//add your lat and lng where you wants to draw polyline
-
-  // StreamSubscription _locationSubscription;  Location _locationTracker = Location();
   @override
   void initState() {
     super.initState();
-
     polylinePoints = PolylinePoints();
-
-    final applicationBloc =
-        Provider.of<ApplicationBloc>(context, listen: false);
-    locationSubscription =
-        applicationBloc.selectedLocation.stream.listen((place) {
-      if (place != null) {
-        //set intitial location
-        setIntitialLocation(place);
-
-        //set marker icon
-        // this.setSourceAndDestinationMarkerIcons();
-      }
+    Future.delayed(Duration.zero, () {
+      this.setIntitialLocation();
     });
   }
 
@@ -80,125 +56,41 @@ class _NavigationState extends State<Navigation> {
   void _currentLocation() async {
     final GoogleMapController controller = await _controller.future;
     LocationData _currentPosition;
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
 
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    final _currentlocation = _args['current'] as Places;
+    final _currentlocation = _args['current'] as Position;
 
     final _place = _args['places'] as Places;
     var location = new Location();
     try {
       _currentPosition = await location.getLocation();
-      // _currentPosition = await location.getLocation();
     } on Exception {
       _currentPosition = null;
     }
-
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
         bearing: 0,
-        target: LatLng(applicationBloc.currentLocation.latitude,
-            applicationBloc.currentLocation.longitude),
-        // target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-        zoom: 18.0,
+        target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
+        zoom: 13.6,
         tilt: 20.0,
       ),
     ));
   }
 
-  void setIntitialLocation(Place place) {
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
+  void setIntitialLocation() {
+    print('init');
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    final _currentlocation = _args['current'] as Places;
+    final _currentlocation = _args['current'] as Position;
     final _place = _args['places'] as Places;
-
-    currentLocation = LatLng(applicationBloc.currentLocation.latitude,
-        applicationBloc.currentLocation.longitude);
-    // currentLocation = LatLng(applicationBloc.currentLocation.latitude,
-    //     applicationBloc.currentLocation.longitude);
-
+    LatLng DEST_LOCATION =
+        LatLng(_place.geometry.location.lat, _place.geometry.location.lng);
+    currentLocation =
+        LatLng(_currentlocation.latitude, _currentlocation.longitude);
     destinationLocation =
         LatLng(_place.geometry.location.lat, _place.geometry.location.lng);
-    // destinationLocation =
-    //     LatLng(place.geometry.location.lat, place.geometry.location.lng);
   }
-
-  // Future<Uint8List> getMarker() async{
-  //   ByteData byteData = await DefaultAssetBundle.of(context).load("images/navigation.png",);
-  //   return byteData.buffer.asUint8List();
-  // }
-
-  // void updateMarker(LocationData newLocalData, Uint8List imgData){
-  //   LatLng latlng = LatLng(newLocalData.latitude,newLocalData.longitude);
-  //   this.setState(() {
-  //     marker = Marker(
-  //       markerId: MarkerId("my location"),
-  //       position: latlng,
-  //       rotation: newLocalData.heading,
-  //       draggable: false,
-  //       zIndex: 3,
-  //       flat: true,
-  //       icon: BitmapDescriptor.fromBytes(imgData)
-  //     );
-  //   });
-  // }
-
-  // void getCurrentLocation() async {
-  //   try{
-  //     Uint8List imgData= await getMarker();
-  //     var location = await _locationTracker.getLocation();
-
-  //     updateMarker(location, imgData);
-
-  //     if(_locationSubscription != null){
-  //       _locationSubscription.cancel();
-  //     }
-
-  //     _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData) {
-  //       if(_controller != null){
-  //         _controller.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
-  //           target: LatLng(newLocalData.latitude,newLocalData.longitude),
-  //           zoom: 16.0,
-  //           tilt: 50.0, )));
-  //           updateMarker(newLocalData, imgData);
-  //       }
-  //     });
-  //   } on PlatformException catch (e){
-  //     if(e.code == "PERMISSION_DENIED"){
-  //       debugPrint("Permission Denied");
-  //     }
-  //   }
-  // }
-  // @override
-  // void dispose(){
-  //   if(_locationSubscription != null){
-  //     _locationSubscription.cancel();
-  //   }
-  //   super.dispose();
-  // }
-
-  // Position _currentPosition;
-  // String _currentAddress = '';
-
-  // final startAddressController = TextEditingController();
-  // final destinationAddressController = TextEditingController();
-
-  // final startAddressFocusNode = FocusNode();
-  // final desrinationAddressFocusNode = FocusNode();
-
-  // String _startAddress = '';
-  // String _destinationAddress = '';
-  // String _placeDistance;
-
-  // Set<Marker> markers = {};
-
-  // PolylinePoints polylinePoints;
-  // Map<PolylineId, Polyline> polylines = {};
-  // List<LatLng> polylineCoordinates = [];
-
-  // final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Widget _textField({
     TextEditingController controller,
@@ -218,7 +110,6 @@ class _NavigationState extends State<Navigation> {
         },
         controller: controller,
         focusNode: focusNode,
-        // enabled: false,
         readOnly: true,
         decoration: new InputDecoration(
           prefixIcon: prefixIcon,
@@ -231,7 +122,7 @@ class _NavigationState extends State<Navigation> {
               Radius.circular(10.0),
             ),
             borderSide: BorderSide(
-              color: Colors.grey.shade400,
+              color: Colors.blue.shade400,
               width: 2,
             ),
           ),
@@ -240,7 +131,7 @@ class _NavigationState extends State<Navigation> {
               Radius.circular(10.0),
             ),
             borderSide: BorderSide(
-              color: Colors.blue.shade300,
+              color: Colors.blue.shade100,
               width: 2,
             ),
           ),
@@ -254,40 +145,34 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     this.setSourceAndDestinationMarkerIcons(context);
-
-    // Completer<GoogleMapController> _mapController = Completer();
-    // final currentPosition = Provider.of<Position>(context);
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
-
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    final _currentlocation = _args['current'] as Places;
+    final _currentlocation = _args['current'] as Position;
     final _place = _args['places'] as Places;
-    // Set<Marker> markers = {};
     var width = MediaQuery.of(context).size.width;
     final startAddressController = GoogleMapController;
+    final user = FirebaseAuth.instance.currentUser;
 
     Marker sourcePin() {
+      // print('=================src lat: ${_currentlocation.latitude}');
+      // print('=================src lng: ${_currentlocation.longitude}');
       return Marker(
         markerId: MarkerId('sourcepin'),
-        position: LatLng(applicationBloc.currentLocation.latitude,
-            applicationBloc.currentLocation.longitude),
-        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(_currentlocation.latitude, _currentlocation.longitude),
         // icon: sourceIcon,
-        // BitmapDescriptor.defaultMarkerWithHue(150.0),
-        // infoWindow: InfoWindow(title: document['name'])
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
       );
     }
 
     Marker destinationPin() {
+      // print('=================dest lat: ${_place.geometry.location.lat}');
+      // print('=================dest lng: ${_place.geometry.location.lng}');
       return Marker(
         markerId: MarkerId('destinationpin'),
         position:
             LatLng(_place.geometry.location.lat, _place.geometry.location.lng),
-        icon: BitmapDescriptor.defaultMarker,
-        // icon: sourceIcon,
-        // BitmapDescriptor.defaultMarkerWithHue(150.0),
-        // infoWindow: InfoWindow(title: document['name'])
+        // icon: destinationIcon,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       );
     }
 
@@ -312,26 +197,49 @@ class _NavigationState extends State<Navigation> {
                 /*_markers,*/
                 polylines: _polylines,
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(applicationBloc.currentLocation.latitude,
-                      applicationBloc.currentLocation.longitude),
+                  target: LatLng(
+                      _currentlocation.latitude, _currentlocation.longitude),
                   zoom: 13.6,
                   tilt: 20.0,
-                  // bearing: 30,
                 ),
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
+                // onCameraMove: (position) {
+                //   setState(() {
+                //     mySet().add(
+                //         Marker(markerId: MarkerId('id'), position: position.target));
+                //   });
+                // },
+                padding: EdgeInsets.only(left: 500),
+                onMapCreated: (GoogleMapController controller) async {
+                  print('on created');
+                  try {
+                    _controller.complete(controller);
+                  } catch (e) {
+                    print('controller');
+                    print(e);
+                  }
 
-                  showPinOnMap();
-                  setPolylines();
+                  try {
+                    showPinOnMap();
+                  } catch (e) {
+                    print('show pin');
+                    print('error pin: $e');
+                    print('-----------------=============-------------');
+                  }
+
+                  try {
+                    setPolylines();
+                  } catch (e) {
+                    print('set poly line');
+                    print(e);
+                  }
                 },
-                // markers: Set<Marker>.of(markers),
               ),
             ),
             SafeArea(
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.only(top: 25.0),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white70,
@@ -351,30 +259,28 @@ class _NavigationState extends State<Navigation> {
                           ),
                           SizedBox(height: 10),
                           _textField(
-                              // label: 'Start',
                               hint: 'my location',
-                              prefixIcon: Icon(Icons.looks_one),
+                              prefixIcon: Icon(
+                                Icons.looks_one,
+                                color: Colors.blue[400],
+                              ),
                               suffixIcon: IconButton(
                                 icon: Icon(Icons.my_location),
                                 onPressed: () {
                                   _currentLocation();
                                 },
                               ),
-                              // controller: startAddressController,
-                              // focusNode: startAddressFocusNode,
                               width: width,
                               locationCallback: (String value) {
-                                setState(() {
-                                  // _startAddress = value;
-                                });
+                                setState(() {});
                               }),
                           SizedBox(height: 10),
                           _textField(
-                              // label: 'Destination',
                               hint: '${_place.name}',
-                              prefixIcon: Icon(Icons.looks_two),
-                              // controller: destinationAddressController,
-                              // focusNode: desrinationAddressFocusNode,
+                              prefixIcon: Icon(
+                                Icons.looks_two,
+                                color: Colors.blue[400],
+                              ),
                               width: width,
                               locationCallback: (String value) {
                                 setState(() {
@@ -382,70 +288,7 @@ class _NavigationState extends State<Navigation> {
                                 });
                               }),
                           SizedBox(height: 10),
-                          // Visibility(
-                          //   visible: _placeDistance == null ? false : true,
-                          //   child: Text(
-                          //     'DISTANCE: $_placeDistance km',
-                          //     style: TextStyle(
-                          //       fontSize: 16,
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          // ),
                           SizedBox(height: 5),
-                          // ElevatedButton(
-                          //   onPressed: (_startAddress != '' &&
-                          //           _destinationAddress != '')
-                          //       ? () async {
-                          //           startAddressFocusNode.unfocus();
-                          //           desrinationAddressFocusNode.unfocus();
-                          //           setState(() {
-                          //             if (markers.isNotEmpty) markers.clear();
-                          //             if (polylines.isNotEmpty)
-                          //               polylines.clear();
-                          //             if (polylineCoordinates.isNotEmpty)
-                          //               polylineCoordinates.clear();
-                          //             _placeDistance = null;
-                          //           });
-
-                          //           _calculateDistance().then((isCalculated) {
-                          //             if (isCalculated) {
-                          //               ScaffoldMessenger.of(context)
-                          //                   .showSnackBar(
-                          //                 SnackBar(
-                          //                   content: Text(
-                          //                       'Distance Calculated Sucessfully'),
-                          //                 ),
-                          //               );
-                          //             } else {
-                          //               ScaffoldMessenger.of(context)
-                          //                   .showSnackBar(
-                          //                 SnackBar(
-                          //                   content: Text(
-                          //                       'Error Calculating Distance'),
-                          //                 ),
-                          //               );
-                          //             }
-                          //           });
-                          //         }
-                          //       : null,
-                          //   child: Padding(
-                          //     padding: const EdgeInsets.all(8.0),
-                          //     child: Text(
-                          //       'Show Route'.toUpperCase(),
-                          //       style: TextStyle(
-                          //         color: Colors.white,
-                          //         fontSize: 20.0,
-                          //       ),
-                          //     ),
-                          //   ),
-                          //   style: ElevatedButton.styleFrom(
-                          //     primary: Colors.red,
-                          //     shape: RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.circular(20.0),
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
@@ -537,19 +380,136 @@ class _NavigationState extends State<Navigation> {
                                       side: BorderSide(
                                           color: ToiletColors.colorButton2)),
                                   onPressed: () {
-                                    print(
-                                        '${applicationBloc.currentLocation.latitude}'
-                                        '++++++'
-                                        '${applicationBloc.currentLocation.longitude}');
-                                    print('${_place.geometry.location.lat}'
-                                        '++++++'
-                                        '${_place.geometry.location.lng}');
+                                    // print('${_currentlocation.latitude}'
+                                    //     '++++++'
+                                    //     '${_currentlocation.longitude}');
+                                    // print('${_place.geometry.location.lat}'
+                                    //     '++++++'
+                                    //     '${_place.geometry.location.lng}');
+
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          actionsAlignment:
+                                              MainAxisAlignment.center,
+                                          actions: <Widget>[
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Column(children: [
+                                              Text(
+                                                "รีวิวและประเมินห้องน้ำ",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20,
+                                                  fontFamily:
+                                                      'Sukhumvit' ?? 'SF-Pro',
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Container(
+                                                  height: 80, child: Star()),
+                                              Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Container(
+                                                      width: 100,
+                                                      height: 47,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                        30.0)),
+                                                      ),
+                                                      child: ElevatedButton(
+                                                        // Within the `FirstScreen` widget
+                                                        style: ElevatedButton.styleFrom(
+                                                            shape:
+                                                                StadiumBorder(),
+                                                            primary: ToiletColors
+                                                                .colorButton2,
+                                                            elevation: 5.0),
+
+                                                        child: Image.asset(
+                                                          'images/comment.png',
+                                                          alignment:
+                                                              Alignment.center,
+                                                          width: 35,
+                                                        ),
+                                                        onPressed: () {
+                                                          // Navigate to the second screen using a named route.
+                                                          if (user
+                                                              .isAnonymous) {
+                                                            return Navigator
+                                                                .pushNamed(
+                                                                    context,
+                                                                    '/ten');
+                                                          } else
+                                                            Navigator.pushNamed(
+                                                                context,
+                                                                '/seven');
+                                                        },
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: 100,
+                                                      height: 47,
+                                                      child: ElevatedButton(
+                                                        // Within the `FirstScreen` widget
+                                                        style: ElevatedButton.styleFrom(
+                                                            shape:
+                                                                StadiumBorder(),
+                                                            primary: ToiletColors
+                                                                .colorButton2,
+                                                            elevation: 5.0),
+
+                                                        child: Text(
+                                                          'ยืนยัน',
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Sukhumvit' ??
+                                                                      'SF-Pro',
+                                                              fontSize: 20),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          // Navigator.pushNamed(
+                                                          //     context, '/two');
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ]),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                            ]),
+                                          ],
+                                          elevation: 10.0,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                        );
+                                      },
+                                    );
                                   },
                                   padding: EdgeInsets.all(10.0),
                                   color: ToiletColors.colorButton2,
                                   textColor: Colors.white,
                                   child: Text(
-                                    "เริ่มต้น",
+                                    "สิ้นสุดปลายทาง",
                                     style: TextStyle(
                                       color: Colors.white,
                                       // fontWeight: FontWeight.w600,
@@ -607,8 +567,8 @@ class _NavigationState extends State<Navigation> {
                               ),
                             ),
                             onPressed: () {
-                              // Navigator.pop(context);
-                              Navigator.pushNamed(context, '/two');
+                              Navigator.pop(context);
+                              // Navigator.pushNamed(context, '/two');
                             },
                             child: Row(
                               children: <Widget>[
@@ -641,52 +601,55 @@ class _NavigationState extends State<Navigation> {
   }
 
   void showPinOnMap() {
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
+    print('1st');
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
+    print('2nd');
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    final _currentlocation = _args['current'] as Places;
+    print('3rd');
+    final _currentlocation = _args['current'] as Position;
     final _place = _args['places'] as Places;
     setState(() {
       _markers.add(Marker(
         markerId: MarkerId('sourcePin'),
         position: LatLng(applicationBloc.currentLocation.latitude,
             applicationBloc.currentLocation.longitude),
-        icon: sourceIcon.toJson(),
+        icon: BitmapDescriptor.defaultMarker,
       ));
 
       _markers.add(Marker(
         markerId: MarkerId('destinationPin'),
         position:
             LatLng(_place.geometry.location.lat, _place.geometry.location.lng),
-        icon: destinationIcon.toJson(),
+        icon: BitmapDescriptor.defaultMarker,
       ));
     });
   }
 
   void setPolylines() async {
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    final _currentlocation = _args['current'] as Places;
 
-    final _place = _args['places'] as Places;
-
+    print('current lat: ${currentLocation.latitude}');
+    print('current lng: ${currentLocation.longitude}');
+    print('dest lat:${destinationLocation.latitude}');
+    print('dest lng:${destinationLocation.longitude}');
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       "AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
-      PointLatLng(applicationBloc.currentLocation.latitude,
-          applicationBloc.currentLocation.longitude),
-      PointLatLng(_place.geometry.location.lat, _place.geometry.location.lng),
+      PointLatLng(currentLocation.latitude, currentLocation.longitude),
+      PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
     );
-
+    print('=====status: ${result.status}');
     if (result.status == 'OK') {
       result.points.forEach((PointLatLng point) {
-        print("printtttttttttttttt"'${point.latitude}' "${point.longitude}");
+        print("printtttttttttttttt" '${point.latitude}' "${point.longitude}");
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
 
       setState(() {
         _polylines.add(Polyline(
-            width: 20,
+            width: 5,
             polylineId: PolylineId('polyLine'),
             color: Color(0xFF08A5CB),
             points: polylineCoordinates));
