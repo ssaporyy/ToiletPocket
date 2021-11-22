@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:ToiletPocket/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class DisplayScreen extends StatefulWidget {
   @override
@@ -27,182 +29,194 @@ class _DisplayScreenState extends State<DisplayScreen> {
                   );
                 } else {
                   return Flexible(
-                    child: ListView(
+                    child: Container(
+                        child: ListView.builder(
+                      // physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      children: snapshot.data.docs.map((document) {
-                        // print('Images =');
-                        // print('Images = -----------------------' +
-                        //     document['imgAddcomment'].toString());
-                        // List imageList = document['imgAddcomment'];
-                        // List<Widget> result = snapshot.data.docs
-                        //     .map((c) => Image.network(
-                        //         document['imgAddcomment'].toString()))
-                        //     .toList();
-                        // final List img = document['imgAddcomment'];
-                        // final List img = [
-                        //   'https://firebasestorage.googleapis.com/v0/b/toiletpocket-pj.appspot.com/o/images%2F67faca6d-3585-4d5f-a4b6-f177beb4d5114328562372637156712.jpg?alt=media&token=e429585c-ce0e-4b9c-b350-e72ffa98025b',
-                        //   ];
-                        // final List img = [
-                        //   'https://firebasestorage.googleapis.com/v0/b/toiletpocket-pj.appspot.com/o/images%2F67faca6d-3585-4d5f-a4b6-f177beb4d5114328562372637156712.jpg?alt=media&token=e429585c-ce0e-4b9c-b350-e72ffa98025b',
-                        //   'https://firebasestorage.googleapis.com/v0/b/toiletpocket-pj.appspot.com/o/images%2F5a8e1473-4454-4359-9798-dd006300e1243959910793714610986.jpg?alt=media&token=8d3129df-8a7a-4405-8870-bc06099b385c',
-                        //   'https://firebasestorage.googleapis.com/v0/b/toiletpocket-pj.appspot.com/o/images%2F84848bc5-4d54-4346-ac77-7081ebbe40956205931860320900183.jpg?alt=media&token=b2fe9d8e-57e5-4afb-b94e-68b3635f2f75'
-                        // ];
-                        // print('img = -----------------' + '$img');
-                        // List<String> imageList = document['imgAddcomment'];
-                        final imageList = document['imgAddcomment'] as List;
-                        return Container(
-                          child: ListTile(
-                            leading: Container(
-                              child: CircleAvatar(
-                                radius: 15,
-                                child: document['imgprofileURL'] != null
-                                    ? Image.network(
-                                        document['imgprofileURL'],
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.network(
-                                        'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'),
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final imageList =
+                            snapshot.data.docs[index]['imgAddcomment'] as List;
+                        return new Container(
+                          padding: new EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 0.0),
+                          child: new Card(
+                            elevation: 6,
+                            shadowColor: ToiletColors.colorBackground,
+                            child: Container(
+                              // height: 260,
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Expanded(
+                                        flex: 0,
+                                        child: Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(15, 0, 20, 0),
+                                          child: CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                              snapshot
+                                                          .data
+                                                          .docs[index]
+                                                              ['imgprofileURL']
+                                                          .toString() !=
+                                                      'null'
+                                                  ? '${snapshot.data.docs[index]['imgprofileURL']}'
+                                                  : 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar',
+                                            ),
+                                            radius: 20,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 4,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                RatingBarIndicator(
+                                                  rating: snapshot.data
+                                                      .docs[index]['rating'],
+                                                  // _placeDetail.reviews.isEmpty
+                                                  // ? 0.0
+                                                  // : _placeDetail.reviews[index].rating
+                                                  //     .toDouble(),
+                                                  itemBuilder:
+                                                      (context, index) => Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber),
+                                                  itemCount: 5,
+                                                  itemSize: 25.0,
+                                                  direction: Axis.horizontal,
+                                                ),
+                                                SizedBox(
+                                                  width: 3,
+                                                ),
+                                                Text(
+                                                  snapshot.data.docs[index]
+                                                      ['time'],
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 12.0,
+                                                    fontFamily:
+                                                        'Sukhumvit' ?? 'SF-Pro',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              // "Watanabe Haruto",
+                                              snapshot.data
+                                                      .docs[index]['userName']
+                                                      .toString()
+                                                      .isEmpty
+                                                  ? 'Name'
+                                                  : snapshot.data.docs[index]
+                                                      ['userName'],
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16.0,
+                                                fontFamily:
+                                                    'Sukhumvit' ?? 'SF-Pro',
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
+
+                                              snapshot.data.docs[index]
+                                                  ['usercomment'],
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14.0,
+                                                fontFamily:
+                                                    'Sukhumvit' ?? 'SF-Pro',
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Container(
+                                                height: 100.0,
+                                                padding:
+                                                    EdgeInsets.only(left: 0.0),
+                                                child: ListView.builder(
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Padding(
+                                                      padding: EdgeInsets.only(
+                                                          right: 15.0,
+                                                          top: 10.0,
+                                                          bottom: 10.0),
+                                                      child: Container(
+                                                        width: 100.0,
+                                                        height: 100,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5.0),
+                                                                color: Colors
+                                                                    .black12,
+                                                                image:
+                                                                    DecorationImage(
+                                                                        image: imageList[index] == []
+                                                                            ? Text('data')
+                                                                            : NetworkImage(imageList[index]
+                                                                                .toString()),
+                                                                                // SizedBox(
+                                                                        //     height:
+                                                                        //         2,
+                                                                        //   ),
+
+                                                                        fit: BoxFit
+                                                                            .cover),
+                                                                shape: BoxShape
+                                                                    .rectangle,
+                                                                boxShadow: [
+                                                              BoxShadow(
+                                                                blurRadius: 5.0,
+                                                                color: Colors
+                                                                    .black38,
+                                                              )
+                                                            ]),
+                                                      ),
+                                                    );
+                                                  },
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: imageList.length,
+                                                  shrinkWrap: true,
+                                                  addAutomaticKeepAlives: true,
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                            title: Text(document['time']
-                                    .toString() /* '${formatter.format(myDatetime)}'*/ +
-                                ' ' +
-                                document['userName']),
-                            // subtitle: Column(
-                            //   children: [
-                            //     Text('comment = ' + document['usercomment']),
-                            //     Text('comment = ' + document['usercomment']),
-                            //     Text('comment = ' + document['usercomment']),
-                            //   ],
-                            // ),
-                            subtitle: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: imageList.length,
-                                itemBuilder: (context, index) =>
-                                    Image.network(imageList[index])
-                                // Text(imageList[index] ?? ''),
-                                ),
-                            // Container(
-                            //     height: 170.0,
-                            //     padding: EdgeInsets.only(left: 10.0),
-                            //     child: ListView.builder(
-                            //       itemBuilder: (context, index) {
-                            //         return Padding(
-                            //             padding: EdgeInsets.only(
-                            //                 right: 15.0,
-                            //                 top: 10.0,
-                            //                 bottom: 10.0),
-                            //             child: Container(
-                            //               width: 100.0,
-                            //               decoration: BoxDecoration(
-                            //                   borderRadius:
-                            //                       BorderRadius.circular(
-                            //                           5.0),
-                            //                   color: Colors.black12,
-                            //                   image: DecorationImage(
-                            //                       image: NetworkImage(img.toString()),
-                            //                       fit: BoxFit.cover),
-                            //                   shape: BoxShape.rectangle,
-                            //                   boxShadow: [
-                            //                     BoxShadow(
-                            //                       blurRadius: 5.0,
-                            //                       color: Colors.black38,
-                            //                     )
-                            //                   ]),
-                            //             ));
-                            //       },
-                            //       scrollDirection: Axis.horizontal,
-                            //       itemCount: 20,
-                            //       addAutomaticKeepAlives: true,
-                            //     )),
-                            //     ListView.builder(
-                            //   itemBuilder: (BuildContext ctx, int index) {
-                            //     return Padding(
-                            //       padding: EdgeInsets.all(20),
-                            //       child: Column(
-                            //         children: <Widget>[
-                            //           Image.network(img[index]),
-                            //           Icon(
-                            //             Icons.favorite,
-                            //             color: Colors.red,
-                            //             size: 50,
-                            //           ),
-                            //         ],
-                            //       ),
-                            //     );
-                            //   },
-                            //   itemCount: img.length,
-                            // ),
-                            // Image.network(document['imgAddcomment']),
-                            // Column(children: result,),
-                            // Text('comment = ' + document['usercomment']),
-                            //   Column(
-                            //   children: [
-                            //     Expanded(
-                            //       child: ListView.builder(
-                            //         itemCount: img.length == null ? 0: img.length,
-                            //         itemBuilder: (context, int) {
-                            //           return Container(
-                            //             margin: EdgeInsets.all(3),
-                            //             decoration: BoxDecoration(
-                            //                 image: DecorationImage(
-                            //                     image: NetworkImage(
-                            //                         img.toString()),
-                            //                     fit: BoxFit.cover)),
-                            //           );
-                            //         },
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // Column(
-                            //   mainAxisAlignment: MainAxisAlignment.start,
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     Text('comment = ' + document['usercomment']),
-                            //     // Padding(
-                            //     //   padding: const EdgeInsets.only(
-                            //     //       left: 12, right: 12),
-                            //     //   child: ListView.builder(
-                            //     //       scrollDirection: Axis.horizontal,
-                            //     //       itemCount: imgList.length,
-                            //     //       itemBuilder:
-                            //     //           (BuildContext context, int i) {
-                            //     //         return Container(
-                            //     //           height: 60,
-                            //     //           width: 60,
-                            //     //           child: Image.network(
-                            //     //               '$imgList'),
-                            //     //           // decoration: BoxDecoration(
-                            //     //           //   border: Border.all()
-                            //     //           // ),
-                            //     //         );
-                            //     //       }),
-                            //     // )
-                            //     // StaggeredGridView.countBuilder(
-                            //     //   crossAxisCount: 2,
-                            //     //   itemCount: ,
-                            //     //   itemBuilder: (BuildContext context,
-                            //     //           int index) =>
-                            //     //       Container(
-                            //     //           margin:
-                            //     //               EdgeInsets.fromLTRB(5, 5, 5, 5),
-                            //     //           child: Image(
-                            //     //               fit: BoxFit.fill,
-                            //     //               image: NetworkImage(
-                            //     //                   document['imgAddcomment'][index]))),
-                            //     //   staggeredTileBuilder: (int index) =>
-                            //     //       new StaggeredTile.fit(1),
-                            //     // ),
-                            //   ],
-                            // ),
-                            // subtitle:
-
-                            trailing: Text(document['rating'].toString()),
                           ),
                         );
-                      }).toList(),
-                    ),
+                      },
+                    )),
                   );
                 }
               },

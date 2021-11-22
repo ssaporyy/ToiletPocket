@@ -2,11 +2,13 @@ import 'package:ToiletPocket/addComment/addImgcomment.dart';
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/addComment/addImg_comment.dart';
+import 'package:ToiletPocket/models/places.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -105,11 +107,9 @@ class _AddCommentState extends State<AddComment> {
   @override
   Widget build(BuildContext context) {
     String timestamp;
-
     DateTime now = DateTime.now();
     String formatDate = DateFormat('d MMM, hh:mm a').format(now);
     timestamp = formatDate;
-
     final applicationBloc = Provider.of<ApplicationBloc>(context);
 
     return FutureBuilder(
@@ -815,7 +815,8 @@ class _AddCommentState extends State<AddComment> {
                                               'userName': user.displayName,
                                               'time': timestamp,
                                               'rating': rating,
-                                              'imgAddcomment': imageUrlList
+                                              'imgAddcomment': imageUrlList,
+                                              // 'placeId':_place,
                                             });
                                             fromKey.currentState.reset();
                                           }
@@ -838,7 +839,9 @@ class _AddCommentState extends State<AddComment> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 20,),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                 ],
                               ),
                             ),

@@ -36,6 +36,13 @@ class _NavigationState extends State<Navigation> {
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
 
+//อันใหม่
+  GoogleMapController _googleMapController;
+  String googleAPIKey = "AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
+
+
+
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +64,7 @@ class _NavigationState extends State<Navigation> {
     final GoogleMapController controller = await _controller.future;
     LocationData _currentPosition;
 
+
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _currentlocation = _args['current'] as Position;
@@ -71,7 +79,7 @@ class _NavigationState extends State<Navigation> {
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
         bearing: 0,
-        target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
+        target: LatLng(_currentlocation.latitude, _currentlocation.longitude),
         zoom: 13.6,
         tilt: 20.0,
       ),
@@ -91,6 +99,59 @@ class _NavigationState extends State<Navigation> {
     destinationLocation =
         LatLng(_place.geometry.location.lat, _place.geometry.location.lng);
   }
+
+//อันใหม่
+  void _setMapFitToTour(Set<Polyline> p) async{
+    final GoogleMapController controller = await _controller.future;
+    double minLat = p.first.points.first.latitude;
+    double minLong = p.first.points.first.longitude;
+    double maxLat = p.first.points.first.latitude;
+    double maxLong = p.first.points.first.longitude;
+    p.forEach((poly) {
+      poly.points.forEach((point) {
+        if(point.latitude < minLat) minLat = point.latitude;
+        if(point.latitude > maxLat) maxLat = point.latitude;
+        if(point.longitude < minLong) minLong = point.longitude;
+        if(point.longitude > maxLong) maxLong = point.longitude;
+      });
+    });
+    _googleMapController.moveCamera(CameraUpdate.newLatLngBounds(LatLngBounds(
+      southwest: LatLng(minLat, minLong),
+      northeast: LatLng(maxLat,maxLong)
+    ), 20));
+  }
+
+    void _onMapCreated(GoogleMapController controller) async {
+    setState(() {
+      _googleMapController = controller;
+      setPolyliness().then((_) => _setMapFitToTour(_polylines));
+    });
+  }
+
+//อันใหม่
+   setPolyliness() async {
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleAPIKey,
+      PointLatLng(currentLocation.latitude, currentLocation.longitude),
+      PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
+    );
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    } else {
+      print("--address not found ---");
+    }
+    setState(() {
+      Polyline polyline = Polyline(
+          polylineId: PolylineId("poly"),
+          color: Color.fromARGB(255, 40, 122, 198),
+          width: 5,
+          points: polylineCoordinates);
+      _polylines.add(polyline);
+    });
+  }
+
 
   Widget _textField({
     TextEditingController controller,
@@ -180,6 +241,8 @@ class _NavigationState extends State<Navigation> {
       return <Marker>[sourcePin(), destinationPin()].toSet();
     }
 
+    final current = _place;
+
     return Scaffold(
         backgroundColor: ToiletColors.colorBackground,
         body: Stack(
@@ -209,30 +272,34 @@ class _NavigationState extends State<Navigation> {
                 //   });
                 // },
                 padding: EdgeInsets.only(left: 500),
-                onMapCreated: (GoogleMapController controller) async {
-                  print('on created');
-                  try {
-                    _controller.complete(controller);
-                  } catch (e) {
-                    print('controller');
-                    print(e);
-                  }
+                //อันใหม่
+                onMapCreated: _onMapCreated,
+                //อันเก่า ------------------------------------------
+                // onMapCreated: (GoogleMapController controller) async {
+                //   print('on created');
+                //   try {
+                //     _controller.complete(controller);
+                //   } catch (e) {
+                //     print('controller');
+                //     print(e);
+                //   }
 
-                  try {
-                    showPinOnMap();
-                  } catch (e) {
-                    print('show pin');
-                    print('error pin: $e');
-                    print('-----------------=============-------------');
-                  }
+                //   try {
+                //     showPinOnMap();
+                //   } catch (e) {
+                //     print('show pin');
+                //     print('error pin: $e');
+                //     print('-----------------=============-------------');
+                //   }
 
-                  try {
-                    setPolylines();
-                  } catch (e) {
-                    print('set poly line');
-                    print(e);
-                  }
-                },
+                //   try {
+                //     setPolylines();
+                //   } catch (e) {
+                //     print('set poly line');
+                //     print(e);
+                //   }
+                // },
+              
               ),
             ),
             Align(
@@ -454,12 +521,17 @@ class _NavigationState extends State<Navigation> {
                                                               .isAnonymous) {
                                                             return Navigator
                                                                 .pushNamed(
-                                                                    context,
-                                                                    '/ten');
+                                                              context,
+                                                              '/ten',
+                                                            );
                                                           } else
                                                             Navigator.pushNamed(
                                                                 context,
-                                                                '/seven');
+                                                                '/seven',
+                                                                arguments: {
+                                                                'placeId':current,
+                                                              },
+                                                                );print('+++''${current.placeId}');
                                                         },
                                                       ),
                                                     ),
@@ -467,7 +539,7 @@ class _NavigationState extends State<Navigation> {
                                                       width: 100,
                                                       height: 47,
                                                       child: ElevatedButton(
-                                                        // Within the `FirstScreen` widget
+                                                        // Within the `FirstScreen` widget 
                                                         style: ElevatedButton.styleFrom(
                                                             shape:
                                                                 StadiumBorder(),
@@ -616,8 +688,8 @@ class _NavigationState extends State<Navigation> {
     setState(() {
       _markers.add(Marker(
         markerId: MarkerId('sourcePin'),
-        position: LatLng(applicationBloc.currentLocation.latitude,
-            applicationBloc.currentLocation.longitude),
+        position: LatLng(_currentlocation.latitude,
+            _currentlocation.longitude),
         icon: BitmapDescriptor.defaultMarker,
       ));
 
@@ -629,7 +701,7 @@ class _NavigationState extends State<Navigation> {
       ));
     });
   }
-
+//อันเก่า
   void setPolylines() async {
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
