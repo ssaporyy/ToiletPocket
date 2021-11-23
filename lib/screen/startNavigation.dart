@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:typed_data';
+// import 'dart:convert';
+// import 'dart:ffi';
+// import 'dart:typed_data';
 
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
@@ -13,7 +13,11 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+
 import 'package:provider/provider.dart';
+import 'package:geocoding/geocoding.dart';
+
+import 'dart:math' show cos, sqrt, asin;
 
 class Navigation extends StatefulWidget {
   const Navigation({Key key}) : super(key: key);
@@ -24,6 +28,8 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController mapController;
+
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
   StreamSubscription locationSubscription;
@@ -35,13 +41,7 @@ class _NavigationState extends State<Navigation> {
   Set<Polyline> _polylines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
-
-//อันใหม่
-  GoogleMapController _googleMapController;
-  String googleAPIKey = "AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
-
-
-
+  String _placeDistance;
 
   @override
   void initState() {
@@ -64,18 +64,17 @@ class _NavigationState extends State<Navigation> {
     final GoogleMapController controller = await _controller.future;
     LocationData _currentPosition;
 
-
-    final _args =
+    final _args = 
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _currentlocation = _args['current'] as Position;
 
     final _place = _args['places'] as Places;
-    var location = new Location();
-    try {
-      _currentPosition = await location.getLocation();
-    } on Exception {
-      _currentPosition = null;
-    }
+    // var location = new Location();
+    // try {
+    //   _currentPosition = await location.getLocation();
+    // } on Exception {
+    //   _currentPosition = null;
+    // }
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
         bearing: 0,
@@ -99,59 +98,6 @@ class _NavigationState extends State<Navigation> {
     destinationLocation =
         LatLng(_place.geometry.location.lat, _place.geometry.location.lng);
   }
-
-//อันใหม่
-  void _setMapFitToTour(Set<Polyline> p) async{
-    final GoogleMapController controller = await _controller.future;
-    double minLat = p.first.points.first.latitude;
-    double minLong = p.first.points.first.longitude;
-    double maxLat = p.first.points.first.latitude;
-    double maxLong = p.first.points.first.longitude;
-    p.forEach((poly) {
-      poly.points.forEach((point) {
-        if(point.latitude < minLat) minLat = point.latitude;
-        if(point.latitude > maxLat) maxLat = point.latitude;
-        if(point.longitude < minLong) minLong = point.longitude;
-        if(point.longitude > maxLong) maxLong = point.longitude;
-      });
-    });
-    _googleMapController.moveCamera(CameraUpdate.newLatLngBounds(LatLngBounds(
-      southwest: LatLng(minLat, minLong),
-      northeast: LatLng(maxLat,maxLong)
-    ), 20));
-  }
-
-    void _onMapCreated(GoogleMapController controller) async {
-    setState(() {
-      _googleMapController = controller;
-      setPolyliness().then((_) => _setMapFitToTour(_polylines));
-    });
-  }
-
-//อันใหม่
-   setPolyliness() async {
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      googleAPIKey,
-      PointLatLng(currentLocation.latitude, currentLocation.longitude),
-      PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
-    );
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    } else {
-      print("--address not found ---");
-    }
-    setState(() {
-      Polyline polyline = Polyline(
-          polylineId: PolylineId("poly"),
-          color: Color.fromARGB(255, 40, 122, 198),
-          width: 5,
-          points: polylineCoordinates);
-      _polylines.add(polyline);
-    });
-  }
-
 
   Widget _textField({
     TextEditingController controller,
@@ -243,6 +189,42 @@ class _NavigationState extends State<Navigation> {
 
     final current = _place;
 
+
+    _culculateDistance(){
+      double totalDistance = 0.0;
+      double _coordinateDistance(lat1, lon1, lat2, lon2){
+       final _args =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final _currentlocation = _args['current'] as Position;
+    final _place = _args['places'] as Places;
+
+    lat1 = _currentlocation.latitude;
+    lon1 = _currentlocation.longitude;
+    lat2 = _place.geometry.location.lat;
+    lon2 = _place.geometry.location.lng;
+
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 - c((lat2 - lat1) * p)/2 +
+        c(lat1 * p) * c(lat2 * p) *
+            (1 - c((lon2 - lon1) * p))/2;
+    return 12742 * asin(sqrt(a));
+  }
+      for (int i = 0; i < polylineCoordinates.length - 1; i++) {
+        totalDistance += _coordinateDistance(
+          polylineCoordinates[i].latitude,
+          polylineCoordinates[i].longitude,
+          polylineCoordinates[i + 1].latitude,
+          polylineCoordinates[i + 1].longitude,
+        );
+      }
+      setState(() {
+        _placeDistance = totalDistance.toStringAsFixed(2);
+        print('DISTANCE: $_placeDistance km');
+      });
+      return _placeDistance;
+    } 
+
     return Scaffold(
         backgroundColor: ToiletColors.colorBackground,
         body: Stack(
@@ -272,33 +254,32 @@ class _NavigationState extends State<Navigation> {
                 //   });
                 // },
                 padding: EdgeInsets.only(left: 500),
-                //อันใหม่
-                onMapCreated: _onMapCreated,
+            
                 //อันเก่า ------------------------------------------
-                // onMapCreated: (GoogleMapController controller) async {
-                //   print('on created');
-                //   try {
-                //     _controller.complete(controller);
-                //   } catch (e) {
-                //     print('controller');
-                //     print(e);
-                //   }
+                onMapCreated: (GoogleMapController controller) async {
+                  print('on created');
+                  try {
+                    _controller.complete(controller);
+                  } catch (e) {
+                    print('controller');
+                    print(e);
+                  }
 
-                //   try {
-                //     showPinOnMap();
-                //   } catch (e) {
-                //     print('show pin');
-                //     print('error pin: $e');
-                //     print('-----------------=============-------------');
-                //   }
+                  try {
+                    showPinOnMap();
+                  } catch (e) {
+                    print('show pin');
+                    print('error pin: $e');
+                    print('-----------------=============-------------');
+                  }
 
-                //   try {
-                //     setPolylines();
-                //   } catch (e) {
-                //     print('set poly line');
-                //     print(e);
-                //   }
-                // },
+                  try {
+                    setPolylines();
+                  } catch (e) {
+                    print('set poly line');
+                    print(e);
+                  }
+                },
               
               ),
             ),
@@ -339,6 +320,7 @@ class _NavigationState extends State<Navigation> {
                                   color: Colors.blue[400]),
                               onPressed: () {
                                 _currentLocation();
+                                // print(calculateDistance(lat1, lon1, lat2, lon2));
                               },
                             ),
                             width: width,
@@ -431,7 +413,10 @@ class _NavigationState extends State<Navigation> {
                                     height: 5,
                                   ),
                                   Text(
-                                    '(... km)',
+                                    // '(km)',
+                                    '${_culculateDistance()} km',
+                                    // '(${distance}km)',
+
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15.0,
