@@ -23,8 +23,6 @@ import 'package:path/path.dart' as Path;
 class AddToiletDetail extends StatefulWidget {
   const AddToiletDetail({Key key}) : super(key: key);
 
-  final String title = 'Wrap Widget & Chips';
-
   @override
   _AddToiletDetailState createState() => _AddToiletDetailState();
 }
@@ -685,7 +683,7 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                 ? 'no photo'
                                                 : imageUrlList,
                                           });
-                                                                                    print(_result.id);
+                                          print(_result.id);
                                           fromKey.currentState.reset();
                                           //   if (user.isAnonymous) {
                                           //   final provider =

@@ -187,7 +187,7 @@ class _NavigationState extends State<Navigation> {
       return <Marker>[sourcePin(), destinationPin()].toSet();
     }
 
-    final current = _place;
+
 
 
     _culculateDistance(){
@@ -224,6 +224,9 @@ class _NavigationState extends State<Navigation> {
       });
       return _placeDistance;
     } 
+
+    // final current = "${_place.placeId}";
+    // final nameplace = "${_place.name}";
 
     return Scaffold(
         backgroundColor: ToiletColors.colorBackground,
@@ -514,9 +517,11 @@ class _NavigationState extends State<Navigation> {
                                                                 context,
                                                                 '/seven',
                                                                 arguments: {
-                                                                'placeId':current,
+                                                                'current':_place.placeId,
+                                                                'placeName':_place.name,
                                                               },
-                                                                );print('+++''${current.placeId}');
+                                                                );
+                                                              // print('+++''${current.placeId}');
                                                         },
                                                       ),
                                                     ),

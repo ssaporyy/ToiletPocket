@@ -1,26 +1,165 @@
-import 'dart:io';
-
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class DisplayScreen extends StatefulWidget {
+class CommentToiletDetail extends StatefulWidget {
+  const CommentToiletDetail({ Key key }) : super(key: key);
+
   @override
-  _DisplayScreenState createState() => _DisplayScreenState();
+  _CommentToiletDetailState createState() => _CommentToiletDetailState();
 }
 
-class _DisplayScreenState extends State<DisplayScreen> {
-  List<File> _image = [];
+class _CommentToiletDetailState extends State<CommentToiletDetail> {
   @override
   Widget build(BuildContext context) {
-    final arguments = ModalRoute.of(context).settings.arguments as Map;
-    // final id = arguments['placeid'] as Places;
-    // final nameP = arguments['placename'];
-    return Scaffold(
-      appBar: AppBar(title: Text("Comment")),
-      body: Container(
+      final _args =
+      ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+  final _place = _args['places'] as Places;
+  final _placeDetail = _args['places_detail'] as Places;
+  final arguments = ModalRoute.of(context).settings.arguments as Map;
+ if (_placeDetail.reviews.isEmpty) {
+    return Container(
+      alignment: Alignment.topCenter,
+      height: 260,
+      child: Center(
+        child: Text(
+          "ไม่มีความคิดเห็น",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16.0,
+            fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+  return 
+  Column(
+    children: [
+    Container(
+      child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: _placeDetail.reviews.length,
+        itemBuilder: (BuildContext context, int index) {
+          return new Container(
+            padding: new EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 0.0),
+            child: new Card(
+              elevation: 6,
+              shadowColor: ToiletColors.colorBackground,
+              child: Container(
+                // height: 260,
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 0,
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(15, 0, 20, 0),
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  // NetworkImage(
+                                  //     'https://cdn.readawrite.com/articles/1821/1820201/thumbnail/large.gif?3'),
+                                  // AssetImage('images/ruto.jpg'),
+
+                                  NetworkImage(_placeDetail.reviews.isEmpty
+                                      ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
+                                      : '${_placeDetail.reviews[index].profilePhotoUrl}'),
+                              radius: 20,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  RatingBarIndicator(
+                                    rating: _placeDetail.reviews.isEmpty
+                                        ? 0.0
+                                        : _placeDetail.reviews[index].rating
+                                            .toDouble(),
+                                    itemBuilder: (context, index) =>
+                                        Icon(Icons.star, color: Colors.amber),
+                                    itemCount: 5,
+                                    itemSize: 25.0,
+                                    direction: Axis.horizontal,
+                                  ),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text(
+                                    // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
+                                    _placeDetail.reviews.isEmpty
+                                        ? ''
+                                        : _placeDetail.reviews[index]
+                                            .relativeTimeDescription,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.0,
+                                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                // "Watanabe Haruto",
+                                _placeDetail.reviews.isEmpty
+                                    ? 'No name'
+                                    : _placeDetail.reviews[index].authorName,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
+                                _placeDetail.reviews.isEmpty
+                                    ? 'No Comment'
+                                    : _placeDetail.reviews[index].text,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14.0,
+                                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    ),
+    Container(
         child: Row(
           children: [
             StreamBuilder(
@@ -153,12 +292,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                                               ),
                                             ),
                                             Text(
-                                              snapshot.data.docs[index]
-                                                          ['placeId'] ==
-                                                      null
-                                                  ? 'no'
-                                                  : snapshot.data.docs[index]
-                                                      ['placeId'],
+                                              arguments['placeid'] == null ?'no':arguments['placeid'],
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 14.0,
@@ -205,13 +339,11 @@ class _DisplayScreenState extends State<DisplayScreen> {
                                                                     .black12,
                                                                 image:
                                                                     DecorationImage(
-                                                                        image: imageList[index] ==
-                                                                                []
-                                                                            ? Text(
-                                                                                'data')
+                                                                        image: imageList[index] == []
+                                                                            ? Text('data')
                                                                             : NetworkImage(imageList[index]
                                                                                 .toString()),
-                                                                        // SizedBox(
+                                                                                // SizedBox(
                                                                         //     height:
                                                                         //         2,
                                                                         //   ),
@@ -255,6 +387,9 @@ class _DisplayScreenState extends State<DisplayScreen> {
           ],
         ),
       ),
-    );
+    
+    ],
+  );
+  
   }
 }

@@ -111,6 +111,10 @@ class _AddCommentState extends State<AddComment> {
     String formatDate = DateFormat('d MMM, hh:mm a').format(now);
     timestamp = formatDate;
     final applicationBloc = Provider.of<ApplicationBloc>(context);
+    final arguments = ModalRoute.of(context).settings.arguments as Map;
+
+    final placeid = arguments['current'];
+    // final placename = arguments['nameplace'];
 
     return FutureBuilder(
         future: firebase,
@@ -815,13 +819,24 @@ class _AddCommentState extends State<AddComment> {
                                               'userName': user.displayName,
                                               'time': timestamp,
                                               'rating': rating,
-                                              'imgAddcomment': imageUrlList,
-                                              // 'placeId':_place,
+                                              'imgAddcomment': imageUrlList.isEmpty? null:imageUrlList,
+                                              'placeId': arguments['current'],
+                                              'placeName': arguments['placeName'],
                                             });
                                             fromKey.currentState.reset();
                                           }
 
-                                          Navigator.pushNamed(context, '/o');
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/two',
+                                            // arguments: {
+                                              // 'placeid': arguments['current'],
+                                              // 'placeid': placeid,
+                                              // 'placename':placename,
+                                            // },
+                                          );
+                                          // print(placeid.placeId);
+                                          // Navigator.pushNamed(context, '/o');
                                         },
 
                                         padding: EdgeInsets.all(10.0),
