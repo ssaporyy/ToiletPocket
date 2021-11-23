@@ -84,7 +84,7 @@ class LoginGoogleAddToiletState extends State<LoginGoogleAddToilet> {
           ),
         ),
       ),
-     
+
       Padding(
         padding: const EdgeInsets.only(top: 120),
         child: ShowUp(
@@ -110,18 +110,17 @@ class LoginGoogleAddToiletState extends State<LoginGoogleAddToilet> {
                     ),
                     onPressed: () {},
                   ),
-                ),              
+                ),
                 Container(
                   height: 75,
                   margin: EdgeInsets.only(left: 50, top: 0),
                   child: Text(
-                    'Already here',
+                    'Already have',
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                       color: Colors.black,
                       fontSize: 45,
-                      
                     ),
                   ),
                 ),
@@ -132,14 +131,12 @@ class LoginGoogleAddToiletState extends State<LoginGoogleAddToilet> {
                     'an account?',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      color: Colors.black,
-                      fontSize: 45,
-                      height: 0.8
-                    ),
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        color: Colors.black,
+                        fontSize: 45,
+                        height: 0.8),
                   ),
                 ),
-
               ],
             ),
           ),
@@ -162,7 +159,9 @@ class LoginGoogleAddToiletState extends State<LoginGoogleAddToilet> {
                 ),
               ),
             ),
-            SizedBox(height: 8,),
+            SizedBox(
+              height: 8,
+            ),
             Text(
               'เข้าสู่ระบบได้ง่ายขึ้น',
               style: TextStyle(
