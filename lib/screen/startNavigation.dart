@@ -12,10 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 
 import 'package:provider/provider.dart';
-import 'package:geocoding/geocoding.dart';
 
 import 'dart:math' show cos, sqrt, asin;
 
@@ -32,7 +30,7 @@ class _NavigationState extends State<Navigation> {
 
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
-  StreamSubscription locationSubscription;
+  // StreamSubscription locationSubscription;
 
   LatLng currentLocation;
   LatLng destinationLocation;
@@ -62,13 +60,13 @@ class _NavigationState extends State<Navigation> {
 
   void _currentLocation() async {
     final GoogleMapController controller = await _controller.future;
-    LocationData _currentPosition;
+    // LocationData _currentPosition;
 
     final _args = 
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _currentlocation = _args['current'] as Position;
 
-    final _place = _args['places'] as Places;
+    // final _place = _args['places'] as Places;
     // var location = new Location();
     // try {
     //   _currentPosition = await location.getLocation();
@@ -91,8 +89,6 @@ class _NavigationState extends State<Navigation> {
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _currentlocation = _args['current'] as Position;
     final _place = _args['places'] as Places;
-    LatLng DEST_LOCATION =
-        LatLng(_place.geometry.location.lat, _place.geometry.location.lng);
     currentLocation =
         LatLng(_currentlocation.latitude, _currentlocation.longitude);
     destinationLocation =
@@ -157,7 +153,6 @@ class _NavigationState extends State<Navigation> {
     final _currentlocation = _args['current'] as Position;
     final _place = _args['places'] as Places;
     var width = MediaQuery.of(context).size.width;
-    final startAddressController = GoogleMapController;
     final user = FirebaseAuth.instance.currentUser;
 
     Marker sourcePin() {
@@ -667,8 +662,8 @@ class _NavigationState extends State<Navigation> {
 
   void showPinOnMap() {
     print('1st');
-    final applicationBloc =
-        Provider.of<ApplicationBloc>(context, listen: false);
+    // final applicationBloc =
+    //     Provider.of<ApplicationBloc>(context, listen: false);
     print('2nd');
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
@@ -693,8 +688,8 @@ class _NavigationState extends State<Navigation> {
   }
 //อันเก่า
   void setPolylines() async {
-    final _args =
-        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    // final _args =
+    //     ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     print('current lat: ${currentLocation.latitude}');
     print('current lng: ${currentLocation.longitude}');

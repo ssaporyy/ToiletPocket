@@ -1,8 +1,5 @@
-import 'package:ToiletPocket/addToilet_InMap/addImage.dart';
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/provider/google_sign_in.dart';
-import 'package:ToiletPocket/star2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

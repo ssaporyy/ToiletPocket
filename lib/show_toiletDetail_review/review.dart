@@ -1,13 +1,13 @@
 // import 'dart:html';
 
-import 'package:ToiletPocket/addComment/addReviewComment.dart';
-import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/models/places.dart';
-import 'package:ToiletPocket/show_toiletDetail_review/comment.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:ToiletPocket/addComment/addReviewComment.dart';
+// import 'package:ToiletPocket/colors.dart';
+// import 'package:ToiletPocket/models/places.dart';
+// import 'package:ToiletPocket/show_toiletDetail_review/comment.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:ToiletPocket/models/reviews.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 
 Widget user() {

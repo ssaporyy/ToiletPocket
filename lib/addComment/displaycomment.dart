@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/models/places.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -15,7 +14,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
   List<File> _image = [];
   @override
   Widget build(BuildContext context) {
-    final arguments = ModalRoute.of(context).settings.arguments as Map;
+    // final arguments = ModalRoute.of(context).settings.arguments as Map;
     // final id = arguments['placeid'] as Places;
     // final nameP = arguments['placename'];
     return Scaffold(

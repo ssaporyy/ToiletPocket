@@ -1,6 +1,5 @@
 import 'package:ToiletPocket/Show_toiletDetail_review/CarouselWithDotsPage.dart';
-import 'package:ToiletPocket/Show_toiletDetail_review/review.dart';
-import 'package:ToiletPocket/blocs/application_bloc.dart';
+// import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
 // import 'package:ToiletPocket/models/place.dart';
 import 'package:ToiletPocket/models/places.dart';
@@ -13,7 +12,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 // import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 // import 'package:getwidget/components/carousel/gf_items_carousel.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 class ToiletDetail extends StatefulWidget {
   ToiletDetail({Key key}) : super(key: key);
@@ -25,12 +24,12 @@ class ToiletDetail extends StatefulWidget {
 class ToiletDetailState extends State<ToiletDetail> {
   @override
   Widget build(BuildContext context) {
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
+    // final applicationBloc = Provider.of<ApplicationBloc>(context);
     final _args =
         ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
     final _place = _args['places'] as Places;
     final _placeDetail = _args['places_detail'] as Places;
-    final arguments = ModalRoute.of(context).settings.arguments as Map;
+    // final arguments = ModalRoute.of(context).settings.arguments as Map;
     return SafeArea(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -883,7 +882,7 @@ class ToiletDetailState extends State<ToiletDetail> {
 // }
 
 Widget slide(BuildContext context) {
-  final applicationBloc = Provider.of<ApplicationBloc>(context);
+  // final applicationBloc = Provider.of<ApplicationBloc>(context);
   final _args =
       ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
   final _place = _args['places'] as Places;
@@ -1021,7 +1020,7 @@ Widget slide(BuildContext context) {
 Widget img(BuildContext context) {
   final _args =
       ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-  final _place = _args['places'] as Places;
+  // final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
 
 //   final List<String> imgList = [
@@ -1082,7 +1081,7 @@ Widget toiletLocation(BuildContext context) {
 Widget time(BuildContext context) {
   final _args =
       ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-  final _place = _args['places'] as Places;
+  // final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
 
   return ExpansionTile(

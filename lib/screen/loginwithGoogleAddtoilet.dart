@@ -1,10 +1,8 @@
-import 'package:ToiletPocket/addToilet_InMap/addToiletDetail.dart';
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:ToiletPocket/screen/homepage.dart';
 import 'package:ToiletPocket/screen/showUp.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -42,7 +40,7 @@ class LoginGoogleAddToiletState extends State<LoginGoogleAddToilet> {
 
   @override
   Widget build(BuildContext context) {
-    final currentPosition = Provider.of<Position>(context);
+    // final currentPosition = Provider.of<Position>(context);
     int delayAmount = 1500;
     return Material(
         child: Stack(children: <Widget>[

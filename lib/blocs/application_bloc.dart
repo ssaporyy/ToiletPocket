@@ -62,8 +62,8 @@ class ApplicationBloc with ChangeNotifier {
   setSelectedLocation(String placeId) async {
     var sLocation = await placesService.getPlace(placeId);
     //new
-    var markers =
-        (places != null) ? markerService.getMarkers(places) : <Marker>[];
+    // var markers =
+    //     (places != null) ? markerService.getMarkers(places) : <Marker>[];
     //
     selectedLocation.add(sLocation);
     selectedLocationStatic = sLocation;

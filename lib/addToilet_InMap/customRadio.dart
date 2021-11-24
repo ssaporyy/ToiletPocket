@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 
 class CustomRadio extends StatefulWidget {
   @override
-  _customRadioState createState() => _customRadioState();
+  _CustomRadioState createState() => _CustomRadioState();
 }
 
-class _customRadioState extends State<CustomRadio> {
+class _CustomRadioState extends State<CustomRadio> {
 
   List<String> lst = ['ไม่เสียค่าใช้บริการ','เสียค่าใช้บริการ'];
   int selectedIndex = 0;

@@ -97,13 +97,13 @@ import 'dart:async';
 
 import 'package:multi_image_picker/multi_image_picker.dart';
 
-class addImage extends StatefulWidget {
-  addImage({Key key}) : super(key: key);
+class AddImage extends StatefulWidget {
+  AddImage({Key key}) : super(key: key);
   @override
-  _addImageState createState() => _addImageState();
+  _AddImageState createState() => _AddImageState();
 }
 
-class _addImageState extends State<addImage> {
+class _AddImageState extends State<AddImage> {
   List<Asset> images = <Asset>[];
   String _error = 'No Error Dectected';
 
