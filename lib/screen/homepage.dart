@@ -99,15 +99,15 @@ class _HomePageState extends State<HomePage> {
     ));
   }
 
-  Future<void> _gotoMarker(double lat, double long) async {
-    final GoogleMapController controller = await _mapController.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-      target: LatLng(lat, long),
-      zoom: 16,
-      tilt: 50.0,
-      // bearing: 45.0,
-    )));
-  }
+  // Future<void> _gotoMarker(double lat, double long) async {
+  //   final GoogleMapController controller = await _mapController.future;
+  //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+  //     target: LatLng(lat, long),
+  //     zoom: 16,
+  //     tilt: 50.0,
+  //     // bearing: 45.0,
+  //   )));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +117,6 @@ class _HomePageState extends State<HomePage> {
     final markerService = MarkerService();
     //new
     final applicationBloc = Provider.of<ApplicationBloc>(context);
-    final _place = ModalRoute.of(context)?.settings.arguments as Places;
     List<Marker> _marker = <Marker>[];
 
     return FutureProvider(

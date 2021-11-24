@@ -16,7 +16,7 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
   Widget build(BuildContext context) {
       final _args =
       ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-  final _place = _args['places'] as Places;
+  // final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
   final arguments = ModalRoute.of(context).settings.arguments as Map;
  if (_placeDetail.reviews.isEmpty) {

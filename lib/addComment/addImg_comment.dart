@@ -98,7 +98,7 @@ class _AddImage1State extends State<AddImage1> {
 
   Future<void> retrieveLostData() async {
     final LostData response = await picker.getLostData();
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
+    // final applicationBloc = Provider.of<ApplicationBloc>(context);
 
     if (response.isEmpty) {
       return;

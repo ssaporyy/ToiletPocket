@@ -1,18 +1,11 @@
 import 'dart:async';
-import 'dart:collection';
 
-import 'package:ToiletPocket/addToilet_InMap/addToiletDetail.dart';
-import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
-import 'package:ToiletPocket/models/place.dart';
-import 'package:ToiletPocket/models/places.dart';
-import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:outline_material_icons/outline_material_icons.dart';
 
 class AddToilet extends StatefulWidget {
