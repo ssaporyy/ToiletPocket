@@ -633,70 +633,248 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                               color:
                                                   ToiletColors.colorButton2)),
                                       onPressed: () async {
-                                        //ยืนยัน
+                                        // //ยืนยัน
 
-                                        List<String> imageUrlList = [];
+                                        showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              actionsAlignment:
+                                                  MainAxisAlignment.center,
+                                              actions: <Widget>[
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Column(children: [
+                                                  Image.asset('images/toiletPlus.png',width: 50,height: 50,),
+                                                  SizedBox(height: 18,),
+                                                  Text(
+                                                    "ขอบคุณสำหรับการเพิ่มห้องน้ำ",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 18,
+                                                      fontFamily: 'Sukhumvit' ??
+                                                          'SF-Pro',
+                                                    ),
+                                                  ),
+                                                  // Text(
+                                                  //   "สำหรับการเพิ่มห้องน้ำ",
+                                                  //   style: TextStyle(
+                                                  //     color: Colors.black,
+                                                  //     fontWeight:
+                                                  //         FontWeight.w600,
+                                                  //     fontSize: 20,
+                                                  //     fontFamily: 'Sukhumvit' ??
+                                                  //         'SF-Pro',
+                                                  //   ),
+                                                  // ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      "เราได้บันทึกข้อมูลไว้แล้ว\nโปรดยืนยันอีกครั้ง",
+                                                      style: TextStyle(
+                                                        color: Colors.black87,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 15,
+                                                        fontFamily:
+                                                            'Sukhumvit' ??
+                                                                'SF-Pro',
+                                                      ),textAlign: TextAlign.center,
+                                                    ),
+                                                    alignment:
+                                                        Alignment.topCenter,
+                                                    padding: EdgeInsets.all(5),
+                                                    height: 80,
+                                                    width: 200,
+                                                  ),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Container(
+                                                          width: 100,
+                                                          height: 47,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius.vertical(
+                                                                    top: Radius
+                                                                        .circular(
+                                                                            30.0)),
+                                                          ),
+                                                          child: ElevatedButton(
+                                                            // Within the `FirstScreen` widget
+                                                            style: ElevatedButton.styleFrom(
+                                                                shape:
+                                                                    StadiumBorder(),
+                                                                primary:
+                                                                    ToiletColors
+                                                                        .colorButton2,
+                                                                elevation: 5.0),
 
-                                        // if (user.isAnonymous) {
-                                        //     final provider = Provider.of<
-                                        //             GoogleSignInProvider>(
-                                        //         context,
-                                        //         listen: false);
-                                        //     provider.login();
-                                        //     // return Navigator.pop(context, true);
-                                        //     user.refreshToken;
-                                        //   }
+                                                            child: Text(
+                                                              'ยกเลิก',
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      'Sukhumvit' ??
+                                                                          'SF-Pro',
+                                                                  fontSize: 20),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                              Navigator.of(context).pop();
+                                                            },
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          width: 100,
+                                                          height: 47,
+                                                          child: ElevatedButton(
+                                                            // Within the `FirstScreen` widget
+                                                            style: ElevatedButton.styleFrom(
+                                                                shape:
+                                                                    StadiumBorder(),
+                                                                primary:
+                                                                    ToiletColors
+                                                                        .colorButton2,
+                                                                elevation: 5.0),
 
-                                        if (fromKey.currentState.validate()) {
-                                          fromKey.currentState.save();
-                                          for (var img in _image) {
-                                            ref = firebase_storage
-                                                .FirebaseStorage.instance
-                                                .ref()
-                                                .child(
-                                                    'images/${Path.basename(img.path)}');
-                                            await ref.putFile(img);
-                                            final String downloadUrl =
-                                                await ref.getDownloadURL();
-                                            imageUrlList.add(downloadUrl);
-                                          }
+                                                            child: Text(
+                                                              'ยืนยัน',
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      'Sukhumvit' ??
+                                                                          'SF-Pro',
+                                                                  fontSize: 20),
+                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              //ยืนยัน
 
-                                          final _result = await addToilets.add({
-                                            'name': userAddToilet.placesname,
-                                            'userName': user.displayName,
-                                            'email': user.email,
-                                            'time': timestamp,
-                                            'rating': rating,
-                                            'openToilet': _time.format(context),
-                                            'closeToilet':
-                                                _time2.format(context),
-                                            'type': _filters.join(', '),
-                                            'payment': selectedIndex == 0 &&
-                                                    selectedIndex < 1
-                                                ? 'ไม่เสียค่าบริการ'
-                                                : 'เสียค่าบริการ',
-                                            'currentlocationLat':
-                                                _currentlocation.latitude,
-                                            'currentlocationLong':
-                                                _currentlocation.longitude,
-                                            'imgAddtoilet': imageUrlList.isEmpty
-                                                ? 'no photo'
-                                                : imageUrlList,
-                                          });
-                                          print(_result.id);
-                                          fromKey.currentState.reset();
-                                          //   if (user.isAnonymous) {
-                                          //   final provider =
-                                          //       Provider.of<GoogleSignInProvider>(
-                                          //           context,
-                                          //           listen: false);
-                                          //   provider.login();
-                                          //   // return Navigator.pop(context, true);
-                                          // }
-                                        }
+                                                              List<String>
+                                                                  imageUrlList =
+                                                                  [];
+
+                                                              if (fromKey
+                                                                  .currentState
+                                                                  .validate()) {
+                                                                fromKey
+                                                                    .currentState
+                                                                    .save();
+                                                                for (var img
+                                                                    in _image) {
+                                                                  ref = firebase_storage
+                                                                      .FirebaseStorage
+                                                                      .instance
+                                                                      .ref()
+                                                                      .child(
+                                                                          'images/${Path.basename(img.path)}');
+                                                                  await ref
+                                                                      .putFile(
+                                                                          img);
+                                                                  final String
+                                                                      downloadUrl =
+                                                                      await ref
+                                                                          .getDownloadURL();
+                                                                  imageUrlList.add(
+                                                                      downloadUrl);
+                                                                }
+
+                                                                final _result =
+                                                                    await addToilets
+                                                                        .add({
+                                                                  'name': userAddToilet
+                                                                      .placesname,
+                                                                  'userName': user
+                                                                      .displayName,
+                                                                  'email': user
+                                                                      .email,
+                                                                  'time':
+                                                                      timestamp,
+                                                                  'rating':
+                                                                      rating,
+                                                                  'openToilet':
+                                                                      _time.format(
+                                                                          context),
+                                                                  'closeToilet':
+                                                                      _time2.format(
+                                                                          context),
+                                                                  'type': _filters
+                                                                      .join(
+                                                                          ', '),
+                                                                  'payment': selectedIndex ==
+                                                                              0 &&
+                                                                          selectedIndex <
+                                                                              1
+                                                                      ? 'ไม่เสียค่าบริการ'
+                                                                      : 'เสียค่าบริการ',
+                                                                  'currentlocationLat':
+                                                                      _currentlocation
+                                                                          .latitude,
+                                                                  'currentlocationLong':
+                                                                      _currentlocation
+                                                                          .longitude,
+                                                                  'imgAddtoilet': imageUrlList
+                                                                          .isEmpty
+                                                                      ? 'no photo'
+                                                                      : imageUrlList,
+                                                                });
+                                                                print(
+                                                                    _result.id);
+                                                                fromKey
+                                                                    .currentState
+                                                                    .reset();
+                                                              }
+                                                              Navigator.pushNamed(
+                                                                  context, '/n',
+                                                                  arguments: {
+                                                                    'currentlocationLat':
+                                                                        _currentlocation
+                                                                            .latitude,
+                                                                    'currentlocationLong':
+                                                                        _currentlocation
+                                                                            .longitude,
+                                                                    'name': userAddToilet
+                                                                        .placesname
+                                                                  });
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                  SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                ]),
+                                              ],
+                                              elevation: 10.0,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                            );
+                                          },
+                                        );
 
                                         // Navigator.pushNamed(context, '/o');
-                                        Navigator.pushNamed(context, '/n');
+
+                                        // Navigator.pushNamed(context, '/n',
+                                        //     arguments: {
+                                        //       'currentlocationLat':
+                                        //           _currentlocation.latitude,
+                                        //       'currentlocationLong':
+                                        //           _currentlocation.longitude,
+                                        //       'name': userAddToilet.placesname
+                                        //     });
 
                                         // Navigator.of(context).pop();
                                       },

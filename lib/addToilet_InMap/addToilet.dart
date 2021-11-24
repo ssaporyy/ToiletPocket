@@ -227,6 +227,7 @@ class _AddToiletState extends State<AddToilet> {
       ),
     );
   }
+
 }
 
 Widget add(BuildContext context) {

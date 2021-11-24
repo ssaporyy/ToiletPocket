@@ -70,6 +70,7 @@ dependencies:
   flutter_launcher_icons: ^0.9.2
   http_parser: ^4.0.0
   geocoding: ^2.0.1
+  dio: ^4.0.4
   
 
 flutter_icons:
@@ -98,7 +99,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/mmm.png
+    - images/Icon-flush.png
     - images/flush.png
     - images/welcome.png
     - images/star.png
@@ -110,13 +111,6 @@ flutter:
     - images/toiletPlus.png
     - images/toiletplus_.png
     - images/direction.png
-    - images/ruto.jpg
-    - images/toilets/1.jpg
-    - images/toilets/2.jpg
-    - images/toilets/3.jpg
-    - images/toilets/4.jpg
-    - images/toilets/5.jpg
-    - images/toilets/6.jpg
     - images/banner.png
     - images/signUp.png
     - images/navigation.png

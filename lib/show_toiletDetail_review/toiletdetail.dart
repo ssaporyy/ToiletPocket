@@ -31,6 +31,7 @@ class ToiletDetailState extends State<ToiletDetail> {
     final _place = _args['places'] as Places;
     final _placeDetail = _args['places_detail'] as Places;
     final arguments = ModalRoute.of(context).settings.arguments as Map;
+
     return SafeArea(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -261,6 +262,8 @@ class ToiletDetailState extends State<ToiletDetail> {
                                           StreamBuilder(
                                             stream: FirebaseFirestore.instance
                                                 .collection("comment")
+                                                .orderBy('time',
+                                                    descending: true)
                                                 .snapshots(),
                                             builder: (context,
                                                 AsyncSnapshot<QuerySnapshot>
@@ -676,212 +679,6 @@ class ToiletDetailState extends State<ToiletDetail> {
   }
 }
 
-// Widget appbar(BuildContext context) {
-//   return Scaffold(
-//     backgroundColor: ToiletColors.colorBackground,
-//     body: Container(
-//       child: Stack(
-//         children: [
-//           Container(
-//             padding: EdgeInsets.only(top: 0.0, left: 13.0, right: 0.0),
-//             child: Container(
-//               padding: EdgeInsets.only(top: 30.0),
-//               child: InkWell(
-//                 onTap: () {
-//                   // Navigator.pushNamed(context, '/two');
-//                   Navigator.of(context).pop();
-//                 },
-//                 child: Row(
-//                   crossAxisAlignment: CrossAxisAlignment.center,
-//                   children: <Widget>[
-//                     Icon(
-//                       Icons.arrow_back_ios_rounded,
-//                       size: 18,
-//                       color: Colors.black87,
-//                     ),
-//                     Text(
-//                       'กลับ',
-//                       style: TextStyle(
-//                         color: Colors.black87,
-//                         fontSize: 15.0,
-//                         fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-//                         fontWeight: FontWeight.w500,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.only(top: 80),
-//             child: Container(
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.only(
-//                   topLeft: Radius.circular(30),
-//                   topRight: Radius.circular(30),
-//                 ),
-//                 color: Colors.white,
-//                 boxShadow: [
-//                   BoxShadow(
-//                     color: ToiletColors.colorBackground
-//                         .withOpacity(0.9), //color of shadow
-//                     spreadRadius: 5, //spread radius
-//                     blurRadius: 7, // blur radius
-//                     offset: Offset(0, 2), // changes position of shadow
-//                     //first paramerter of offset is left-right
-//                     //second parameter is top to down
-//                   ),
-//                   //you can set more BoxShadow() here
-//                 ],
-//               ),
-//               child: Container(
-//                 padding: EdgeInsets.only(top: 27),
-//                 // child: slide(context)
-//                 child: SingleChildScrollView(
-//                   padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-//                   child: Column(
-//                     children: <Widget>[
-//                       img(context),
-//                       toiletLocation(context),
-//                       Padding(
-//                         padding: const EdgeInsets.only(left: 3),
-//                         child: time(context),
-//                       ),
-//                       //ไอคอนแสดง ห้องน้ำคนพิการ ที่สูญบุหรี่
-//                       // Padding(
-//                       //   padding: const EdgeInsets.only(left: 3),
-//                       //   child: info(context),
-//                       // ),
-//                       // rate(context),
-
-//                       Container(
-//                         child: Column(children: [
-//                           Container(
-//                             color: ToiletColors.colorgrayOpacity,
-//                             padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
-//                             child: Row(children: [
-//                               Container(
-//                                 child: Column(children: [
-//                                   Image(
-//                                     width: 30,
-//                                     height: 30,
-//                                     image: AssetImage('images/star.png'),
-//                                   ),
-//                                   Text(
-//                                     "คะแนน",
-//                                     style: TextStyle(
-//                                       color: Colors.black87,
-//                                       fontSize: 14.0,
-//                                       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-//                                       fontWeight: FontWeight.w500,
-//                                     ),
-//                                   ),
-//                                 ]),
-//                               ),
-//                               SizedBox(width: 25),
-//                               Container(
-//                                 child: Column(
-//                                     crossAxisAlignment:
-//                                         CrossAxisAlignment.start,
-//                                     children: [
-//                                       Row(children: <Widget>[
-//                                         Container(
-//                                           child: Row(
-//                                             mainAxisSize: MainAxisSize.min,
-//                                             children: [
-//                                               Text(
-//                                                 "${_place.rating}",
-//                                                 // "4.7",
-//                                                 style: TextStyle(
-//                                                   color: Colors.black,
-//                                                   fontSize: 16.0,
-//                                                   fontFamily:
-//                                                       'Sukhumvit' ?? 'SF-Pro',
-//                                                   fontWeight: FontWeight.w500,
-//                                                 ),
-//                                               )
-//                                             ],
-//                                           ),
-//                                         ),
-//                                         Container(
-//                                           child: RatingBarIndicator(
-//                                             rating: _place.rating,
-//                                             itemBuilder: (context, index) =>
-//                                                 Icon(Icons.star,
-//                                                     color: Colors.amber),
-//                                             itemCount: 5,
-//                                             itemSize: 21.0,
-//                                             direction: Axis.horizontal,
-//                                           ),
-//                                         ),
-//                                         Container(
-//                                           child: Row(
-//                                             mainAxisSize: MainAxisSize.min,
-//                                             children: [
-//                                               Text(
-//                                                 '(${_place.userRatingCount})',
-//                                                 style: TextStyle(
-//                                                     color: Colors.black54,
-//                                                     fontSize: 16.0,
-//                                                     fontFamily:
-//                                                         'Sukhumvit' ?? 'SF-Pro',
-//                                                     fontWeight:
-//                                                         FontWeight.normal),
-//                                               )
-//                                             ],
-//                                           ),
-//                                         ),
-//                                       ]),
-//                                       Container(
-//                                         child: Text(
-//                                           (() {
-//                                             if (_place.rating == 0.0) {
-//                                               return "-";
-//                                             } else if (_place.rating <= 1.0) {
-//                                               return "แย่";
-//                                             } else if (_place.rating <= 2.0) {
-//                                               return "ควรปรับปรุง";
-//                                             } else if (_place.rating <= 3.0) {
-//                                               return "พอใช้";
-//                                             } else if (_place.rating <= 4.0) {
-//                                               return "ดี";
-//                                             } else if (_place.rating <= 5.0) {
-//                                               return "ดีเยี่ยม";
-//                                             }
-//                                           }()),
-//                                           // "ดี",
-//                                           style: TextStyle(
-//                                             color: Colors.black,
-//                                             fontSize: 16.0,
-//                                             fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-//                                             fontWeight: FontWeight.w500,
-//                                           ),
-//                                         ),
-//                                       )
-//                                     ]),
-//                               ),
-//                             ]),
-//                           ),
-//                           Container(
-//                             child: CommentToiletDetail(),
-//                             // child: comment(context)
-//                           )
-//                         ]),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//               // Testpage(),
-//             ),
-//           ),
-//         ],
-//       ),
-//     ),
-//   );
-// }
-
 Widget slide(BuildContext context) {
   final applicationBloc = Provider.of<ApplicationBloc>(context);
   final _args =
@@ -897,13 +694,6 @@ Widget slide(BuildContext context) {
           padding: const EdgeInsets.only(left: 3),
           child: time(context),
         ),
-        //ไอคอนแสดง ห้องน้ำคนพิการ ที่สูญบุหรี่
-        // Padding(
-        //   padding: const EdgeInsets.only(left: 3),
-        //   child: info(context),
-        // ),
-        // rate(context),
-
         Container(
           child: Column(children: [
             Container(
@@ -1023,19 +813,9 @@ Widget img(BuildContext context) {
       ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
   final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
-
-//   final List<String> imgList = [
-//     // _place.photos.isEmpty ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg' :'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_place.photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
-//     _place.photos.isEmpty ?'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg' :'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
-//     _place.photos.isEmpty ?'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg' :'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos[1].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
-//   ];
-
   var imgList = new List<String>.generate(
     _placeDetail.photos.length,
     (index) =>
-        // _placeDetail.photos.isEmpty
-        //     ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
-        //     : 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos[index].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
         'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${_placeDetail.photos[index].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno',
   );
   if (imgList.isEmpty) {

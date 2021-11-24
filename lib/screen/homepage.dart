@@ -291,6 +291,20 @@ class _HomePageState extends State<HomePage> {
                                                       places[index],
                                                       // places[index],
                                                       currentPosition,
+                                                      
+                                                        currentPosition
+                                                            .latitude,
+                                                        currentPosition
+                                                            .longitude,
+                                                        places[index]
+                                                            .geometry
+                                                            .location
+                                                            .lat,
+                                                        places[index]
+                                                            .geometry
+                                                            .location
+                                                            .lng,
+                                                      
                                                       /**openClose */
                                                       //'',
                                                       '${places[index].openingHours == null || places[index].openingHours.openNow.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
@@ -351,9 +365,14 @@ class _HomePageState extends State<HomePage> {
     address,
     push,
     navigate,
+    lat1,
+    lng1,
+    lat2,
+    lng2,
     openClose,
     BuildContext context,
   ) {
+    final placesService = PlacesService();
     return Container(
       child: new FittedBox(
         fit: BoxFit.cover,
@@ -384,14 +403,6 @@ class _HomePageState extends State<HomePage> {
                             ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
                             : _image,
                       ),
-                      // errorBuilder: (context, exception, stackTrack) => Container(
-                      //   color: ToiletColors.colorButton,
-                      //   child: Icon(
-                      //     Icons.collections,
-                      //     size: 100,
-                      //     color: ToiletColors.colorPurple,
-                      //   ),
-                      // ),
                     ),
                   ),
                 ),
@@ -421,33 +432,21 @@ class _HomePageState extends State<HomePage> {
                               child: RaisedButton(
                                 color: ToiletColors.colorButton,
 
-                                onPressed: () {
-                                  // Navigator.pushNamed(context,'/eight');
+                                onPressed: () async {
                                   //กดไปหน้า นำทาง
-                                  // _gotoMarker(lat,long);
-                                  /*เลื่อนไปmarkerอันเดียวกับการ์ด*/
+                                  //set direction
+                                  final direction = await placesService.getDirection(lat1, lng1, lat2, lng2);
+
                                   Navigator.pushNamed(
                                     context,
                                     '/eight',
                                     arguments: {
                                       'places': push,
                                       'current': navigate,
+                                      'direction': direction,
                                     },
                                   );
                                 },
-                                // onPressed: () async {
-                                //   final placeDetail = await placesService
-                                //       .getPlaceDetail(places[index].placeId);
-
-                                //   Navigator.pushNamed(
-                                //     context,
-                                //     '/third',
-                                //     arguments: {
-                                //       'places': places[index],
-                                //       'places_detail': placeDetail,
-                                //     },
-                                //   );
-                                // },
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.vertical(
                                     top: Radius.circular(15),

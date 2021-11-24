@@ -1,11 +1,11 @@
 import 'dart:async';
-// import 'dart:convert';
-// import 'dart:ffi';
-// import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
+import 'package:ToiletPocket/directionModel/direction.dart';
 import 'package:ToiletPocket/models/places.dart';
+import 'package:ToiletPocket/services/places_service.dart';
 import 'package:ToiletPocket/star.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class _NavigationState extends State<Navigation> {
     final GoogleMapController controller = await _controller.future;
     LocationData _currentPosition;
 
-    final _args = 
+    final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _currentlocation = _args['current'] as Position;
 
@@ -91,6 +91,7 @@ class _NavigationState extends State<Navigation> {
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _currentlocation = _args['current'] as Position;
     final _place = _args['places'] as Places;
+
     LatLng DEST_LOCATION =
         LatLng(_place.geometry.location.lat, _place.geometry.location.lng);
     currentLocation =
@@ -159,6 +160,8 @@ class _NavigationState extends State<Navigation> {
     var width = MediaQuery.of(context).size.width;
     final startAddressController = GoogleMapController;
     final user = FirebaseAuth.instance.currentUser;
+    //get directionModel
+    final directions = _args['direction'] as DistanceMatrix;
 
     Marker sourcePin() {
       // print('=================src lat: ${_currentlocation.latitude}');
@@ -187,29 +190,27 @@ class _NavigationState extends State<Navigation> {
       return <Marker>[sourcePin(), destinationPin()].toSet();
     }
 
-
-
-
-    _culculateDistance(){
+    _culculateDistance() {
       double totalDistance = 0.0;
-      double _coordinateDistance(lat1, lon1, lat2, lon2){
-       final _args =
-        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    final _currentlocation = _args['current'] as Position;
-    final _place = _args['places'] as Places;
+      double _coordinateDistance(lat1, lon1, lat2, lon2) {
+        final _args =
+            ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+        final _currentlocation = _args['current'] as Position;
+        final _place = _args['places'] as Places;
 
-    lat1 = _currentlocation.latitude;
-    lon1 = _currentlocation.longitude;
-    lat2 = _place.geometry.location.lat;
-    lon2 = _place.geometry.location.lng;
+        lat1 = _currentlocation.latitude;
+        lon1 = _currentlocation.longitude;
+        lat2 = _place.geometry.location.lat;
+        lon2 = _place.geometry.location.lng;
 
-    var p = 0.017453292519943295;
-    var c = cos;
-    var a = 0.5 - c((lat2 - lat1) * p)/2 +
-        c(lat1 * p) * c(lat2 * p) *
-            (1 - c((lon2 - lon1) * p))/2;
-    return 12742 * asin(sqrt(a));
-  }
+        var p = 0.017453292519943295;
+        var c = cos;
+        var a = 0.5 -
+            c((lat2 - lat1) * p) / 2 +
+            c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+        return 12742 * asin(sqrt(a));
+      }
+
       for (int i = 0; i < polylineCoordinates.length - 1; i++) {
         totalDistance += _coordinateDistance(
           polylineCoordinates[i].latitude,
@@ -223,7 +224,7 @@ class _NavigationState extends State<Navigation> {
         print('DISTANCE: $_placeDistance km');
       });
       return _placeDistance;
-    } 
+    }
 
     // final current = "${_place.placeId}";
     // final nameplace = "${_place.name}";
@@ -257,7 +258,7 @@ class _NavigationState extends State<Navigation> {
                 //   });
                 // },
                 padding: EdgeInsets.only(left: 500),
-            
+
                 //อันเก่า ------------------------------------------
                 onMapCreated: (GoogleMapController controller) async {
                   print('on created');
@@ -283,7 +284,6 @@ class _NavigationState extends State<Navigation> {
                     print(e);
                   }
                 },
-              
               ),
             ),
             Align(
@@ -404,7 +404,8 @@ class _NavigationState extends State<Navigation> {
                                     height: 5,
                                   ),
                                   Text(
-                                    '... นาที',
+                                    'นาที',
+                                    // '... นาที',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 18.0,
@@ -412,11 +413,20 @@ class _NavigationState extends State<Navigation> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
+                                  //ลองดึง direction
+                                  // ListView.builder(
+                                  //   itemCount: directions.elements.length,
+                                  //   itemBuilder: (context, index) {
+                                  //     return Text(
+                                  //         '${directions.elements[index].duration.text}');
+                                  //   },
+                                  // ),
                                   SizedBox(
                                     height: 5,
                                   ),
                                   Text(
                                     // '(km)',
+                                    // '${calculateDistanceFromLink()} km',
                                     '${_culculateDistance()} km',
                                     // '(${distance}km)',
 
@@ -514,14 +524,16 @@ class _NavigationState extends State<Navigation> {
                                                             );
                                                           } else
                                                             Navigator.pushNamed(
-                                                                context,
-                                                                '/seven',
-                                                                arguments: {
-                                                                'current':_place.placeId,
-                                                                'placeName':_place.name,
+                                                              context,
+                                                              '/seven',
+                                                              arguments: {
+                                                                'current': _place
+                                                                    .placeId,
+                                                                'placeName':
+                                                                    _place.name,
                                                               },
-                                                                );
-                                                              // print('+++''${current.placeId}');
+                                                            );
+                                                          // print('+++''${current.placeId}');
                                                         },
                                                       ),
                                                     ),
@@ -529,7 +541,7 @@ class _NavigationState extends State<Navigation> {
                                                       width: 100,
                                                       height: 47,
                                                       child: ElevatedButton(
-                                                        // Within the `FirstScreen` widget 
+                                                        // Within the `FirstScreen` widget
                                                         style: ElevatedButton.styleFrom(
                                                             shape:
                                                                 StadiumBorder(),
@@ -569,6 +581,7 @@ class _NavigationState extends State<Navigation> {
                                         );
                                       },
                                     );
+                                  
                                   },
                                   padding: EdgeInsets.all(10.0),
                                   color: ToiletColors.colorButton2,
@@ -678,8 +691,7 @@ class _NavigationState extends State<Navigation> {
     setState(() {
       _markers.add(Marker(
         markerId: MarkerId('sourcePin'),
-        position: LatLng(_currentlocation.latitude,
-            _currentlocation.longitude),
+        position: LatLng(_currentlocation.latitude, _currentlocation.longitude),
         icon: BitmapDescriptor.defaultMarker,
       ));
 
@@ -691,6 +703,7 @@ class _NavigationState extends State<Navigation> {
       ));
     });
   }
+
 //อันเก่า
   void setPolylines() async {
     final _args =

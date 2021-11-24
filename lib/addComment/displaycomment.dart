@@ -20,7 +20,8 @@ class _DisplayScreenState extends State<DisplayScreen> {
     // final nameP = arguments['placename'];
     return Scaffold(
       appBar: AppBar(title: Text("Comment")),
-      body: Container(
+      body: 
+      Container(
         child: Row(
           children: [
             StreamBuilder(
@@ -88,10 +89,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
                                                 RatingBarIndicator(
                                                   rating: snapshot.data
                                                       .docs[index]['rating'],
-                                                  // _placeDetail.reviews.isEmpty
-                                                  // ? 0.0
-                                                  // : _placeDetail.reviews[index].rating
-                                                  //     .toDouble(),
                                                   itemBuilder:
                                                       (context, index) => Icon(
                                                           Icons.star,
@@ -255,6 +252,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
           ],
         ),
       ),
+    
     );
   }
 }

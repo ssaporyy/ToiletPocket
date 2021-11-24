@@ -110,6 +110,7 @@ class _AddCommentState extends State<AddComment> {
     DateTime now = DateTime.now();
     String formatDate = DateFormat('d MMM, hh:mm a').format(now);
     timestamp = formatDate;
+    
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     final arguments = ModalRoute.of(context).settings.arguments as Map;
 
