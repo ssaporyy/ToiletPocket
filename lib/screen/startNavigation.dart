@@ -50,6 +50,8 @@ class _NavigationState extends State<Navigation> {
     Future.delayed(Duration.zero, () {
       this.setIntitialLocation();
     });
+    // mapController.moveCamera(CameraUpdate.newLatLng(LatLng(currentLocation.latitude, currentLocation.longitude))) as CameraPosition;
+    mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude, currentLocation.longitude), 14));
   }
 
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
@@ -91,6 +93,7 @@ class _NavigationState extends State<Navigation> {
     destinationLocation =
         LatLng(_place.geometry.location.lat, _place.geometry.location.lng);
   }
+  
 
   Widget _textField({
     TextEditingController controller,
@@ -228,9 +231,13 @@ class _NavigationState extends State<Navigation> {
       return _placeDistance;
     }
 
+     CameraPosition _initialCameraPosition = CameraPosition(
+       target: LatLng(_currentlocation.latitude, _currentlocation.longitude),
+       zoom: 13.6,
+       tilt: 20.0,
+      );
     // final current = "${_place.placeId}";
     // final nameplace = "${_place.name}";
-
     return Scaffold(
         backgroundColor: ToiletColors.colorBackground,
         body: Stack(
@@ -247,12 +254,13 @@ class _NavigationState extends State<Navigation> {
                 markers: mySet(),
                 /*_markers,*/
                 polylines: _polylines,
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                      _currentlocation.latitude, _currentlocation.longitude),
-                  zoom: 13.6,
-                  tilt: 20.0,
-                ),
+                initialCameraPosition: _initialCameraPosition,
+                // CameraPosition(
+                //   target: LatLng(
+                //       _currentlocation.latitude, _currentlocation.longitude),
+                //   zoom: 13.6,
+                //   tilt: 20.0,
+                // ),
                 // onCameraMove: (position) {
                 //   setState(() {
                 //     mySet().add(
