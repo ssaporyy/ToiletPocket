@@ -263,15 +263,21 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                 .collection("comment")
                                                 .orderBy('time',
                                                     descending: true)
-                                                .snapshots(),
+                                                .snapshots()
+                                                ,
                                             builder: (context,
-                                                AsyncSnapshot<QuerySnapshot>
+                                                // AsyncSnapshot<QuerySnapshot>
+                                                AsyncSnapshot<QuerySnapshot<Object>>
                                                     snapshot) {
                                               if (!snapshot.hasData) {
                                                 return Center(
                                                   child:
                                                       CircularProgressIndicator(),
                                                 );
+                                              }
+                                              if (snapshot.hasError) {
+                                                return new Text(
+                                                    'Error: ${snapshot.hasError}');
                                               } else {
                                                 return Flexible(
                                                   child: Container(
@@ -286,11 +292,7 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                     itemBuilder:
                                                         (BuildContext context,
                                                             int index) {
-                                                      final imageList = snapshot
-                                                                      .data.docs[
-                                                                  index]
-                                                              ['imgAddcomment']
-                                                          as List;
+                                                      final imageList = snapshot.data.docs[index]['imgAddcomment'] as List;
                                                       if (_place.placeId ==
                                                           snapshot.data
                                                                   .docs[index]
@@ -341,7 +343,8 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                               CircleAvatar(
                                                                             backgroundImage:
                                                                                 NetworkImage(
-                                                                              snapshot.data.docs[index]['imgprofileURL'].toString() != 'null' ? '${snapshot.data.docs[index]['imgprofileURL']}' : 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar',
+                                                                                  // 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
+                                                                              snapshot.data.docs[index]['imgprofileURL'] != 'null' ? '${snapshot.data.docs[index]['imgprofileURL']}' : 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar',
                                                                             ),
                                                                             radius:
                                                                                 20,
@@ -384,7 +387,7 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                             ),
                                                                             Text(
                                                                               // "Watanabe Haruto",
-                                                                              snapshot.data.docs[index]['userName'].toString().isEmpty ? 'Name' : snapshot.data.docs[index]['userName'],
+                                                                              snapshot.data.docs[index]['userName'] == null? 'Name' : snapshot.data.docs[index]['userName'],
                                                                               style: TextStyle(
                                                                                 color: Colors.black,
                                                                                 fontSize: 16.0,
@@ -397,7 +400,7 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                             ),
                                                                             Text(
                                                                               // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
-                                                                              snapshot.data.docs[index]['usercomment'],
+                                                                              snapshot.data.docs[index]['usercomment'] == null?'': snapshot.data.docs[index]['usercomment'],
                                                                               style: TextStyle(
                                                                                 color: Colors.black,
                                                                                 fontSize: 14.0,
@@ -461,12 +464,14 @@ class ToiletDetailState extends State<ToiletDetail> {
                                         ],
                                       ),
                                     ),
+                                    
                                     if (_placeDetail.reviews.isNotEmpty)
                                       Column(
                                         children: [
                                           Container(
                                             child: ListView.builder(
-                                              padding: EdgeInsets.only(top: 5),
+                                              padding: EdgeInsets.only(
+                                                  top: 5, bottom: 50),
                                               physics:
                                                   NeverScrollableScrollPhysics(),
                                               shrinkWrap: true,
@@ -623,7 +628,8 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                       ),
                                                                     ),
                                                                     SizedBox(
-                                                                      height: 5,
+                                                                      height:
+                                                                          15,
                                                                     ),
                                                                   ],
                                                                 ),

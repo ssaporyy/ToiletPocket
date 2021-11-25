@@ -106,7 +106,7 @@ class _AddCommentState extends State<AddComment> {
     DateTime now = DateTime.now();
     String formatDate = DateFormat('d MMM, hh:mm a').format(now);
     timestamp = formatDate;
-    
+
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     final arguments = ModalRoute.of(context).settings.arguments as Map;
 
@@ -236,11 +236,15 @@ class _AddCommentState extends State<AddComment> {
                                             ),
                                           ),
                                           SizedBox(
-                                            height: 3,
+                                            height: 2,
                                           ),
+                                          // SizedBox(
+                                          //   height: 10,
+                                          // ),
                                           Text(
                                             // 'Haruto',
-                                            (user == null || user.isAnonymous
+                                            (user.displayName == null ||
+                                                    user.isAnonymous
                                                 ? 'My Name'
                                                 : '${user.displayName} '),
                                             style: TextStyle(
@@ -335,34 +339,156 @@ class _AddCommentState extends State<AddComment> {
                                         child: Form(
                                           key: fromKey,
                                           child: TextFormField(
-                                            autofocus: false,
-                                            textCapitalization:
-                                                TextCapitalization.words,
-                                            textInputAction:
-                                                TextInputAction.done,
-                                            style: TextStyle(
-                                              fontSize: 13,
-                                              fontFamily:
-                                                  'Sukhumvit' ?? 'SF-Pro',
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            maxLines: 4,
-                                            decoration: InputDecoration(
-                                              hintText: "แสดงความคิดเห็น",
-                                              hintStyle: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily:
-                                                      'Sukhumvit' ?? 'SF-Pro',
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black45),
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            onSaved: (String review) {
-                                              userComment.review = review;
-                                            },
-                                            validator: RequiredValidator(
-                                                errorText: "Please comment"),
-                                          ),
+                                              autofocus: false,
+                                              textCapitalization:
+                                                  TextCapitalization.words,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                fontFamily:
+                                                    'Sukhumvit' ?? 'SF-Pro',
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              maxLines: 4,
+                                              decoration: InputDecoration(
+                                                hintText: "แสดงความคิดเห็น",
+                                                hintStyle: TextStyle(
+                                                    fontSize: 12,
+                                                    fontFamily:
+                                                        'Sukhumvit' ?? 'SF-Pro',
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black45),
+                                                border: OutlineInputBorder(),
+                                              ),
+                                              onSaved: (String review) {
+                                                userComment.review = review;
+                                                print(
+                                                    "+++++++++++++++${review}");
+                                              },
+                                              // validator: (value) {
+                                              //   if (value.isEmpty) {
+                                              //     showDialog(
+                                              //         context: context,
+                                              //         barrierDismissible: false,
+                                              //         builder: (BuildContext
+                                              //             context) {
+                                              //           return AlertDialog(
+                                              //             actionsAlignment:
+                                              //                 MainAxisAlignment
+                                              //                     .center,
+                                              //             actions: <Widget>[
+                                              //               SizedBox(
+                                              //                 height: 10,
+                                              //               ),
+                                              //               Column(children: [
+                                              //                 // Image.asset(
+                                              //                 //   'images/toiletPlus.png',
+                                              //                 //   width: 50,
+                                              //                 //   height: 50,
+                                              //                 // ),
+                                              //                 Image.network(
+                                              //                     'https://www.shareicon.net/data/512x512/2015/08/18/86945_warning_512x512.png'),
+                                              //                 SizedBox(
+                                              //                   height: 18,
+                                              //                 ),
+                                              //                 // Text(
+                                              //                 //   "ขอบคุณสำหรับการเพิ่มห้องน้ำ",
+                                              //                 //   style: TextStyle(
+                                              //                 //     color: Colors.black,
+                                              //                 //     fontWeight:
+                                              //                 //         FontWeight.w600,
+                                              //                 //     fontSize: 18,
+                                              //                 //     fontFamily:
+                                              //                 //         'Sukhumvit' ??
+                                              //                 //             'SF-Pro',
+                                              //                 //   ),
+                                              //                 // ),
+                                              //                 // SizedBox(
+                                              //                 //   height: 10,
+                                              //                 // ),
+                                              //                 Container(
+                                              //                   child: Text(
+                                              //                     "คุณยังไม่ได้กรอกข้อความ\nกรุณาใส่ข้อความ",
+                                              //                     style:
+                                              //                         TextStyle(
+                                              //                       color: Colors
+                                              //                           .black87,
+                                              //                       fontWeight:
+                                              //                           FontWeight
+                                              //                               .w500,
+                                              //                       fontSize:
+                                              //                           15,
+                                              //                       fontFamily:
+                                              //                           'Sukhumvit' ??
+                                              //                               'SF-Pro',
+                                              //                     ),
+                                              //                     textAlign:
+                                              //                         TextAlign
+                                              //                             .center,
+                                              //                   ),
+                                              //                   alignment:
+                                              //                       Alignment
+                                              //                           .topCenter,
+                                              //                   padding:
+                                              //                       EdgeInsets
+                                              //                           .all(5),
+                                              //                   height: 80,
+                                              //                   width: 200,
+                                              //                 ),
+                                              //                 Container(
+                                              //                   width: 100,
+                                              //                   height: 47,
+                                              //                   child:
+                                              //                       ElevatedButton(
+                                              //                     style: ElevatedButton.styleFrom(
+                                              //                         shape:
+                                              //                             StadiumBorder(),
+                                              //                         primary:
+                                              //                             ToiletColors
+                                              //                                 .colorButton2,
+                                              //                         elevation:
+                                              //                             5.0),
+                                              //                     child: Text(
+                                              //                       'ยืนยัน',
+                                              //                       style: TextStyle(
+                                              //                           fontFamily:
+                                              //                               'Sukhumvit' ??
+                                              //                                   'SF-Pro',
+                                              //                           fontSize:
+                                              //                               20),
+                                              //                     ),
+                                              //                     onPressed:
+                                              //                         () async {
+                                              //                       //ยืนยัน
+                                              //                       // Navigator.of(
+                                              //                       //         context)
+                                              //                       //     .pop();
+                                              //                     },
+                                              //                   ),
+                                              //                 ),
+                                              //                 SizedBox(
+                                              //                   height: 15,
+                                              //                 ),
+                                              //               ]),
+                                              //             ],
+                                              //             elevation: 10.0,
+                                              //             shape:
+                                              //                 RoundedRectangleBorder(
+                                              //               borderRadius:
+                                              //                   BorderRadius
+                                              //                       .circular(
+                                              //                           10.0),
+                                              //             ),
+                                              //           );
+                                              //         });
+                                              //   }
+                                              //   return null;
+                                              // }
+
+                                              validator: RequiredValidator(
+                                                  errorText: "Please comment"),
+                                              ),
                                         ),
                                       ),
                                     ),
@@ -403,7 +529,6 @@ class _AddCommentState extends State<AddComment> {
                                                       ),
                                                       highlightColor:
                                                           Colors.white,
-                                                      // onPressed: ()=>!uploading ? chooseImage() : null,
                                                       onPressed: () {
                                                         tripEditModalBottomSheet(
                                                             context);
@@ -795,8 +920,117 @@ class _AddCommentState extends State<AddComment> {
                                         onPressed: () async {
                                           //ยืนยัน
                                           List<String> imageUrlList = [];
-
-                                          if (fromKey.currentState.validate()) {
+                                          // if (userComment.review == "") {
+                                          //   return showDialog(
+                                          //       context: context,
+                                          //       barrierDismissible: false,
+                                          //       builder:
+                                          //           (BuildContext context) {
+                                          //         return AlertDialog(
+                                          //           actionsAlignment:
+                                          //               MainAxisAlignment
+                                          //                   .center,
+                                          //           actions: <Widget>[
+                                          //             SizedBox(
+                                          //               height: 10,
+                                          //             ),
+                                          //             Column(children: [
+                                          //               // Image.asset(
+                                          //               //   'images/toiletPlus.png',
+                                          //               //   width: 50,
+                                          //               //   height: 50,
+                                          //               // ),
+                                          //               Image.network(
+                                          //                 'https://www.shareicon.net/data/512x512/2015/08/18/86945_warning_512x512.png',
+                                          //                 width: 50,
+                                          //                 height: 50,
+                                          //               ),
+                                          //               SizedBox(
+                                          //                 height: 18,
+                                          //               ),
+                                          //               // Text(
+                                          //               //   "ขอบคุณสำหรับการเพิ่มห้องน้ำ",
+                                          //               //   style: TextStyle(
+                                          //               //     color: Colors.black,
+                                          //               //     fontWeight:
+                                          //               //         FontWeight.w600,
+                                          //               //     fontSize: 18,
+                                          //               //     fontFamily:
+                                          //               //         'Sukhumvit' ??
+                                          //               //             'SF-Pro',
+                                          //               //   ),
+                                          //               // ),
+                                          //               // SizedBox(
+                                          //               //   height: 10,
+                                          //               // ),
+                                          //               Container(
+                                          //                 child: Text(
+                                          //                   "คุณยังไม่ได้กรอกข้อความ\nกรุณาใส่ข้อความ",
+                                          //                   style: TextStyle(
+                                          //                     color: Colors
+                                          //                         .black87,
+                                          //                     fontWeight:
+                                          //                         FontWeight
+                                          //                             .w500,
+                                          //                     fontSize: 15,
+                                          //                     fontFamily:
+                                          //                         'Sukhumvit' ??
+                                          //                             'SF-Pro',
+                                          //                   ),
+                                          //                   textAlign: TextAlign
+                                          //                       .center,
+                                          //                 ),
+                                          //                 alignment: Alignment
+                                          //                     .topCenter,
+                                          //                 padding:
+                                          //                     EdgeInsets.all(5),
+                                          //                 height: 80,
+                                          //                 width: 200,
+                                          //               ),
+                                          //               Container(
+                                          //                 width: 100,
+                                          //                 height: 47,
+                                          //                 child: ElevatedButton(
+                                          //                   style: ElevatedButton.styleFrom(
+                                          //                       shape:
+                                          //                           StadiumBorder(),
+                                          //                       primary:
+                                          //                           ToiletColors
+                                          //                               .colorButton2,
+                                          //                       elevation: 5.0),
+                                          //                   child: Text(
+                                          //                     'ยืนยัน',
+                                          //                     style: TextStyle(
+                                          //                         fontFamily:
+                                          //                             'Sukhumvit' ??
+                                          //                                 'SF-Pro',
+                                          //                         fontSize: 20),
+                                          //                   ),
+                                          //                   onPressed:
+                                          //                       () async {
+                                          //                     //ยืนยัน
+                                          //                     Navigator.of(
+                                          //                             context)
+                                          //                         .pop();
+                                          //                   },
+                                          //                 ),
+                                          //               ),
+                                          //               SizedBox(
+                                          //                 height: 15,
+                                          //               ),
+                                          //             ]),
+                                          //           ],
+                                          //           elevation: 10.0,
+                                          //           shape:
+                                          //               RoundedRectangleBorder(
+                                          //             borderRadius:
+                                          //                 BorderRadius.circular(
+                                          //                     10.0),
+                                          //           ),
+                                          //         );
+                                          //       });
+                                          // }
+                                          if (fromKey.currentState.validate()&&userComment.review.isNotEmpty) {
                                             fromKey.currentState.save();
                                             for (var img in _image) {
                                               ref = firebase_storage
@@ -810,15 +1044,22 @@ class _AddCommentState extends State<AddComment> {
                                               imageUrlList.add(downloadUrl);
                                             }
                                             await addComment.add({
-                                              'usercomment': userComment.review,
+                                              'usercomment':
+                                                  userComment.review == null
+                                                      ? "No comment"
+                                                      : userComment.review,
                                               'uid': user.uid,
                                               'imgprofileURL': user.photoURL,
                                               'userName': user.displayName,
                                               'time': timestamp,
                                               'rating': rating,
-                                              'imgAddcomment': imageUrlList.isEmpty? null:imageUrlList,
+                                              'imgAddcomment':
+                                                  imageUrlList.isEmpty
+                                                      ? null
+                                                      : imageUrlList,
                                               'placeId': arguments['current'],
-                                              'placeName': arguments['placeName'],
+                                              'placeName':
+                                                  arguments['placeName'],
                                             });
                                             fromKey.currentState.reset();
                                           }
@@ -826,14 +1067,7 @@ class _AddCommentState extends State<AddComment> {
                                           Navigator.pushNamed(
                                             context,
                                             '/two',
-                                            // arguments: {
-                                              // 'placeid': arguments['current'],
-                                              // 'placeid': placeid,
-                                              // 'placename':placename,
-                                            // },
                                           );
-                                          // print(placeid.placeId);
-                                          // Navigator.pushNamed(context, '/o');
                                         },
 
                                         padding: EdgeInsets.all(10.0),

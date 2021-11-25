@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/directionModel/direction.dart';
 import 'package:ToiletPocket/models/places.dart';
+import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,17 +43,56 @@ class _NavigationState extends State<Navigation> {
 
   double rating = 3.0;
 
+  final GeoLocatorService geoService = GeoLocatorService();
+
+  // bool _isLocationGranted = false;
+
+  // var currentLocations;
+
+  // final List<Marker> markers = [];
 
   @override
   void initState() {
+    // final _args =
+    //     ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    // final _currentlocation = _args['current'] as Position;
+    geoService.getCurrentLocation().listen((_currentlocation) {
+      centerScreen(_currentlocation);
+    });
+    // geoService.getCurrentLocation().listen((position) {
+    //   centerScreen(position);
+    // });
     super.initState();
     polylinePoints = PolylinePoints();
     Future.delayed(Duration.zero, () {
       this.setIntitialLocation();
     });
-    // mapController.moveCamera(CameraUpdate.newLatLng(LatLng(currentLocation.latitude, currentLocation.longitude))) as CameraPosition;
-    mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude, currentLocation.longitude), 14));
+
+
+
+
+    //   mapController.moveCamera(CameraUpdate.newLatLng(
+    //           LatLng(currentLocation.latitude, currentLocation.longitude)))
+    //       as CameraPosition;
+    //   // mapController.animateCamera(CameraUpdate.newLatLngZoom(
+    //   //     LatLng(_currentlocation.latitude, _currentlocation.longitude), 14));
+    //   // mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude, currentLocation.longitude), 14));
+    // });
   }
+
+    Future<void> centerScreen(_currentlocation) async {
+    final GoogleMapController controller = await _controller.future;
+    
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(_currentlocation.latitude, _currentlocation.longitude), zoom: 13)));
+  }
+  //   Future<void> centerScreen(Position position) async {
+  //   final GoogleMapController controller = await _controller.future;
+
+  //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+  //       target: LatLng(position.latitude, position.longitude), zoom: 10)));
+  // }
+
 
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
     sourceIcon = await BitmapDescriptor.fromAssetImage(
@@ -93,7 +133,6 @@ class _NavigationState extends State<Navigation> {
     destinationLocation =
         LatLng(_place.geometry.location.lat, _place.geometry.location.lng);
   }
-  
 
   Widget _textField({
     TextEditingController controller,
@@ -231,11 +270,11 @@ class _NavigationState extends State<Navigation> {
       return _placeDistance;
     }
 
-     CameraPosition _initialCameraPosition = CameraPosition(
-       target: LatLng(_currentlocation.latitude, _currentlocation.longitude),
-       zoom: 13.6,
-       tilt: 20.0,
-      );
+    CameraPosition _initialCameraPosition = CameraPosition(
+      target: LatLng(_currentlocation.latitude, _currentlocation.longitude),
+      zoom: 13.6,
+      tilt: 20.0,
+    );
     // final current = "${_place.placeId}";
     // final nameplace = "${_place.name}";
     return Scaffold(
@@ -278,7 +317,18 @@ class _NavigationState extends State<Navigation> {
                     print('controller');
                     print(e);
                   }
-
+                  // try {
+                  //   _onMapCreated;
+                  // } catch (e) {
+                  //   print('_onMapCreated');
+                  //   print(e);
+                  // }
+                  // try {
+                  //   _onMapmarker;
+                  // } catch (e) {
+                  //   print('_onMapmarker');
+                  //   print(e);
+                  // }
                   try {
                     showPinOnMap();
                   } catch (e) {
@@ -294,8 +344,12 @@ class _NavigationState extends State<Navigation> {
                     print(e);
                   }
                 },
-              ),
+
+          
+        ),
+        
             ),
+           
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
@@ -458,7 +512,6 @@ class _NavigationState extends State<Navigation> {
                                       side: BorderSide(
                                           color: ToiletColors.colorButton2)),
                                   onPressed: () {
-
                                     showDialog(
                                       context: context,
                                       barrierDismissible: false,
@@ -648,6 +701,7 @@ class _NavigationState extends State<Navigation> {
                                                                         .email,
                                                                 'time':
                                                                     timestamp,
+                                                                  'placeId':_place.placeId,
                                                               });
                                                               print(
                                                                   "Push called");
@@ -662,9 +716,7 @@ class _NavigationState extends State<Navigation> {
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();
-                                                          }
-
-                                                          ),
+                                                          }),
                                                     ),
                                                   ]),
                                               SizedBox(
@@ -772,6 +824,7 @@ class _NavigationState extends State<Navigation> {
                 ),
               ),
             ),
+         
           ],
         ));
   }
