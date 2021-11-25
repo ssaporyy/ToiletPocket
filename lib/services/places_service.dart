@@ -87,14 +87,18 @@ class PlacesService {
     var jsonResults = json['results'] as List;
     return jsonResults.map((place) => Place.fromJson(place)).toList();
   }
+
   //new
-  Future<DistanceMatrix> getDirection(double lat1, double lng1,double lat2, double lng2) async {
+  Future<DistanceMatrix> getDirection(
+      double lat1, double lng1, double lat2, double lng2) async {
     final _url =
         'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=$lat2,$lng2&language=th-TH&mode=driving&origins=$lat1,$lng1&key=$key';
     final response = await http.get(Uri.parse(_url));
     final json = convert.jsonDecode(response.body);
-    final jsonResult = json['results'] as Map<String, dynamic>;
-    return DistanceMatrix.fromJson(jsonResult);
+    // final jsonResult = json['results'] as Map<String, dynamic>;
+    // return DistanceMatrix.fromJson(jsonResult);
+    
+    return DistanceMatrix.fromJson(json.decode(response.body));
+    // return DistanceMatrix.fromJson(convert.decode(response.body));
   }
-
 }

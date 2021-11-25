@@ -1,21 +1,20 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/directionModel/direction.dart';
 import 'package:ToiletPocket/models/places.dart';
-import 'package:ToiletPocket/services/places_service.dart';
-import 'package:ToiletPocket/star.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import 'dart:math' show cos, sqrt, asin;
+
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({Key key}) : super(key: key);
@@ -41,6 +40,9 @@ class _NavigationState extends State<Navigation> {
   PolylinePoints polylinePoints;
   String _placeDistance;
 
+  double rating = 3.0;
+
+
   @override
   void initState() {
     super.initState();
@@ -65,14 +67,6 @@ class _NavigationState extends State<Navigation> {
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _currentlocation = _args['current'] as Position;
-
-    // final _place = _args['places'] as Places;
-    // var location = new Location();
-    // try {
-    //   _currentPosition = await location.getLocation();
-    // } on Exception {
-    //   _currentPosition = null;
-    // }
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
         bearing: 0,
@@ -156,9 +150,20 @@ class _NavigationState extends State<Navigation> {
     final _currentlocation = _args['current'] as Position;
     final _place = _args['places'] as Places;
     var width = MediaQuery.of(context).size.width;
-    final user = FirebaseAuth.instance.currentUser;
     //get directionModel
     final directions = _args['direction'] as DistanceMatrix;
+
+    CollectionReference addRating =
+        FirebaseFirestore.instance.collection('comment');
+    final Future<FirebaseApp> firebase = Firebase.initializeApp();
+    final user = FirebaseAuth.instance.currentUser;
+    final fromKey = GlobalKey<FormState>();
+
+    String timestamp;
+
+    DateTime now = DateTime.now();
+    String formatDate = DateFormat('d MMM, hh:mm a').format(now);
+    timestamp = formatDate;
 
     Marker sourcePin() {
       // print('=================src lat: ${_currentlocation.latitude}');
@@ -445,12 +450,6 @@ class _NavigationState extends State<Navigation> {
                                       side: BorderSide(
                                           color: ToiletColors.colorButton2)),
                                   onPressed: () {
-                                    // print('${_currentlocation.latitude}'
-                                    //     '++++++'
-                                    //     '${_currentlocation.longitude}');
-                                    // print('${_place.geometry.location.lat}'
-                                    //     '++++++'
-                                    //     '${_place.geometry.location.lng}');
 
                                     showDialog(
                                       context: context,
@@ -477,8 +476,76 @@ class _NavigationState extends State<Navigation> {
                                               SizedBox(
                                                 height: 10,
                                               ),
+                                              // Container(
+                                              //     height: 80, child: Star()),
                                               Container(
-                                                  height: 80, child: Star()),
+                                                height: 80,
+                                                //ยังไม่ได้แก้ ส่วนนี้เป็นดาวที่ให้เรทติ้งที่อยู่ หน้า star.dart
+                                                child:
+                                                    // Star2()
+                                                    Center(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      SmoothStarRating(
+                                                        rating: rating,
+                                                        borderColor:
+                                                            Colors.amber,
+                                                        color: Colors.amber,
+                                                        size: 35,
+                                                        filledIconData:
+                                                            Icons.star,
+                                                        halfFilledIconData:
+                                                            Icons.star_half,
+                                                        defaultIconData:
+                                                            Icons.star_border,
+                                                        starCount: 5,
+                                                        allowHalfRating: false,
+                                                        spacing: 2.0,
+                                                        onRated: (value) {
+                                                          setState(() {
+                                                            rating = value;
+                                                          });
+                                                        },
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text(
+                                                        // "คุณให้คะแนน $rating คะแนน",
+                                                        rating == 5.0
+                                                            ? 'ดีเยี่ยม'
+                                                            : ((rating < 5.0) &
+                                                                    (rating >
+                                                                        3.0))
+                                                                ? 'ดี'
+                                                                : ((rating <
+                                                                            4.0) &
+                                                                        (rating >
+                                                                            2.0))
+                                                                    ? 'พอใช้'
+                                                                    : ((rating <
+                                                                                3.0) &
+                                                                            (rating >
+                                                                                1.0))
+                                                                        ? 'ควรปรับปรุง'
+                                                                        : ((rating < 2.0) &
+                                                                                (rating > 0.0))
+                                                                            ? 'แย่'
+                                                                            : 'คะแนนความพึงพอใจ',
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'Sukhumvit' ??
+                                                                  'SF-Pro',
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
                                               Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
@@ -538,31 +605,58 @@ class _NavigationState extends State<Navigation> {
                                                       width: 100,
                                                       height: 47,
                                                       child: ElevatedButton(
-                                                        // Within the `FirstScreen` widget
-                                                        style: ElevatedButton.styleFrom(
-                                                            shape:
-                                                                StadiumBorder(),
-                                                            primary: ToiletColors
-                                                                .colorButton2,
-                                                            elevation: 5.0),
+                                                          // Within the `FirstScreen` widget
+                                                          style: ElevatedButton.styleFrom(
+                                                              shape:
+                                                                  StadiumBorder(),
+                                                              primary: ToiletColors
+                                                                  .colorButton2,
+                                                              elevation: 5.0),
+                                                          child: Text(
+                                                            'ยืนยัน',
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'Sukhumvit' ??
+                                                                        'SF-Pro',
+                                                                fontSize: 20),
+                                                          ),
+                                                          onPressed: () async {
+                                                            try {
+                                                              await addRating
+                                                                  .add({
+                                                                'rating':
+                                                                    rating,
+                                                                'userName': user
+                                                                            .displayName ==
+                                                                        null
+                                                                    ? 'isAnonymous'
+                                                                    : user
+                                                                        .displayName,
+                                                                'email': user
+                                                                            .email ==
+                                                                        null
+                                                                    ? 'isAnonymous'
+                                                                    : user
+                                                                        .email,
+                                                                'time':
+                                                                    timestamp,
+                                                              });
+                                                              print(
+                                                                  "Push called");
+                                                            } catch (e) {
+                                                              print(
+                                                                  "You got an error! $e");
+                                                            }
 
-                                                        child: Text(
-                                                          'ยืนยัน',
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'Sukhumvit' ??
-                                                                      'SF-Pro',
-                                                              fontSize: 20),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          // Navigator.pushNamed(
-                                                          //     context, '/two');
-                                                        },
-                                                      ),
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          }
+
+                                                          ),
                                                     ),
                                                   ]),
                                               SizedBox(
@@ -578,7 +672,6 @@ class _NavigationState extends State<Navigation> {
                                         );
                                       },
                                     );
-                                  
                                   },
                                   padding: EdgeInsets.all(10.0),
                                   color: ToiletColors.colorButton2,

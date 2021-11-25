@@ -22,7 +22,7 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
   void setCustomMarker() async {
     customIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(/*size: Size(40, 40)*/ devicePixelRatio: 2.5),
-        'images/Icon-flush.png');
+        /*'images/Icon-flush.png'*/'images/flush.png');
   }
 
   @override
@@ -33,11 +33,13 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
 
   void _onMapCreated(GoogleMapController controller) {
     final arguments = ModalRoute.of(context).settings.arguments as Map;
+    final currentPosition = Provider.of<Position>(context);
     setState(() {
       _markers.add(Marker(
           markerId: MarkerId('AddMarker'),
-          position: LatLng(arguments['currentlocationLat'],
-              arguments['currentlocationLong']),
+          position: LatLng(currentPosition.latitude, currentPosition.longitude),
+          // position: LatLng(arguments['currentlocationLat'],
+          //     arguments['currentlocationLong']),
           icon: customIcon,
           infoWindow: InfoWindow(title: arguments['name'])));
     });
@@ -74,10 +76,10 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
                 zoomControlsEnabled: false,
                 compassEnabled: false,
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(arguments['currentlocationLat'],
-                      arguments['currentlocationLong']),
-                  // target: LatLng(
-                  //     currentPosition.latitude, currentPosition.longitude),
+                  // target: LatLng(arguments['currentlocationLat'],
+                  //     arguments['currentlocationLong']),
+                  target: LatLng(
+                      currentPosition.latitude, currentPosition.longitude),
                   zoom: 18.0,
                   tilt: 20.0,
                   // bearing: 30,

@@ -312,7 +312,7 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                 ),
                                 Container(
                                   height: 80,
-                                  //ยังไม่ได้แก้ ส่วนนี้เป็นดาวที่ให้เรทติ้งที่อยู่ หน้า star.dart
+                                  //ส่วนนี้เป็นดาวที่ให้เรทติ้งที่อยู่ หน้า star.dart
                                   child:
                                       // Star2()
                                       Center(
@@ -657,17 +657,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                           'SF-Pro',
                                                     ),
                                                   ),
-                                                  // Text(
-                                                  //   "สำหรับการเพิ่มห้องน้ำ",
-                                                  //   style: TextStyle(
-                                                  //     color: Colors.black,
-                                                  //     fontWeight:
-                                                  //         FontWeight.w600,
-                                                  //     fontSize: 20,
-                                                  //     fontFamily: 'Sukhumvit' ??
-                                                  //         'SF-Pro',
-                                                  //   ),
-                                                  // ),
                                                   SizedBox(
                                                     height: 10,
                                                   ),

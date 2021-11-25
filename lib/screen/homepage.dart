@@ -434,7 +434,7 @@ class _HomePageState extends State<HomePage> {
                                 onPressed: () async {
                                   //กดไปหน้า นำทาง
                                   //set direction
-                                  final direction = await placesService.getDirection(lat1, lng1, lat2, lng2);
+                                  // final direction = await placesService.getDirection(lat1, lng1, lat2, lng2);
 
                                   Navigator.pushNamed(
                                     context,
@@ -442,7 +442,7 @@ class _HomePageState extends State<HomePage> {
                                     arguments: {
                                       'places': push,
                                       'current': navigate,
-                                      'direction': direction,
+                                      // 'direction': direction,
                                     },
                                   );
                                 },
