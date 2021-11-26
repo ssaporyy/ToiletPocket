@@ -21,7 +21,7 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
 
   void setCustomMarker() async {
     customIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(/*size: Size(40, 40)*/ devicePixelRatio: 2.5),
+        ImageConfiguration(size: Size(15, 15), devicePixelRatio: 2.5),
         /*'images/Icon-flush.png'*/'images/flush.png');
   }
 
@@ -37,13 +37,17 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
     setState(() {
       _markers.add(Marker(
           markerId: MarkerId('AddMarker'),
-          position: LatLng(currentPosition.latitude, currentPosition.longitude),
-          // position: LatLng(arguments['currentlocationLat'],
-          //     arguments['currentlocationLong']),
+          // position: LatLng(currentPosition.latitude, currentPosition.longitude),
+          position: LatLng(arguments['currentlocationLat'],
+              arguments['currentlocationLong']),
           icon: customIcon,
-          infoWindow: InfoWindow(title: arguments['name'])));
+          // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          // infoWindow: InfoWindow(title: arguments['name'])
+          ));
     });
   }
+
+  BitmapDescriptor sourceIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +55,27 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
     final currentPosition = Provider.of<Position>(context);
     final arguments = ModalRoute.of(context).settings.arguments as Map;
 
+    Marker sourcePin() {
+      // print('=================src lat: ${_currentlocation.latitude}');
+      // print('=================src lng: ${_currentlocation.longitude}');
+      return Marker(
+        markerId: MarkerId('sourcepin'),
+        position: LatLng(arguments['currentlocationLat'], arguments['currentlocationLong']),
+        // icon: sourceIcon,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      );
+    }
+
+    Set<Marker> mySet() {
+      return <Marker>[sourcePin()].toSet();
+    }
+
+
     Set<Circle> myCircles = Set.from([
       Circle(
         circleId: CircleId('pin add toilet'),
-        center: LatLng(currentPosition.latitude, currentPosition.longitude),
+        center: LatLng(arguments['currentlocationLat'], arguments['currentlocationLong']),
+        // center: LatLng(currentPosition.latitude, currentPosition.longitude),
         radius: 80,
         fillColor: Colors.blue.shade100.withOpacity(0.5),
         strokeColor: Colors.blue.shade100.withOpacity(0.1),
@@ -76,10 +97,10 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
                 zoomControlsEnabled: false,
                 compassEnabled: false,
                 initialCameraPosition: CameraPosition(
-                  // target: LatLng(arguments['currentlocationLat'],
-                  //     arguments['currentlocationLong']),
-                  target: LatLng(
-                      currentPosition.latitude, currentPosition.longitude),
+                  target: LatLng(arguments['currentlocationLat'],
+                      arguments['currentlocationLong']),
+                  // target: LatLng(
+                  //     currentPosition.latitude, currentPosition.longitude),
                   zoom: 18.0,
                   tilt: 20.0,
                   // bearing: 30,
@@ -91,9 +112,9 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
                 // },
                 onCameraMove: null,
                 circles: myCircles,
-                // markers: Set<Marker>.of(markers),
-                markers: _markers,
-                // markers: mySet(),
+                // markers: Set<Marker>.of(_markers),
+                // markers: _markers,
+                markers: mySet(),
                 // myLocationButtonEnabled: false,
               ),
             ),

@@ -230,7 +230,7 @@ class _AddCommentState extends State<AddComment> {
                                               radius: 45.0,
                                               backgroundImage: NetworkImage(user ==
                                                           null ||
-                                                      user.isAnonymous
+                                                      user.isAnonymous || user.photoURL.isEmpty
                                                   ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
                                                   : (user.photoURL)),
                                             ),
@@ -1030,14 +1030,14 @@ class _AddCommentState extends State<AddComment> {
                                           //         );
                                           //       });
                                           // }
-                                          if (fromKey.currentState.validate()&&userComment.review.isNotEmpty) {
+                                          if (fromKey.currentState.validate()|| userComment.review.isNotEmpty || userComment.review == null) {
                                             fromKey.currentState.save();
                                             for (var img in _image) {
                                               ref = firebase_storage
                                                   .FirebaseStorage.instance
                                                   .ref()
                                                   .child(
-                                                      'images/${Path.basename(img.path)}');
+                                                      'images/${Path.basename(img?.path)}');
                                               await ref.putFile(img);
                                               final String downloadUrl =
                                                   await ref.getDownloadURL();
@@ -1045,7 +1045,7 @@ class _AddCommentState extends State<AddComment> {
                                             }
                                             await addComment.add({
                                               'usercomment':
-                                                  userComment.review == null
+                                                  userComment.review == null || userComment.review.isEmpty
                                                       ? "No comment"
                                                       : userComment.review,
                                               'uid': user.uid,
@@ -1054,7 +1054,7 @@ class _AddCommentState extends State<AddComment> {
                                               'time': timestamp,
                                               'rating': rating,
                                               'imgAddcomment':
-                                                  imageUrlList.isEmpty
+                                                  imageUrlList.isEmpty || imageUrlList ==null
                                                       ? null
                                                       : imageUrlList,
                                               'placeId': arguments['current'],

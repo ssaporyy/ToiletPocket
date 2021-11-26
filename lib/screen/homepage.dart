@@ -420,140 +420,143 @@ class _HomePageState extends State<HomePage> {
                         child: myDetailsContainer1(toiletName, score, rating,
                             address, openClose, context),
                       ),
-                      Container(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 90,
-                              width: 240,
-                              child: RaisedButton(
-                                color: ToiletColors.colorButton,
+                      Flexible(
+                        child: Container(
+                          padding: new EdgeInsets.only(right: 13.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 90,
+                                width: 240,
+                                child: RaisedButton(
+                                  color: ToiletColors.colorButton,
 
-                                onPressed: () async {
-                                  //กดไปหน้า นำทาง
-                                  //set direction
-                                  // final direction = await placesService.getDirection(lat1, lng1, lat2, lng2);
+                                  onPressed: () async {
+                                    //กดไปหน้า นำทาง
+                                    //set direction
+                                    // final direction = await placesService.getDirection(lat1, lng1, lat2, lng2);
 
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/eight',
-                                    arguments: {
-                                      'places': push,
-                                      'current': navigate,
-                                      // 'direction': direction,
-                                    },
-                                  );
-                                },
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(15),
-                                    bottom: Radius.circular(15),
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/eight',
+                                      arguments: {
+                                        'places': push,
+                                        'current': navigate,
+                                        // 'direction': direction,
+                                      },
+                                    );
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(15),
+                                      bottom: Radius.circular(15),
+                                    ),
                                   ),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.directions,
+                                        color: ToiletColors.colorText,
+                                        size: 35,
+                                      ),
+                                      SizedBox(width: 15.0),
+                                      Text(
+                                        'เส้นทาง',
+                                        style: TextStyle(
+                                          color: ToiletColors.colorText,
+                                          fontSize: 30.0,
+                                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                          // fontWeight: FontWeight.normal
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  elevation: 1,
+                                  padding: new EdgeInsets.fromLTRB(28, 7, 28, 7),
                                 ),
+                              ),
+                              // SizedBox(width: 50.0),
+                              Container(
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.directions,
-                                      color: ToiletColors.colorText,
-                                      size: 35,
+                                  children: [
+                                    Container(
+                                      width: 85.0,
+                                      height: 80.0,
+                                      child: RaisedButton(
+                                        color: ToiletColors.colorButton,
+                                        onPressed: () {},
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(30),
+                                            bottom: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.smoking_rooms_rounded,
+                                          color: ToiletColors.colorText,
+                                          size: 35,
+                                        ),
+                                        elevation: 1,
+                                        padding:
+                                            new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                      ),
                                     ),
                                     SizedBox(width: 15.0),
-                                    Text(
-                                      'เส้นทาง',
-                                      style: TextStyle(
-                                        color: ToiletColors.colorText,
-                                        fontSize: 30.0,
-                                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                                        // fontWeight: FontWeight.normal
+                                    Container(
+                                      width: 85.0,
+                                      height: 80.0,
+                                      child: RaisedButton(
+                                        color: ToiletColors.colorButton,
+                                        onPressed: () {},
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(30),
+                                            bottom: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.accessible,
+                                          color: ToiletColors.colorText,
+                                          size: 35,
+                                        ),
+                                        elevation: 1,
+                                        padding:
+                                            new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                      ),
+                                    ),
+                                    SizedBox(width: 15.0),
+                                    Container(
+                                      width: 85.0,
+                                      height: 80.0,
+                                      child: RaisedButton(
+                                        color: ToiletColors.colorButton,
+                                        onPressed: () {},
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(30),
+                                            bottom: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.wc,
+                                          color: ToiletColors.colorText,
+                                          size: 35,
+                                        ),
+                                        elevation: 1,
+                                        padding:
+                                            new EdgeInsets.fromLTRB(3, 7, 3, 7),
                                       ),
                                     ),
                                   ],
                                 ),
-                                elevation: 1,
-                                padding: new EdgeInsets.fromLTRB(28, 7, 28, 7),
                               ),
-                            ),
-                            // SizedBox(width: 50.0),
-                            Container(
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 85.0,
-                                    height: 80.0,
-                                    child: RaisedButton(
-                                      color: ToiletColors.colorButton,
-                                      onPressed: () {},
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(30),
-                                          bottom: Radius.circular(30),
-                                        ),
-                                      ),
-                                      child: Icon(
-                                        Icons.smoking_rooms_rounded,
-                                        color: ToiletColors.colorText,
-                                        size: 35,
-                                      ),
-                                      elevation: 1,
-                                      padding:
-                                          new EdgeInsets.fromLTRB(3, 7, 3, 7),
-                                    ),
-                                  ),
-                                  SizedBox(width: 15.0),
-                                  Container(
-                                    width: 85.0,
-                                    height: 80.0,
-                                    child: RaisedButton(
-                                      color: ToiletColors.colorButton,
-                                      onPressed: () {},
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(30),
-                                          bottom: Radius.circular(30),
-                                        ),
-                                      ),
-                                      child: Icon(
-                                        Icons.accessible,
-                                        color: ToiletColors.colorText,
-                                        size: 35,
-                                      ),
-                                      elevation: 1,
-                                      padding:
-                                          new EdgeInsets.fromLTRB(3, 7, 3, 7),
-                                    ),
-                                  ),
-                                  SizedBox(width: 15.0),
-                                  Container(
-                                    width: 85.0,
-                                    height: 80.0,
-                                    child: RaisedButton(
-                                      color: ToiletColors.colorButton,
-                                      onPressed: () {},
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(30),
-                                          bottom: Radius.circular(30),
-                                        ),
-                                      ),
-                                      child: Icon(
-                                        Icons.wc,
-                                        color: ToiletColors.colorText,
-                                        size: 35,
-                                      ),
-                                      elevation: 1,
-                                      padding:
-                                          new EdgeInsets.fromLTRB(3, 7, 3, 7),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],
