@@ -49,30 +49,33 @@ class ToiletDetailState extends State<ToiletDetail> {
                       padding:
                           EdgeInsets.only(top: 0.0, left: 13.0, right: 0.0),
                       child: Container(
-                        padding: EdgeInsets.only(top: 30.0),
+                        padding: EdgeInsets.only(top: 40.0),
                         child: InkWell(
                           onTap: () {
                             // Navigator.pushNamed(context, '/two');
                             Navigator.of(context).pop();
+                            // Navigator.pop(context);
                           },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.arrow_back_ios_rounded,
-                                size: 18,
-                                color: Colors.black87,
-                              ),
-                              Text(
-                                'กลับ',
-                                style: TextStyle(
+                          child: IgnorePointer(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.arrow_back_ios_rounded,
+                                  size: 18,
                                   color: Colors.black87,
-                                  fontSize: 15.0,
-                                  fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                                  fontWeight: FontWeight.w500,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  'กลับ',
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 15.0,
+                                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
