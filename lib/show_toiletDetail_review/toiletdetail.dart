@@ -344,7 +344,7 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                             backgroundImage:
                                                                                 NetworkImage(
                                                                                   // 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
-                                                                              snapshot.data.docs[index]['imgprofileURL'] != 'null' ? '${snapshot.data.docs[index]['imgprofileURL']}' : 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar',
+                                                                              snapshot.data.docs[index]['imgprofileURL'] != null ? '${snapshot.data.docs[index]['imgprofileURL']}' : 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar',
                                                                             ),
                                                                             radius:
                                                                                 20,

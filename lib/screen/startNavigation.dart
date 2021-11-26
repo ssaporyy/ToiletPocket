@@ -694,8 +694,12 @@ class _NavigationState extends State<Navigation> {
                                                                         .email,
                                                                 'time':
                                                                     timestamp,
-                                                                'placeId': _place
-                                                                    .placeId,
+                                                                  'placeId':_place.placeId,
+                                                                  'placeName':_place.name,
+                                                                  'usercomment': '',
+                                                                  'imgAddcomment': null,
+                                                                  'imgprofileURL': user.photoURL,
+
                                                               });
                                                               print(
                                                                   "Push called");

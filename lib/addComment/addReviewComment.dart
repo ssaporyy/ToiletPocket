@@ -1045,7 +1045,7 @@ class _AddCommentState extends State<AddComment> {
                                             }
                                             await addComment.add({
                                               'usercomment':
-                                                  userComment.review == null || userComment.review.isEmpty
+                                                  userComment.review == null
                                                       ? "No comment"
                                                       : userComment.review,
                                               'uid': user.uid,
@@ -1054,7 +1054,7 @@ class _AddCommentState extends State<AddComment> {
                                               'time': timestamp,
                                               'rating': rating,
                                               'imgAddcomment':
-                                                  imageUrlList.isEmpty || imageUrlList ==null
+                                                  imageUrlList.isEmpty
                                                       ? null
                                                       : imageUrlList,
                                               'placeId': arguments['current'],
