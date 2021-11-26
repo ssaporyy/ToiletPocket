@@ -68,9 +68,6 @@ class _NavigationState extends State<Navigation> {
       this.setIntitialLocation();
     });
 
-
-
-
     //   mapController.moveCamera(CameraUpdate.newLatLng(
     //           LatLng(currentLocation.latitude, currentLocation.longitude)))
     //       as CameraPosition;
@@ -80,11 +77,12 @@ class _NavigationState extends State<Navigation> {
     // });
   }
 
-    Future<void> centerScreen(_currentlocation) async {
+  Future<void> centerScreen(_currentlocation) async {
     final GoogleMapController controller = await _controller.future;
-    
+
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(_currentlocation.latitude, _currentlocation.longitude), zoom: 13)));
+        target: LatLng(_currentlocation.latitude, _currentlocation.longitude),
+        zoom: 13)));
   }
   //   Future<void> centerScreen(Position position) async {
   //   final GoogleMapController controller = await _controller.future;
@@ -92,7 +90,6 @@ class _NavigationState extends State<Navigation> {
   //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
   //       target: LatLng(position.latitude, position.longitude), zoom: 10)));
   // }
-
 
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
     sourceIcon = await BitmapDescriptor.fromAssetImage(
@@ -306,7 +303,7 @@ class _NavigationState extends State<Navigation> {
                 //         Marker(markerId: MarkerId('id'), position: position.target));
                 //   });
                 // },
-                padding: EdgeInsets.only(left: 500),
+                //padding: EdgeInsets.only(left: 500),
 
                 //อันเก่า ------------------------------------------
                 onMapCreated: (GoogleMapController controller) async {
@@ -344,12 +341,8 @@ class _NavigationState extends State<Navigation> {
                     print(e);
                   }
                 },
-
-          
-        ),
-        
+              ),
             ),
-           
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
@@ -701,7 +694,8 @@ class _NavigationState extends State<Navigation> {
                                                                         .email,
                                                                 'time':
                                                                     timestamp,
-                                                                  'placeId':_place.placeId,
+                                                                'placeId': _place
+                                                                    .placeId,
                                                               });
                                                               print(
                                                                   "Push called");
@@ -824,7 +818,6 @@ class _NavigationState extends State<Navigation> {
                 ),
               ),
             ),
-         
           ],
         ));
   }
