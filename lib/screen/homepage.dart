@@ -290,20 +290,17 @@ class _HomePageState extends State<HomePage> {
                                                       places[index],
                                                       // places[index],
                                                       currentPosition,
-                                                      
-                                                        currentPosition
-                                                            .latitude,
-                                                        currentPosition
-                                                            .longitude,
-                                                        places[index]
-                                                            .geometry
-                                                            .location
-                                                            .lat,
-                                                        places[index]
-                                                            .geometry
-                                                            .location
-                                                            .lng,
-                                                      
+                                                      currentPosition.latitude,
+                                                      currentPosition.longitude,
+                                                      places[index]
+                                                          .geometry
+                                                          .location
+                                                          .lat,
+                                                      places[index]
+                                                          .geometry
+                                                          .location
+                                                          .lng,
+
                                                       /**openClose */
                                                       //'',
                                                       '${places[index].openingHours == null || places[index].openingHours.openNow.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
@@ -432,7 +429,6 @@ class _HomePageState extends State<HomePage> {
                                 width: 240,
                                 child: RaisedButton(
                                   color: ToiletColors.colorButton,
-
                                   onPressed: () async {
                                     //กดไปหน้า นำทาง
                                     //set direction
@@ -455,7 +451,8 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
@@ -477,7 +474,8 @@ class _HomePageState extends State<HomePage> {
                                     ],
                                   ),
                                   elevation: 1,
-                                  padding: new EdgeInsets.fromLTRB(28, 7, 28, 7),
+                                  padding:
+                                      new EdgeInsets.fromLTRB(28, 7, 28, 7),
                                 ),
                               ),
                               // SizedBox(width: 50.0),

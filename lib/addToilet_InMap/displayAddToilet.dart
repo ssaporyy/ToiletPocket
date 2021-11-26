@@ -41,6 +41,7 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
         position: LatLng(
             arguments['currentlocationLat'], arguments['currentlocationLong']),
         icon: customIcon,
+        infoWindow: InfoWindow(title: arguments['name'])
         // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         // infoWindow: InfoWindow(title: arguments['name'])
       ));

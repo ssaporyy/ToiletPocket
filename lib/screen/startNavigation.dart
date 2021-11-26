@@ -12,8 +12,9 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 
-import 'dart:math' show cos, sqrt, asin;
+import 'dart:math' show cos, sqrt, asin, Math;
 
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
@@ -51,6 +52,8 @@ class _NavigationState extends State<Navigation> {
 
   // final List<Marker> markers = [];
 
+  double lat1, lng1, lat2, lng2, distance;
+
   @override
   void initState() {
     // final _args =
@@ -67,6 +70,7 @@ class _NavigationState extends State<Navigation> {
     Future.delayed(Duration.zero, () {
       this.setIntitialLocation();
     });
+    findLat1Lng1();
 
     //   mapController.moveCamera(CameraUpdate.newLatLng(
     //           LatLng(currentLocation.latitude, currentLocation.longitude)))
@@ -75,6 +79,41 @@ class _NavigationState extends State<Navigation> {
     //   //     LatLng(_currentlocation.latitude, _currentlocation.longitude), 14));
     //   // mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude, currentLocation.longitude), 14));
     // });
+  }
+
+  Future<Null> findLat1Lng1() async {
+    final _args =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final _currentlocation = _args['current'] as Position;
+    final _place = _args['places'] as Places;
+    // LocationData locationData = await findLocationData();
+    setState(() {
+      lat1 = currentLocation.latitude;
+      lng1 = currentLocation.longitude;
+      lat2 = destinationLocation.latitude;
+      lng2 = destinationLocation.longitude;
+      print('lat1 = $lat1, lng1 =$lng1, lat2 = $lat2, lng2 = $lng2');
+      distance = calculateDistance(lat1, lng1, lat2, lng2);
+    });
+  }
+
+  double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
+    double distance = 0.0;
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lng2 - lng1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
+  }
+
+  Future<LocationData> findLocationData() async {
+    Location location = Location();
+    try {
+      return await location.getLocation();
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<void> centerScreen(_currentlocation) async {
@@ -239,17 +278,25 @@ class _NavigationState extends State<Navigation> {
         final _currentlocation = _args['current'] as Position;
         final _place = _args['places'] as Places;
 
-        lat1 = _currentlocation.latitude;
-        lon1 = _currentlocation.longitude;
-        lat2 = _place.geometry.location.lat;
-        lon2 = _place.geometry.location.lng;
+        lat1 = currentLocation.latitude;
+        lon1 = currentLocation.longitude;
+        lat2 = destinationLocation.latitude;
+        lon2 = destinationLocation.longitude;
 
         var p = 0.017453292519943295;
         var c = cos;
         var a = 0.5 -
             c((lat2 - lat1) * p) / 2 +
-            c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-        return 12742 * asin(sqrt(a));
+            c(lat1 * p) * c(lat2 * p) * 
+            (1 - c((lon2 - lon1) * p)) / 2;
+        // Approximate Equirectangular -- works if (lat1,lon1) ~ (lat2,lon2)
+         return 12742 * asin(sqrt(a)/100);
+        // int R = 6371; // km
+        // double x = (lon2 - lon1) * cos((lat1 + lat2) / 2);
+        // double y = (lat2 - lat1);
+        // double distance = sqrt(x * x + y * y) * R;
+        // return distance;
+       
       }
 
       for (int i = 0; i < polylineCoordinates.length - 1; i++) {
@@ -411,14 +458,14 @@ class _NavigationState extends State<Navigation> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: 280,
+                height: 255,
                 width: MediaQuery.of(context).size.width,
                 child: Stack(
                   children: [
                     Positioned(
                       bottom: 0,
                       child: Container(
-                        height: 250,
+                        height: 230,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -452,24 +499,24 @@ class _NavigationState extends State<Navigation> {
                                     _place.name,
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 13.0,
+                                      fontSize: 20.0,
                                       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 5,
+                                    height: 8,
                                   ),
-                                  Text(
-                                    'นาที',
-                                    // '... นาที',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18.0,
-                                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                                  // Text(
+                                  //   'นาที',
+                                  //   // '... นาที',
+                                  //   style: TextStyle(
+                                  //     color: Colors.black,
+                                  //     fontSize: 18.0,
+                                  //     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                  //     fontWeight: FontWeight.w600,
+                                  //   ),
+                                  // ),
                                   //ลองดึง direction
                                   // ListView.builder(
                                   //   itemCount: directions.elements.length,
@@ -478,18 +525,20 @@ class _NavigationState extends State<Navigation> {
                                   //         '${directions.elements[index].duration.text}');
                                   //   },
                                   // ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
+                                  // SizedBox(
+                                  //   height: 5,
+                                  // ),
                                   Text(
                                     // '(km)',
                                     // '${calculateDistanceFromLink()} km',
+                                    // '$distance km'
+                                    // '$_placeDistance km'
                                     '${_culculateDistance()} km',
                                     // '(${distance}km)',
 
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 15.0,
+                                      fontSize: 18.0,
                                       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -694,12 +743,16 @@ class _NavigationState extends State<Navigation> {
                                                                         .email,
                                                                 'time':
                                                                     timestamp,
-                                                                  'placeId':_place.placeId,
-                                                                  'placeName':_place.name,
-                                                                  'usercomment': '',
-                                                                  'imgAddcomment': null,
-                                                                  'imgprofileURL': user.photoURL,
-
+                                                                'placeId': _place
+                                                                    .placeId,
+                                                                'placeName':
+                                                                    _place.name,
+                                                                'usercomment':
+                                                                    '',
+                                                                'imgAddcomment':
+                                                                    null,
+                                                                'imgprofileURL':
+                                                                    user.photoURL,
                                                               });
                                                               print(
                                                                   "Push called");
@@ -753,6 +806,7 @@ class _NavigationState extends State<Navigation> {
                       ),
                     ),
                     Positioned(
+                      // top: 100,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
