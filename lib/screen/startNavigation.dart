@@ -287,18 +287,9 @@ class _NavigationState extends State<Navigation> {
         var c = cos;
         var a = 0.5 -
             c((lat2 - lat1) * p) / 2 +
-            c(lat1 * p) * c(lat2 * p) * 
-            (1 - c((lon2 - lon1) * p)) / 2;
-        // Approximate Equirectangular -- works if (lat1,lon1) ~ (lat2,lon2)
-         return 12742 * asin(sqrt(a)/100);
-        // int R = 6371; // km
-        // double x = (lon2 - lon1) * cos((lat1 + lat2) / 2);
-        // double y = (lat2 - lat1);
-        // double distance = sqrt(x * x + y * y) * R;
-        // return distance;
-       
+            c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+        return 12742 * asin(sqrt(a));
       }
-
       for (int i = 0; i < polylineCoordinates.length - 1; i++) {
         totalDistance += _coordinateDistance(
           polylineCoordinates[i].latitude,
@@ -313,6 +304,28 @@ class _NavigationState extends State<Navigation> {
       });
       return _placeDistance;
     }
+
+    // cal() {
+    //   final _args =
+    //         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    //     final _currentlocation = _args['current'] as Position;
+    //     final _place = _args['places'] as Places;
+    //   double calculateDistance(lat1, lon1, lat2, lon2) {
+    //     var p = 0.017453292519943295;
+    //     var c = cos;
+    //     var a = 0.5 -
+    //         c((lat2 - lat1) * p) / 2 +
+    //         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    //     return 12742 * asin(sqrt(a));
+    //   }
+
+    //   double totalDistance =
+    //       calculateDistance(
+    //         _currentlocation.latitude, _currentlocation.longitude, 
+    //         _place.geometry.location.lat, _place.geometry.location.lng);
+
+    //   print(totalDistance);
+    // }
 
     CameraPosition _initialCameraPosition = CameraPosition(
       target: LatLng(_currentlocation.latitude, _currentlocation.longitude),
@@ -361,18 +374,6 @@ class _NavigationState extends State<Navigation> {
                     print('controller');
                     print(e);
                   }
-                  // try {
-                  //   _onMapCreated;
-                  // } catch (e) {
-                  //   print('_onMapCreated');
-                  //   print(e);
-                  // }
-                  // try {
-                  //   _onMapmarker;
-                  // } catch (e) {
-                  //   print('_onMapmarker');
-                  //   print(e);
-                  // }
                   try {
                     showPinOnMap();
                   } catch (e) {
@@ -518,13 +519,13 @@ class _NavigationState extends State<Navigation> {
                                   //   ),
                                   // ),
                                   //ลองดึง direction
-                                  // ListView.builder(
-                                  //   itemCount: directions.elements.length,
-                                  //   itemBuilder: (context, index) {
-                                  //     return Text(
-                                  //         '${directions.elements[index].duration.text}');
-                                  //   },
-                                  // ),
+                                  ListView.builder(
+                                    itemCount: directions.elements.length,
+                                    itemBuilder: (context, index) {
+                                      return Text(
+                                          '${directions.elements[index].duration.text}');
+                                    },
+                                  ),
                                   // SizedBox(
                                   //   height: 5,
                                   // ),
@@ -534,6 +535,8 @@ class _NavigationState extends State<Navigation> {
                                     // '$distance km'
                                     // '$_placeDistance km'
                                     '${_culculateDistance()} km',
+                                    // '$cal km',
+
                                     // '(${distance}km)',
 
                                     style: TextStyle(
