@@ -1,6 +1,9 @@
-
+import 'package:ToiletPocket/directionModel/direction.dart';
+import 'package:ToiletPocket/models/places.dart';
+import 'package:ToiletPocket/services/places_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
@@ -91,27 +94,19 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
                     fontWeight: FontWeight.normal),
               ),
               SizedBox(width: 50.0),
-              Consumer<double>(
-                builder: (context, meters, wiget) {
-                  return (meters != null)
-                      ? Text(
-                          '\u00b7  ${(meters / 1609).round()} mi',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 30.0,
-                              fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                              fontWeight: FontWeight.normal),
-                        )
-                      : Container();
-                },
-              ),
-              // Text(
-              //   "500 เมตร",
-              //   style: TextStyle(
-              //       color: Colors.blue,
-              //       fontSize: 35.0,
-              //       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-              //       fontWeight: FontWeight.normal),
+              // Consumer<double>(
+              //   builder: (context, meters, wiget) {
+              //     return (meters != null)
+              //         ? Text(
+              //             '\u00b7  ${(meters / 1609).round()} km',
+              //             style: TextStyle(
+              //                 color: Colors.blue,
+              //                 fontSize: 30.0,
+              //                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+              //                 fontWeight: FontWeight.normal),
+              //           )
+              //         : Container();
+              //   },
               // ),
             ],
           ),

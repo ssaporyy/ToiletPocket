@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:ToiletPocket/Show_toiletDetail_review/CarouselWithDotsPage.dart';
 // import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
@@ -22,6 +24,8 @@ class ToiletDetail extends StatefulWidget {
 }
 
 class ToiletDetailState extends State<ToiletDetail> {
+  String ratingList;
+
   @override
   Widget build(BuildContext context) {
     // final applicationBloc = Provider.of<ApplicationBloc>(context);
@@ -152,20 +156,132 @@ class ToiletDetailState extends State<ToiletDetail> {
                                           ]),
                                         ),
                                         SizedBox(width: 25),
-                                        Container(
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(children: <Widget>[
-                                                  Container(
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                          "${_place.rating}",
-                                                          // "4.7",
+                                        StreamBuilder(
+                                            stream: FirebaseFirestore.instance
+                                                .collection("comment")
+                                                .orderBy('time',
+                                                    descending: true)
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<
+                                                        QuerySnapshot<Object>>
+                                                    snapshot) {
+                                              if (!snapshot.hasData) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              if (snapshot.hasError) {
+                                                return new Text(
+                                                    'Error: ${snapshot.hasError}');
+                                              } else
+                                                snapshot.data.docs.map(
+                                                    (DocumentSnapshot raing) {
+                                                  ratingList = raing['rating'];
+                                                  print(
+                                                      '++++++++++++++${ratingList}');
+                                                });
+                                              return Container(
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(children: <Widget>[
+                                                        Container(
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Text(
+                                                                "${_place.rating}",
+                                                                // "${_place.rating} + ${ratingList}",
+                                                                // "4.7",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      16.0,
+                                                                  fontFamily:
+                                                                      'Sukhumvit' ??
+                                                                          'SF-Pro',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          child:
+                                                              RatingBarIndicator(
+                                                            rating:
+                                                                _place.rating,
+                                                            itemBuilder: (context,
+                                                                    index) =>
+                                                                Icon(Icons.star,
+                                                                    color: Colors
+                                                                        .amber),
+                                                            itemCount: 5,
+                                                            itemSize: 21.0,
+                                                            direction:
+                                                                Axis.horizontal,
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Text(
+                                                                '(${_place.userRatingCount})',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black54,
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    fontFamily:
+                                                                        'Sukhumvit' ??
+                                                                            'SF-Pro',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                      Container(
+                                                        child: Text(
+                                                          (() {
+                                                            if (_place.rating ==
+                                                                0.0) {
+                                                              return "-";
+                                                            } else if (_place
+                                                                    .rating <=
+                                                                1.0) {
+                                                              return "แย่";
+                                                            } else if (_place
+                                                                    .rating <=
+                                                                2.0) {
+                                                              return "ควรปรับปรุง";
+                                                            } else if (_place
+                                                                    .rating <=
+                                                                3.0) {
+                                                              return "พอใช้";
+                                                            } else if (_place
+                                                                    .rating <=
+                                                                4.0) {
+                                                              return "ดี";
+                                                            } else if (_place
+                                                                    .rating <=
+                                                                5.0) {
+                                                              return "ดีเยี่ยม";
+                                                            }
+                                                          }()),
+                                                          // "ดี",
                                                           style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 16.0,
@@ -175,87 +291,11 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                           ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: RatingBarIndicator(
-                                                      rating: _place.rating,
-                                                      itemBuilder: (context,
-                                                              index) =>
-                                                          Icon(Icons.star,
-                                                              color:
-                                                                  Colors.amber),
-                                                      itemCount: 5,
-                                                      itemSize: 21.0,
-                                                      direction:
-                                                          Axis.horizontal,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                          '(${_place.userRatingCount})',
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black54,
-                                                              fontSize: 16.0,
-                                                              fontFamily:
-                                                                  'Sukhumvit' ??
-                                                                      'SF-Pro',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ]),
-                                                Container(
-                                                  child: Text(
-                                                    (() {
-                                                      if (_place.rating ==
-                                                          0.0) {
-                                                        return "-";
-                                                      } else if (_place
-                                                              .rating <=
-                                                          1.0) {
-                                                        return "แย่";
-                                                      } else if (_place
-                                                              .rating <=
-                                                          2.0) {
-                                                        return "ควรปรับปรุง";
-                                                      } else if (_place
-                                                              .rating <=
-                                                          3.0) {
-                                                        return "พอใช้";
-                                                      } else if (_place
-                                                              .rating <=
-                                                          4.0) {
-                                                        return "ดี";
-                                                      } else if (_place
-                                                              .rating <=
-                                                          5.0) {
-                                                        return "ดีเยี่ยม";
-                                                      }
-                                                    }()),
-                                                    // "ดี",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16.0,
-                                                      fontFamily: 'Sukhumvit' ??
-                                                          'SF-Pro',
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                )
-                                              ]),
-                                        ),
+                                                        ),
+                                                      )
+                                                    ]),
+                                              );
+                                            }),
                                       ]),
                                     ),
                                     Container(
@@ -266,11 +306,11 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                 .collection("comment")
                                                 .orderBy('time',
                                                     descending: true)
-                                                .snapshots()
-                                                ,
+                                                .snapshots(),
                                             builder: (context,
                                                 // AsyncSnapshot<QuerySnapshot>
-                                                AsyncSnapshot<QuerySnapshot<Object>>
+                                                AsyncSnapshot<
+                                                        QuerySnapshot<Object>>
                                                     snapshot) {
                                               if (!snapshot.hasData) {
                                                 return Center(
@@ -295,7 +335,16 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                     itemBuilder:
                                                         (BuildContext context,
                                                             int index) {
-                                                      final imageList = snapshot.data.docs[index]['imgAddcomment'] as List;
+                                                      final imageList = snapshot
+                                                                      .data.docs[
+                                                                  index]
+                                                              ['imgAddcomment']
+                                                          as List;
+                                                      final ratingL = snapshot
+                                                                      .data.docs[
+                                                                  index]
+                                                              ['imgAddcomment']
+                                                          as List;
                                                       if (_place.placeId ==
                                                           snapshot.data
                                                                   .docs[index]
@@ -346,7 +395,7 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                               CircleAvatar(
                                                                             backgroundImage:
                                                                                 NetworkImage(
-                                                                                  // 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
+                                                                              // 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
                                                                               snapshot.data.docs[index]['imgprofileURL'] != null ? '${snapshot.data.docs[index]['imgprofileURL']}' : 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar',
                                                                             ),
                                                                             radius:
@@ -390,7 +439,7 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                             ),
                                                                             Text(
                                                                               // "Watanabe Haruto",
-                                                                              snapshot.data.docs[index]['userName'] == null? 'Name' : snapshot.data.docs[index]['userName'],
+                                                                              snapshot.data.docs[index]['userName'] == null ? 'Name' : snapshot.data.docs[index]['userName'],
                                                                               style: TextStyle(
                                                                                 color: Colors.black,
                                                                                 fontSize: 16.0,
@@ -403,7 +452,7 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                             ),
                                                                             Text(
                                                                               // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
-                                                                              snapshot.data.docs[index]['usercomment'] == null?'': snapshot.data.docs[index]['usercomment'],
+                                                                              snapshot.data.docs[index]['usercomment'] == null ? '' : snapshot.data.docs[index]['usercomment'],
                                                                               style: TextStyle(
                                                                                 color: Colors.black,
                                                                                 fontSize: 14.0,
@@ -467,7 +516,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                         ],
                                       ),
                                     ),
-                                    
                                     if (_placeDetail.reviews.isNotEmpty)
                                       Column(
                                         children: [

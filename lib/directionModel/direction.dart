@@ -9,33 +9,33 @@ class DistanceMatrix {
   final List<Elements> elements;
   final String status;
 
-  DistanceMatrix({this.destinations, this.origins, this.elements, this.status});
+  DistanceMatrix({
+    this.destinations,
+    this.origins,
+    this.elements,
+    this.status,
+  });
 
   factory DistanceMatrix.fromJson(Map<String, dynamic> json) {
-    var destinationsJson = json['destination_addresses'];
-    var originsJson = json['origin_addresses'];
+    var destinationsJson = json['destination_addresses'] as List;
+    var originsJson = json['origin_addresses'] as List;
     var rowsJson = json['rows'][0]['elements'] as List;
 
     return DistanceMatrix(
-        destinations: destinationsJson.cast<String>(),
-        origins: originsJson.cast<String>(),
+        destinations: destinationsJson.map((e) => e as String).toList(),
+        origins: originsJson.map((e) => e as String).toList(),
         elements: rowsJson.map((i) => new Elements.fromJson(i)).toList(),
         status: json['status']);
   }
   static Future<DistanceMatrix> loadData() async {
     DistanceMatrix distanceMatrix;
-    try{
-          String jsonData = await rootBundle.loadString('assets/data.json');
-          // String jsonData = await rootBundle.loadString('assets/google-services.json');
-    distanceMatrix = new DistanceMatrix.fromJson(json.decode(jsonData));
-    } catch (e){
+    try {
+      String jsonData = await rootBundle.loadString('assets/data.json');
+      // String jsonData = await rootBundle.loadString('assets/google-services.json');
+      distanceMatrix = new DistanceMatrix.fromJson(json.decode(jsonData));
+    } catch (e) {
       print(e);
     }
     return distanceMatrix;
   }
 }
-
-
-
-
-

@@ -1,10 +1,10 @@
-class Durations{
+class Duration {
   final String text;
   final int value;
 
-  Durations({this.text, this.value});
+  Duration({this.text, this.value});
 
-  factory Durations.fromJson(Map<String, dynamic> json) {
-    return new Durations(text: json['text'], value: json['value']);
+  factory Duration.fromJson(Map<String, dynamic> json) {
+    return new Duration(text: json['text'], value: json['value']);
   }
 }

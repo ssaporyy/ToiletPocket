@@ -4,6 +4,7 @@ import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/directionModel/direction.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/services/geolocator_service.dart';
+import 'package:ToiletPocket/services/places_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,10 +42,12 @@ class _NavigationState extends State<Navigation> {
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
   String _placeDistance;
+  DistanceMatrix direction;
 
   double rating = 3.0;
 
   final GeoLocatorService geoService = GeoLocatorService();
+  final PlacesService placesService = PlacesService();
 
   // bool _isLocationGranted = false;
 
@@ -62,15 +65,16 @@ class _NavigationState extends State<Navigation> {
     geoService.getCurrentLocation().listen((_currentlocation) {
       centerScreen(_currentlocation);
     });
+
     // geoService.getCurrentLocation().listen((position) {
     //   centerScreen(position);
     // });
-    super.initState();
     polylinePoints = PolylinePoints();
     Future.delayed(Duration.zero, () {
       this.setIntitialLocation();
     });
     findLat1Lng1();
+    super.initState();
 
     //   mapController.moveCamera(CameraUpdate.newLatLng(
     //           LatLng(currentLocation.latitude, currentLocation.longitude)))
@@ -81,11 +85,27 @@ class _NavigationState extends State<Navigation> {
     // });
   }
 
+  Future<void> initDirection() async {
+    try {
+      final _direction = await placesService.getDirection(
+        // _currentlocation.latitude,
+        // _currentlocation.longitude,
+        // _place.geometry.location.lat,
+        // _place.geometry.location.lng,
+        currentLocation.latitude,
+        currentLocation.longitude,
+        destinationLocation.latitude,
+        destinationLocation.longitude,
+      );
+      setState(() {
+        direction = _direction;
+      });
+    } catch (e) {
+      print('error init direction: $e');
+    }
+  }
+
   Future<Null> findLat1Lng1() async {
-    final _args =
-        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    final _currentlocation = _args['current'] as Position;
-    final _place = _args['places'] as Places;
     // LocationData locationData = await findLocationData();
     setState(() {
       lat1 = currentLocation.latitude;
@@ -123,12 +143,6 @@ class _NavigationState extends State<Navigation> {
         target: LatLng(_currentlocation.latitude, _currentlocation.longitude),
         zoom: 13)));
   }
-  //   Future<void> centerScreen(Position position) async {
-  //   final GoogleMapController controller = await _controller.future;
-
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-  //       target: LatLng(position.latitude, position.longitude), zoom: 10)));
-  // }
 
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
     sourceIcon = await BitmapDescriptor.fromAssetImage(
@@ -223,13 +237,14 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     this.setSourceAndDestinationMarkerIcons(context);
+    // initDirection();
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _currentlocation = _args['current'] as Position;
     final _place = _args['places'] as Places;
     var width = MediaQuery.of(context).size.width;
     //get directionModel
-    final directions = _args['direction'] as DistanceMatrix;
+    // final directions = _args['direction'] as DistanceMatrix;
 
     CollectionReference addRating =
         FirebaseFirestore.instance.collection('comment');
@@ -270,40 +285,45 @@ class _NavigationState extends State<Navigation> {
       return <Marker>[sourcePin(), destinationPin()].toSet();
     }
 
-    _culculateDistance() {
-      double totalDistance = 0.0;
-      double _coordinateDistance(lat1, lon1, lat2, lon2) {
-        final _args =
-            ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-        final _currentlocation = _args['current'] as Position;
-        final _place = _args['places'] as Places;
-
-        lat1 = currentLocation.latitude;
-        lon1 = currentLocation.longitude;
-        lat2 = destinationLocation.latitude;
-        lon2 = destinationLocation.longitude;
-
-        var p = 0.017453292519943295;
-        var c = cos;
-        var a = 0.5 -
-            c((lat2 - lat1) * p) / 2 +
-            c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-        return 12742 * asin(sqrt(a));
-      }
-      for (int i = 0; i < polylineCoordinates.length - 1; i++) {
-        totalDistance += _coordinateDistance(
-          polylineCoordinates[i].latitude,
-          polylineCoordinates[i].longitude,
-          polylineCoordinates[i + 1].latitude,
-          polylineCoordinates[i + 1].longitude,
-        );
-      }
-      setState(() {
-        _placeDistance = totalDistance.toStringAsFixed(2);
-        print('DISTANCE: $_placeDistance km');
-      });
-      return _placeDistance;
+    if (direction == null) {
+      initDirection();
     }
+
+    // _culculateDistance() {
+    //   double totalDistance = 0.0;
+    //   double _coordinateDistance(lat1, lon1, lat2, lon2) {
+    //     final _args =
+    //         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    //     final _currentlocation = _args['current'] as Position;
+    //     final _place = _args['places'] as Places;
+
+    //     lat1 = currentLocation.latitude;
+    //     lon1 = currentLocation.longitude;
+    //     lat2 = destinationLocation.latitude;
+    //     lon2 = destinationLocation.longitude;
+
+    //     var p = 0.017453292519943295;
+    //     var c = cos;
+    //     var a = 0.5 -
+    //         c((lat2 - lat1) * p) / 2 +
+    //         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    //     return 12742 * asin(sqrt(a));
+    //   }
+
+    //   for (int i = 0; i < polylineCoordinates.length - 1; i++) {
+    //     totalDistance += _coordinateDistance(
+    //       polylineCoordinates[i].latitude,
+    //       polylineCoordinates[i].longitude,
+    //       polylineCoordinates[i + 1].latitude,
+    //       polylineCoordinates[i + 1].longitude,
+    //     );
+    //   }
+    //   setState(() {
+    //     _placeDistance = totalDistance.toStringAsFixed(2);
+    //     print('DISTANCE: $_placeDistance km');
+    //   });
+    //   return _placeDistance;
+    // }
 
     // cal() {
     //   final _args =
@@ -321,7 +341,7 @@ class _NavigationState extends State<Navigation> {
 
     //   double totalDistance =
     //       calculateDistance(
-    //         _currentlocation.latitude, _currentlocation.longitude, 
+    //         _currentlocation.latitude, _currentlocation.longitude,
     //         _place.geometry.location.lat, _place.geometry.location.lng);
 
     //   print(totalDistance);
@@ -508,24 +528,24 @@ class _NavigationState extends State<Navigation> {
                                   SizedBox(
                                     height: 8,
                                   ),
-                                  // Text(
-                                  //   'นาที',
-                                  //   // '... นาที',
-                                  //   style: TextStyle(
-                                  //     color: Colors.black,
-                                  //     fontSize: 18.0,
-                                  //     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                                  //     fontWeight: FontWeight.w600,
-                                  //   ),
-                                  // ),
-                                  //ลองดึง direction
-                                  ListView.builder(
-                                    itemCount: directions.elements.length,
-                                    itemBuilder: (context, index) {
-                                      return Text(
-                                          '${directions.elements[index].duration.text}');
-                                    },
+                                  Text(
+                                    '${direction?.elements?.first?.duration?.text ?? ''}',
+                                    // '... นาที',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.0,
+                                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
+                                  //ลองดึง direction
+                                  // ListView.builder(
+                                  //   itemCount: directions.elements.length,
+                                  //   itemBuilder: (context, index) {
+                                  //     return Text(
+                                  //         '${directions.elements[index].duration.text}');
+                                  //   },
+                                  // ),
                                   // SizedBox(
                                   //   height: 5,
                                   // ),
@@ -534,7 +554,9 @@ class _NavigationState extends State<Navigation> {
                                     // '${calculateDistanceFromLink()} km',
                                     // '$distance km'
                                     // '$_placeDistance km'
-                                    '${_culculateDistance()} km',
+                                    // '${_culculateDistance()} km',
+                                    "${direction?.elements?.first?.distance?.text ?? ''}",
+                                    // "${direction?.destinations?.first ?? ''}",
                                     // '$cal km',
 
                                     // '(${distance}km)',

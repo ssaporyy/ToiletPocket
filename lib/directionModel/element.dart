@@ -4,7 +4,7 @@ import 'package:ToiletPocket/directionModel/duration.dart';
 
 class Elements {
   final Distance distance;
-  final Durations duration;
+  final Duration duration;
   final String status;
 
   Elements({this.distance, this.duration, this.status});
@@ -12,7 +12,7 @@ class Elements {
   factory Elements.fromJson(Map<String, dynamic> json) {
     return Elements(
         distance: new Distance.fromJson(json['distance']),
-        duration: new Durations.fromJson(json['duration']),
+        duration: new Duration.fromJson(json['duration']),
         status: json['status']);
   }
 }
