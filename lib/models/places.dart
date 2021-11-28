@@ -12,8 +12,7 @@ class Places {
   final String vicinity;
   final Geometry geometry;
   final BitmapDescriptor icon;
-  //new
-  // final String id;
+
   final List<Photo> photos;
   final String placeId;
   final String reference;
@@ -21,8 +20,6 @@ class Places {
   final List<String> types;
   final int userRatingsTotal;
 
-  //
-  // List<OpeningHour> openingHours;
   final OpeningHours openingHours;
   final List<Reviews> reviews;
 
@@ -64,10 +61,8 @@ class Places {
             ? OpeningHours.fromJson(
                 json['opening_hours'] as Map<String, dynamic>)
             : null,
-        //
         reviews = json['reviews'] != null
             ? json['reviews'].map<Reviews>((i) => Reviews.fromJson(i)).toList()
             : [],
-        //old
         icon = icon;
 }

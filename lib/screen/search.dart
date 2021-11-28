@@ -1,9 +1,5 @@
-// import 'dart:async';
 
 import 'package:ToiletPocket/blocs/application_bloc.dart';
-// import 'package:ToiletPocket/models/place.dart';
-// import 'package:ToiletPocket/models/place_response.dart';
-// import 'package:ToiletPocket/models/result.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -67,9 +63,7 @@ class _SearchState extends State<Search> {
                           radius: 15.0,
                           backgroundImage: NetworkImage(user == null || user.isAnonymous
                               ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
-                              : (user.photoURL)), // NetworkImage(
-                          //     'https://pbs.twimg.com/media/E1zDPp6VIAIna9y?format=jpg&name=large'),
-                          // AssetImage('images/ruto.jpg'),
+                              : (user.photoURL)), 
                         ),
                       ),
                     ],
@@ -77,7 +71,6 @@ class _SearchState extends State<Search> {
                 ),
               ),
               onChanged: (value) => applicationBloc.searchPlaces(value),
-              // onTap: () => applicationBloc.clearSelectedLocation(),
             ),
           ),
         ),
@@ -90,8 +83,6 @@ class _SearchState extends State<Search> {
             height: 300.0,
             decoration: BoxDecoration(
                 color: Colors.white,
-                // .withOpacity(.6),
-                // backgroundBlendMode: BlendMode.darken
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
@@ -105,13 +96,11 @@ class _SearchState extends State<Search> {
                 ]),
             child: ListView.separated(
               itemCount: applicationBloc.searchResults.length,
-              // itemCount: 0,
               padding: EdgeInsets.all(10),
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(
                     applicationBloc
-                        // .searchResults[index].name,
                         .searchResults[index]
                         .description,
                     style: TextStyle(color: Colors.black),
@@ -120,14 +109,6 @@ class _SearchState extends State<Search> {
                   onTap: () {
                     applicationBloc.setSelectedLocation(
                         applicationBloc.searchResults[index].placeId);
-                    // print(
-                    //   'lat:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lat}',
-                    // );
-                    // print(
-                    //   'lng:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lng}',
-                    // );
-                    // applicationBloc.setSelectedLocation(
-                    //     applicationBloc.searchResults[index].placeId);
                   },
                 );
               },

@@ -1,6 +1,4 @@
-// import 'package:ToiletPocket/models/place.dart';
 import 'package:ToiletPocket/models/places.dart';
-// import 'package:ToiletPocket/models/result.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MarkerService {

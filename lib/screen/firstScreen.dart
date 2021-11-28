@@ -1,12 +1,9 @@
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:ToiletPocket/screen/homepage.dart';
-// import 'package:ToiletPocket/screen/profile.dart';
 import 'package:ToiletPocket/screen/showUp.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive/rive.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -77,10 +74,6 @@ class FirstScreenState extends State<FirstScreen> {
                         fontFamily: 'Sukhumvit' ?? 'SF-Pro', fontSize: 20),
                   ),
                   onPressed: () {
-                    // Navigate to the second screen using a named route.
-
-                    // Navigator.pushNamed(context, '/two');
-
                     final provider = Provider.of<GoogleSignInProvider>(context,
                         listen: false);
                     provider.signInAnonymously();
@@ -149,7 +142,7 @@ class FirstScreenState extends State<FirstScreen> {
                       )),
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5), // <-- Radius
+                        borderRadius: BorderRadius.circular(5), 
                       ),
                       primary: Colors.white.withOpacity(0.7),
                       shadowColor: Colors.white,
@@ -173,7 +166,6 @@ class FirstScreenState extends State<FirstScreen> {
                       color: Colors.black87,
                       fontSize: 12.0,
                       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      // fontWeight: FontWeight.w500,
                     ),
                   ),
                   Container(

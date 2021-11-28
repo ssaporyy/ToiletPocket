@@ -40,7 +40,6 @@ class LoginGoogleAddcommentState extends State<LoginGoogleAddcomment> {
 
   @override
   Widget build(BuildContext context) {
-    // final currentPosition = Provider.of<Position>(context);
     int delayAmount = 1500;
     return Material(
         child: Stack(children: <Widget>[
@@ -57,7 +56,6 @@ class LoginGoogleAddcommentState extends State<LoginGoogleAddcomment> {
           padding: EdgeInsets.only(top: 30.0),
           child: InkWell(
             onTap: () {
-              // Navigator.pushNamed(context, '/two');
               Navigator.of(context).pop();
             },
             child: Row(
@@ -95,7 +93,6 @@ class LoginGoogleAddcommentState extends State<LoginGoogleAddcomment> {
                   height: 45,
                   margin: EdgeInsets.only(left: 50, right: 230),
                   child: ElevatedButton(
-                    // Within the `FirstScreen` widget
                     style: ElevatedButton.styleFrom(
                         shape: StadiumBorder(),
                         primary: ToiletColors.colorButton2,
@@ -221,7 +218,6 @@ class LoginGoogleAddcommentState extends State<LoginGoogleAddcomment> {
                       color: Colors.black87,
                       fontSize: 12.0,
                       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                      // fontWeight: FontWeight.w500,
                     ),
                   ),
                   Container(

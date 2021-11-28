@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/directionModel/direction.dart';
+import 'package:ToiletPocket/distanceModel/distanceModel.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:ToiletPocket/services/places_service.dart';
@@ -32,7 +33,6 @@ class _NavigationState extends State<Navigation> {
 
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
-  // StreamSubscription locationSubscription;
 
   LatLng currentLocation;
   LatLng destinationLocation;
@@ -44,54 +44,32 @@ class _NavigationState extends State<Navigation> {
   String _placeDistance;
   DistanceMatrix direction;
 
+  DistanceModel directionModel;
+
   double rating = 3.0;
 
   final GeoLocatorService geoService = GeoLocatorService();
   final PlacesService placesService = PlacesService();
 
-  // bool _isLocationGranted = false;
-
-  // var currentLocations;
-
-  // final List<Marker> markers = [];
-
   double lat1, lng1, lat2, lng2, distance;
 
   @override
   void initState() {
-    // final _args =
-    //     ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    // final _currentlocation = _args['current'] as Position;
     geoService.getCurrentLocation().listen((_currentlocation) {
       centerScreen(_currentlocation);
     });
 
-    // geoService.getCurrentLocation().listen((position) {
-    //   centerScreen(position);
-    // });
     polylinePoints = PolylinePoints();
     Future.delayed(Duration.zero, () {
       this.setIntitialLocation();
     });
     findLat1Lng1();
     super.initState();
-
-    //   mapController.moveCamera(CameraUpdate.newLatLng(
-    //           LatLng(currentLocation.latitude, currentLocation.longitude)))
-    //       as CameraPosition;
-    //   // mapController.animateCamera(CameraUpdate.newLatLngZoom(
-    //   //     LatLng(_currentlocation.latitude, _currentlocation.longitude), 14));
-    //   // mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude, currentLocation.longitude), 14));
-    // });
   }
 
   Future<void> initDirection() async {
     try {
       final _direction = await placesService.getDirection(
-        // _currentlocation.latitude,
-        // _currentlocation.longitude,
-        // _place.geometry.location.lat,
-        // _place.geometry.location.lng,
         currentLocation.latitude,
         currentLocation.longitude,
         destinationLocation.latitude,
@@ -104,9 +82,23 @@ class _NavigationState extends State<Navigation> {
       print('error init direction: $e');
     }
   }
+  Future<void> initDirectionModel() async {
+    try {
+      final _directionModel = await placesService.getDirectionModel(
+        currentLocation.latitude,
+        currentLocation.longitude,
+        destinationLocation.latitude,
+        destinationLocation.longitude,
+      );
+      setState(() {
+        directionModel = _directionModel;
+      });
+    } catch (e) {
+      print('error init direction: $e');
+    }
+  }
 
   Future<Null> findLat1Lng1() async {
-    // LocationData locationData = await findLocationData();
     setState(() {
       lat1 = currentLocation.latitude;
       lng1 = currentLocation.longitude;
@@ -154,7 +146,6 @@ class _NavigationState extends State<Navigation> {
 
   void _currentLocation() async {
     final GoogleMapController controller = await _controller.future;
-    // LocationData _currentPosition;
 
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
@@ -237,14 +228,11 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     this.setSourceAndDestinationMarkerIcons(context);
-    // initDirection();
     final _args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final _currentlocation = _args['current'] as Position;
     final _place = _args['places'] as Places;
     var width = MediaQuery.of(context).size.width;
-    //get directionModel
-    // final directions = _args['direction'] as DistanceMatrix;
 
     CollectionReference addRating =
         FirebaseFirestore.instance.collection('comment');
@@ -259,8 +247,6 @@ class _NavigationState extends State<Navigation> {
     timestamp = formatDate;
 
     Marker sourcePin() {
-      // print('=================src lat: ${_currentlocation.latitude}');
-      // print('=================src lng: ${_currentlocation.longitude}');
       return Marker(
         markerId: MarkerId('sourcepin'),
         position: LatLng(_currentlocation.latitude, _currentlocation.longitude),
@@ -270,8 +256,6 @@ class _NavigationState extends State<Navigation> {
     }
 
     Marker destinationPin() {
-      // print('=================dest lat: ${_place.geometry.location.lat}');
-      // print('=================dest lng: ${_place.geometry.location.lng}');
       return Marker(
         markerId: MarkerId('destinationpin'),
         position:
@@ -288,72 +272,15 @@ class _NavigationState extends State<Navigation> {
     if (direction == null) {
       initDirection();
     }
-
-    // _culculateDistance() {
-    //   double totalDistance = 0.0;
-    //   double _coordinateDistance(lat1, lon1, lat2, lon2) {
-    //     final _args =
-    //         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    //     final _currentlocation = _args['current'] as Position;
-    //     final _place = _args['places'] as Places;
-
-    //     lat1 = currentLocation.latitude;
-    //     lon1 = currentLocation.longitude;
-    //     lat2 = destinationLocation.latitude;
-    //     lon2 = destinationLocation.longitude;
-
-    //     var p = 0.017453292519943295;
-    //     var c = cos;
-    //     var a = 0.5 -
-    //         c((lat2 - lat1) * p) / 2 +
-    //         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-    //     return 12742 * asin(sqrt(a));
-    //   }
-
-    //   for (int i = 0; i < polylineCoordinates.length - 1; i++) {
-    //     totalDistance += _coordinateDistance(
-    //       polylineCoordinates[i].latitude,
-    //       polylineCoordinates[i].longitude,
-    //       polylineCoordinates[i + 1].latitude,
-    //       polylineCoordinates[i + 1].longitude,
-    //     );
-    //   }
-    //   setState(() {
-    //     _placeDistance = totalDistance.toStringAsFixed(2);
-    //     print('DISTANCE: $_placeDistance km');
-    //   });
-    //   return _placeDistance;
-    // }
-
-    // cal() {
-    //   final _args =
-    //         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    //     final _currentlocation = _args['current'] as Position;
-    //     final _place = _args['places'] as Places;
-    //   double calculateDistance(lat1, lon1, lat2, lon2) {
-    //     var p = 0.017453292519943295;
-    //     var c = cos;
-    //     var a = 0.5 -
-    //         c((lat2 - lat1) * p) / 2 +
-    //         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-    //     return 12742 * asin(sqrt(a));
-    //   }
-
-    //   double totalDistance =
-    //       calculateDistance(
-    //         _currentlocation.latitude, _currentlocation.longitude,
-    //         _place.geometry.location.lat, _place.geometry.location.lng);
-
-    //   print(totalDistance);
-    // }
+    if (directionModel == null) {
+      initDirectionModel();
+    }
 
     CameraPosition _initialCameraPosition = CameraPosition(
       target: LatLng(_currentlocation.latitude, _currentlocation.longitude),
       zoom: 13.6,
       tilt: 20.0,
     );
-    // final current = "${_place.placeId}";
-    // final nameplace = "${_place.name}";
     return Scaffold(
         backgroundColor: ToiletColors.colorBackground,
         body: Stack(
@@ -368,24 +295,8 @@ class _NavigationState extends State<Navigation> {
                 compassEnabled: false,
                 tiltGesturesEnabled: false,
                 markers: mySet(),
-                /*_markers,*/
                 polylines: _polylines,
                 initialCameraPosition: _initialCameraPosition,
-                // CameraPosition(
-                //   target: LatLng(
-                //       _currentlocation.latitude, _currentlocation.longitude),
-                //   zoom: 13.6,
-                //   tilt: 20.0,
-                // ),
-                // onCameraMove: (position) {
-                //   setState(() {
-                //     mySet().add(
-                //         Marker(markerId: MarkerId('id'), position: position.target));
-                //   });
-                // },
-                //padding: EdgeInsets.only(left: 500),
-
-                //อันเก่า ------------------------------------------
                 onMapCreated: (GoogleMapController controller) async {
                   print('on created');
                   try {
@@ -448,7 +359,6 @@ class _NavigationState extends State<Navigation> {
                                   color: Colors.blue[400]),
                               onPressed: () {
                                 _currentLocation();
-                                // print(calculateDistance(lat1, lon1, lat2, lon2));
                               },
                             ),
                             width: width,
@@ -500,8 +410,6 @@ class _NavigationState extends State<Navigation> {
                                 blurRadius: 9, // blur radius
                                 offset:
                                     Offset(0, 2), // changes position of shadow
-                                //first paramerter of offset is left-right
-                                //second parameter is top to down
                               ),
                             ]),
                         child: Container(
@@ -529,8 +437,10 @@ class _NavigationState extends State<Navigation> {
                                     height: 8,
                                   ),
                                   Text(
-                                    '${direction?.elements?.first?.duration?.text ?? ''}',
                                     // '... นาที',
+                                    // '${directionModel?.routes?.first?.legs?.first?.duration?.text ?? ''}',
+                                    '${direction?.elements?.first?.duration?.text ?? ''}',
+                                    
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 18.0,
@@ -538,28 +448,10 @@ class _NavigationState extends State<Navigation> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  //ลองดึง direction
-                                  // ListView.builder(
-                                  //   itemCount: directions.elements.length,
-                                  //   itemBuilder: (context, index) {
-                                  //     return Text(
-                                  //         '${directions.elements[index].duration.text}');
-                                  //   },
-                                  // ),
-                                  // SizedBox(
-                                  //   height: 5,
-                                  // ),
                                   Text(
                                     // '(km)',
-                                    // '${calculateDistanceFromLink()} km',
-                                    // '$distance km'
-                                    // '$_placeDistance km'
-                                    // '${_culculateDistance()} km',
+                                    // "${directionModel?.routes?.first?.legs?.first?.steps?.first?.distance?.text ?? ''}",
                                     "${direction?.elements?.first?.distance?.text ?? ''}",
-                                    // "${direction?.destinations?.first ?? ''}",
-                                    // '$cal km',
-
-                                    // '(${distance}km)',
 
                                     style: TextStyle(
                                       color: Colors.black,
@@ -604,13 +496,10 @@ class _NavigationState extends State<Navigation> {
                                               SizedBox(
                                                 height: 10,
                                               ),
-                                              // Container(
-                                              //     height: 80, child: Star()),
                                               Container(
                                                 height: 80,
-                                                //ยังไม่ได้แก้ ส่วนนี้เป็นดาวที่ให้เรทติ้งที่อยู่ หน้า star.dart
+                                                //ยังไม่ได้แก้ ส่วนนี้เป็นดาวที่ให้เรทติ้ง
                                                 child:
-                                                    // Star2()
                                                     Center(
                                                   child: Column(
                                                     mainAxisAlignment:
@@ -691,7 +580,6 @@ class _NavigationState extends State<Navigation> {
                                                                         30.0)),
                                                       ),
                                                       child: ElevatedButton(
-                                                        // Within the `FirstScreen` widget
                                                         style: ElevatedButton.styleFrom(
                                                             shape:
                                                                 StadiumBorder(),

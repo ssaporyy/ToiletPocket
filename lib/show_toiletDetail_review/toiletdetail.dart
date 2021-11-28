@@ -1,20 +1,12 @@
-import 'dart:ffi';
 
 import 'package:ToiletPocket/Show_toiletDetail_review/CarouselWithDotsPage.dart';
-// import 'package:ToiletPocket/blocs/application_bloc.dart';
 import 'package:ToiletPocket/colors.dart';
-// import 'package:ToiletPocket/models/place.dart';
 import 'package:ToiletPocket/models/places.dart';
 import 'package:ToiletPocket/show_toiletDetail_review/comment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-// import 'package:getwidget/components/carousel/gf_items_carousel.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-// import 'package:provider/provider.dart';
 
 class ToiletDetail extends StatefulWidget {
   ToiletDetail({Key key}) : super(key: key);
@@ -28,7 +20,6 @@ class ToiletDetailState extends State<ToiletDetail> {
 
   @override
   Widget build(BuildContext context) {
-    // final applicationBloc = Provider.of<ApplicationBloc>(context);
     final _args =
         ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
     final _place = _args['places'] as Places;
@@ -39,11 +30,8 @@ class ToiletDetailState extends State<ToiletDetail> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home:
-            // appBar: back(context),
             Stack(
           children: <Widget>[
-            // back(context),
-            // appbar(context),
             Scaffold(
               backgroundColor: ToiletColors.colorBackground,
               body: Container(
@@ -56,9 +44,7 @@ class ToiletDetailState extends State<ToiletDetail> {
                         padding: EdgeInsets.only(top: 40.0),
                         child: InkWell(
                           onTap: () {
-                            // Navigator.pushNamed(context, '/two');
                             Navigator.of(context).pop();
-                            // Navigator.pop(context);
                           },
                           child: IgnorePointer(
                             child: Row(
@@ -101,15 +87,11 @@ class ToiletDetailState extends State<ToiletDetail> {
                               blurRadius: 7, // blur radius
                               offset:
                                   Offset(0, 2), // changes position of shadow
-                              //first paramerter of offset is left-right
-                              //second parameter is top to down
                             ),
-                            //you can set more BoxShadow() here
                           ],
                         ),
                         child: Container(
                           padding: EdgeInsets.only(top: 27),
-                          // child: slide(context)
                           child: SingleChildScrollView(
                             padding: EdgeInsets.only(
                                 left: 10, right: 10, bottom: 10),
@@ -121,12 +103,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                   padding: const EdgeInsets.only(left: 3),
                                   child: time(context),
                                 ),
-                                //ไอคอนแสดง ห้องน้ำคนพิการ ที่สูญบุหรี่
-                                // Padding(
-                                //   padding: const EdgeInsets.only(left: 3),
-                                //   child: info(context),
-                                // ),
-                                // rate(context),
 
                                 Container(
                                   child: Column(children: [
@@ -194,8 +170,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                             children: [
                                                               Text(
                                                                 "${_place.rating}",
-                                                                // "${_place.rating} + ${ratingList}",
-                                                                // "4.7",
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
@@ -281,7 +255,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                               return "ดีเยี่ยม";
                                                             }
                                                           }()),
-                                                          // "ดี",
                                                           style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 16.0,
@@ -308,7 +281,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                     descending: true)
                                                 .snapshots(),
                                             builder: (context,
-                                                // AsyncSnapshot<QuerySnapshot>
                                                 AsyncSnapshot<
                                                         QuerySnapshot<Object>>
                                                     snapshot) {
@@ -363,7 +335,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                 ToiletColors
                                                                     .colorBackground,
                                                             child: Container(
-                                                              // height: 260,
                                                               padding:
                                                                   EdgeInsets
                                                                       .all(10),
@@ -395,7 +366,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                               CircleAvatar(
                                                                             backgroundImage:
                                                                                 NetworkImage(
-                                                                              // 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
                                                                               snapshot.data.docs[index]['imgprofileURL'] != null ? '${snapshot.data.docs[index]['imgprofileURL']}' : 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar',
                                                                             ),
                                                                             radius:
@@ -438,7 +408,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                               height: 5,
                                                                             ),
                                                                             Text(
-                                                                              // "Watanabe Haruto",
                                                                               snapshot.data.docs[index]['userName'] == null ? 'Name' : snapshot.data.docs[index]['userName'],
                                                                               style: TextStyle(
                                                                                 color: Colors.black,
@@ -451,7 +420,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                               height: 5,
                                                                             ),
                                                                             Text(
-                                                                              // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
                                                                               snapshot.data.docs[index]['usercomment'] == null ? '' : snapshot.data.docs[index]['usercomment'],
                                                                               style: TextStyle(
                                                                                 color: Colors.black,
@@ -469,7 +437,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                                   height: 100.0,
                                                                                   padding: EdgeInsets.only(left: 0.0),
                                                                                   child: ListView.builder(
-                                                                                    // physics: NeverScrollableScrollPhysics(),
                                                                                     itemBuilder: (context, index) {
                                                                                       return Padding(
                                                                                         padding: EdgeInsets.only(right: 15.0, top: 10.0, bottom: 10.0),
@@ -540,7 +507,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                     shadowColor: ToiletColors
                                                         .colorBackground,
                                                     child: Container(
-                                                      // height: 260,
                                                       padding:
                                                           EdgeInsets.all(10),
                                                       child: Column(
@@ -568,14 +534,11 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                           0),
                                                                   child:
                                                                       CircleAvatar(
-                                                                    backgroundImage:
-                                                                        // NetworkImage(
-                                                                        //     'https://cdn.readawrite.com/articles/1821/1820201/thumbnail/large.gif?3'),
-                                                                        // AssetImage('images/ruto.jpg'),
-
-                                                                        NetworkImage(_placeDetail.reviews.isEmpty
-                                                                            ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
-                                                                            : '${_placeDetail.reviews[index].profilePhotoUrl}'),
+                                                                    backgroundImage: NetworkImage(_placeDetail
+                                                                            .reviews
+                                                                            .isEmpty
+                                                                        ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
+                                                                        : '${_placeDetail.reviews[index].profilePhotoUrl}'),
                                                                     radius: 20,
                                                                   ),
                                                                 ),
@@ -610,7 +573,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                               3,
                                                                         ),
                                                                         Text(
-                                                                          // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
                                                                           _placeDetail.reviews.isEmpty
                                                                               ? ''
                                                                               : _placeDetail.reviews[index].relativeTimeDescription,
@@ -632,7 +594,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                       height: 5,
                                                                     ),
                                                                     Text(
-                                                                      // "Watanabe Haruto",
                                                                       _placeDetail
                                                                               .reviews
                                                                               .isEmpty
@@ -657,7 +618,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                                                       height: 5,
                                                                     ),
                                                                     Text(
-                                                                      // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
                                                                       _placeDetail
                                                                               .reviews
                                                                               .isEmpty
@@ -703,7 +663,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                                         height: 260,
                                         child: Center(
                                           child: Text(
-                                            // "",
                                             "ไม่มีความคิดเห็นแล้ว",
                                             style: TextStyle(
                                               color: Colors.black,
@@ -721,7 +680,6 @@ class ToiletDetailState extends State<ToiletDetail> {
                             ),
                           ),
                         ),
-                        // Testpage(),
                       ),
                     ),
                   ],
@@ -736,7 +694,6 @@ class ToiletDetailState extends State<ToiletDetail> {
 }
 
 Widget slide(BuildContext context) {
-  // final applicationBloc = Provider.of<ApplicationBloc>(context);
   final _args =
       ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
   final _place = _args['places'] as Places;
@@ -786,7 +743,6 @@ Widget slide(BuildContext context) {
                               children: [
                                 Text(
                                   "${_place.rating}",
-                                  // "4.7",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16.0,
@@ -840,7 +796,6 @@ Widget slide(BuildContext context) {
                                 return "ดีเยี่ยม";
                               }
                             }()),
-                            // "ดี",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 16.0,
@@ -855,7 +810,6 @@ Widget slide(BuildContext context) {
             ),
             Container(
               child: CommentToiletDetail(),
-              // child: comment(context)
             )
           ]),
         ),
@@ -867,7 +821,6 @@ Widget slide(BuildContext context) {
 Widget img(BuildContext context) {
   final _args =
       ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-  // final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
   var imgList = new List<String>.generate(
     _placeDetail.photos.length,
@@ -918,7 +871,6 @@ Widget toiletLocation(BuildContext context) {
 Widget time(BuildContext context) {
   final _args =
       ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-  // final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
 
   return ExpansionTile(
@@ -928,7 +880,6 @@ Widget time(BuildContext context) {
       size: 28.0,
     ),
     title: Text(
-      // _place.openingHours.periods[0].open.time,
       (() {
         if (_placeDetail.openingHours == null) {
           return "ไม่ระบุเวลาทำการ";
@@ -941,7 +892,6 @@ Widget time(BuildContext context) {
 
       style: TextStyle(
         color:
-            // Colors.black,
             _placeDetail.openingHours == null ||
                     _placeDetail.openingHours.openNow.toString() == 'false'
                 ? Colors.red

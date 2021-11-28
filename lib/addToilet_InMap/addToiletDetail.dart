@@ -69,7 +69,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
     if (newTime != null) {
       setState(() {
         _time = newTime;
-        // print(_time);
         if (_time == newTime) {
           debugPrint('TimeOfOpen: $_time');
         }
@@ -85,7 +84,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
     if (newTime != null) {
       setState(() {
         _time2 = newTime;
-        // print(_time);
         if (_time2 == newTime) {
           debugPrint('TimeOfClosed: $_time2');
         }
@@ -118,21 +116,11 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
           avatar: CircleAvatar(
             backgroundColor: Colors.transparent,
             child: Image.asset('images/flush.png'),
-            // Text(
-            //   company.name[0].toUpperCase(),
-            //   style: TextStyle(
-            //     color: Colors.white,
-            //     // fontWeight: FontWeight.w600,
-            //     fontSize: 15,
-            //     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-            //   ),
-            // ),
           ),
           label: Text(
             company.name,
             style: TextStyle(
               color: Colors.black,
-              // fontWeight: FontWeight.w600,
               fontSize: 10,
               fontFamily: 'Sukhumvit' ?? 'SF-Pro',
             ),
@@ -191,7 +179,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
   }
 
   Future uploadInfo() async {
-    // int i = 1;
     String timestamp;
 
     DateTime now = DateTime.now();
@@ -249,7 +236,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                       padding: EdgeInsets.only(top: 30.0),
                       child: InkWell(
                         onTap: () {
-                          // Navigator.pushNamed(context, '/two');
                           Navigator.of(context).pop();
                         },
                         child: Row(
@@ -312,9 +298,8 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                 ),
                                 Container(
                                   height: 80,
-                                  //ส่วนนี้เป็นดาวที่ให้เรทติ้งที่อยู่ หน้า star.dart
+                                  //ส่วนนี้เป็นดาวที่ให้เรทติ้ง
                                   child:
-                                      // Star2()
                                       Center(
                                     child: Column(
                                       mainAxisAlignment:
@@ -380,16 +365,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                         size: 36.0,
                                       ),
                                       title:
-                                          // Text(
-                                          //   // '126 ถ. ประชาอุทิศ แขวง บางมด เขตทุ่งครุ กรุงเทพมหานคร 10140',
-                                          //   '',
-                                          //   style: TextStyle(
-                                          //     color: Colors.black,
-                                          //     fontSize: 11.0,
-                                          //     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                                          //     fontWeight: FontWeight.w500,
-                                          //   ),
-                                          // ),
                                           Flexible(
                                         child: Form(
                                           key: fromKey,
@@ -414,7 +389,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                       'Sukhumvit' ?? 'SF-Pro',
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black45),
-                                              // border: OutlineInputBorder(),
                                             ),
                                             onSaved: (String placesname) {
                                               userAddToilet.placesname =
@@ -459,7 +433,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                     "เปิดเมื่อ  ${_time.format(context)}",
                                                     style: TextStyle(
                                                       color: Colors.red,
-                                                      // fontWeight: FontWeight.w600,
                                                       fontSize: 11,
                                                       fontFamily: 'Sukhumvit' ??
                                                           'SF-Pro',
@@ -490,7 +463,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                     "ปิดเมื่อ  ${_time2.format(context)}",
                                                     style: TextStyle(
                                                       color: Colors.red,
-                                                      // fontWeight: FontWeight.w600,
                                                       fontSize: 11,
                                                       fontFamily: 'Sukhumvit' ??
                                                           'SF-Pro',
@@ -533,7 +505,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                 children:
                                                     companyWidgets.toList(),
                                               ),
-                                              // Text('Selected: ${_filters.join(', ')}'),
                                             ],
                                           ),
                                         ),
@@ -567,7 +538,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                               color: Colors.white,
                                             ),
                                             highlightColor: Colors.white,
-                                            // onPressed: ()=>!uploading ? chooseImage() : null,
                                             onPressed: () {
                                               tripEditModalBottomSheet(context);
                                             },
@@ -630,7 +600,7 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                               color:
                                                   ToiletColors.colorButton2)),
                                       onPressed: () async {
-                                        // //ยืนยัน
+                                        // ยืนยัน
 
                                         showDialog(
                                           context: context,
@@ -726,7 +696,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                                           width: 100,
                                                           height: 47,
                                                           child: ElevatedButton(
-                                                            // Within the `FirstScreen` widget
                                                             style: ElevatedButton.styleFrom(
                                                                 shape:
                                                                     StadiumBorder(),
@@ -851,18 +820,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                           },
                                         );
 
-                                        // Navigator.pushNamed(context, '/o');
-
-                                        // Navigator.pushNamed(context, '/n',
-                                        //     arguments: {
-                                        //       'currentlocationLat':
-                                        //           _currentlocation.latitude,
-                                        //       'currentlocationLong':
-                                        //           _currentlocation.longitude,
-                                        //       'name': userAddToilet.placesname
-                                        //     });
-
-                                        // Navigator.of(context).pop();
                                       },
                                       padding: EdgeInsets.all(10.0),
                                       color: ToiletColors.colorButton2,
@@ -871,7 +828,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                                         "ยืนยัน",
                                         style: TextStyle(
                                           color: Colors.white,
-                                          // fontWeight: FontWeight.w600,
                                           fontSize: 18,
                                           fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                                         ),
@@ -964,7 +920,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                       height: 20,
                     ),
                     MaterialButton(
-                      // RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(13.0),
                           side: BorderSide(color: ToiletColors.colorButton2)),
@@ -980,7 +935,6 @@ class _AddToiletDetailState extends State<AddToiletDetail> {
                         "ยืนยัน",
                         style: TextStyle(
                           color: Colors.white,
-                          // fontWeight: FontWeight.w600,
                           fontSize: 15,
                           fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                         ),

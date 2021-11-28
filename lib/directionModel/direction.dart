@@ -31,7 +31,6 @@ class DistanceMatrix {
     DistanceMatrix distanceMatrix;
     try {
       String jsonData = await rootBundle.loadString('assets/data.json');
-      // String jsonData = await rootBundle.loadString('assets/google-services.json');
       distanceMatrix = new DistanceMatrix.fromJson(json.decode(jsonData));
     } catch (e) {
       print(e);

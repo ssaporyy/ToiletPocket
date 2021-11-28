@@ -14,9 +14,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
   List<File> _image = [];
   @override
   Widget build(BuildContext context) {
-    // final arguments = ModalRoute.of(context).settings.arguments as Map;
-    // final id = arguments['placeid'] as Places;
-    // final nameP = arguments['placename'];
     return Scaffold(
       appBar: AppBar(title: Text("Comment")),
       body: 
@@ -35,7 +32,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
                   return Flexible(
                     child: Container(
                         child: ListView.builder(
-                      // physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -47,7 +43,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
                             elevation: 6,
                             shadowColor: ToiletColors.colorBackground,
                             child: Container(
-                              // height: 260,
                               padding: EdgeInsets.all(10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +111,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                                               height: 5,
                                             ),
                                             Text(
-                                              // "Watanabe Haruto",
+                                              // "ชื่อ",
                                               snapshot.data
                                                       .docs[index]['userName']
                                                       .toString()
@@ -136,7 +131,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                                               height: 5,
                                             ),
                                             Text(
-                                              // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
+                                              // "แสดงความคิดเห็น",
 
                                               snapshot.data.docs[index]
                                                   ['usercomment'],
@@ -163,16 +158,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                            // Text(
-                                            //   id.name == null? '':id.name.toString(),
-                                            //   style: TextStyle(
-                                            //     color: Colors.black,
-                                            //     fontSize: 14.0,
-                                            //     fontFamily:
-                                            //         'Sukhumvit' ?? 'SF-Pro',
-                                            //     fontWeight: FontWeight.w500,
-                                            //   ),
-                                            // ),
                                             SizedBox(
                                               height: 5,
                                             ),
@@ -207,10 +192,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
                                                                                 'data')
                                                                             : NetworkImage(imageList[index]
                                                                                 .toString()),
-                                                                        // SizedBox(
-                                                                        //     height:
-                                                                        //         2,
-                                                                        //   ),
 
                                                                         fit: BoxFit
                                                                             .cover),

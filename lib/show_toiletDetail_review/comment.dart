@@ -16,7 +16,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
   Widget build(BuildContext context) {
       final _args =
       ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-  // final _place = _args['places'] as Places;
   final _placeDetail = _args['places_detail'] as Places;
   final arguments = ModalRoute.of(context).settings.arguments as Map;
  if (_placeDetail.reviews.isEmpty) {
@@ -51,7 +50,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
               elevation: 6,
               shadowColor: ToiletColors.colorBackground,
               child: Container(
-                // height: 260,
                 padding: EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,9 +64,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                             padding: EdgeInsets.fromLTRB(15, 0, 20, 0),
                             child: CircleAvatar(
                               backgroundImage:
-                                  // NetworkImage(
-                                  //     'https://cdn.readawrite.com/articles/1821/1820201/thumbnail/large.gif?3'),
-                                  // AssetImage('images/ruto.jpg'),
 
                                   NetworkImage(_placeDetail.reviews.isEmpty
                                       ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
@@ -99,7 +94,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                                     width: 3,
                                   ),
                                   Text(
-                                    // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
                                     _placeDetail.reviews.isEmpty
                                         ? ''
                                         : _placeDetail.reviews[index]
@@ -117,7 +111,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                                 height: 5,
                               ),
                               Text(
-                                // "Watanabe Haruto",
                                 _placeDetail.reviews.isEmpty
                                     ? 'No name'
                                     : _placeDetail.reviews[index].authorName,
@@ -132,7 +125,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                                 height: 5,
                               ),
                               Text(
-                                // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
                                 _placeDetail.reviews.isEmpty
                                     ? 'No Comment'
                                     : _placeDetail.reviews[index].text,
@@ -174,7 +166,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                   return Flexible(
                     child: Container(
                         child: ListView.builder(
-                      // physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -186,7 +177,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                             elevation: 6,
                             shadowColor: ToiletColors.colorBackground,
                             child: Container(
-                              // height: 260,
                               padding: EdgeInsets.all(10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,10 +217,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                                                 RatingBarIndicator(
                                                   rating: snapshot.data
                                                       .docs[index]['rating'],
-                                                  // _placeDetail.reviews.isEmpty
-                                                  // ? 0.0
-                                                  // : _placeDetail.reviews[index].rating
-                                                  //     .toDouble(),
                                                   itemBuilder:
                                                       (context, index) => Icon(
                                                           Icons.star,
@@ -259,7 +245,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                                               height: 5,
                                             ),
                                             Text(
-                                              // "Watanabe Haruto",
                                               snapshot.data
                                                       .docs[index]['userName']
                                                       .toString()
@@ -279,7 +264,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                                               height: 5,
                                             ),
                                             Text(
-                                              // "ห้องน้ำสะอาด มีเจลล้างมือ ประตูไม่มีการชำรุด",
 
                                               snapshot.data.docs[index]
                                                   ['usercomment'],
@@ -301,16 +285,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                            // Text(
-                                            //   id.name == null? '':id.name.toString(),
-                                            //   style: TextStyle(
-                                            //     color: Colors.black,
-                                            //     fontSize: 14.0,
-                                            //     fontFamily:
-                                            //         'Sukhumvit' ?? 'SF-Pro',
-                                            //     fontWeight: FontWeight.w500,
-                                            //   ),
-                                            // ),
                                             SizedBox(
                                               height: 5,
                                             ),
@@ -343,10 +317,6 @@ class _CommentToiletDetailState extends State<CommentToiletDetail> {
                                                                             ? Text('data')
                                                                             : NetworkImage(imageList[index]
                                                                                 .toString()),
-                                                                                // SizedBox(
-                                                                        //     height:
-                                                                        //         2,
-                                                                        //   ),
 
                                                                         fit: BoxFit
                                                                             .cover),

@@ -37,12 +37,10 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
     setState(() {
       _markers.add(Marker(
         markerId: MarkerId('AddMarker'),
-        // position: LatLng(currentPosition.latitude, currentPosition.longitude),
         position: LatLng(
             arguments['currentlocationLat'], arguments['currentlocationLong']),
         icon: customIcon,
         infoWindow: InfoWindow(title: arguments['name'])
-        // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
       ));
     });
   }
@@ -56,8 +54,6 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
     final arguments = ModalRoute.of(context).settings.arguments as Map;
 
     Marker sourcePin() {
-      // print('=================src lat: ${_currentlocation.latitude}');
-      // print('=================src lng: ${_currentlocation.longitude}');
       return Marker(
         markerId: MarkerId('sourcepin'),
         position: LatLng(
@@ -100,22 +96,13 @@ class _DisplayAddToiletsState extends State<DisplayAddToilets> {
                 initialCameraPosition: CameraPosition(
                   target: LatLng(arguments['currentlocationLat'],
                       arguments['currentlocationLong']),
-                  // target: LatLng(
-                  //     currentPosition.latitude, currentPosition.longitude),
                   zoom: 18.0,
                   tilt: 20.0,
-                  // bearing: 30,
                 ),
                 onMapCreated: _onMapCreated,
-                // (GoogleMapController controller) {
-                //   _mapController.complete(controller);
-                // },
                 onCameraMove: null,
                 circles: myCircles,
-                // markers: Set<Marker>.of(_markers),
-                // markers: _markers,
                 markers: mySet(),
-                // myLocationButtonEnabled: false,
               ),
             ),
             Align(

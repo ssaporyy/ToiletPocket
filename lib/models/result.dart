@@ -1,33 +1,27 @@
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'geometry.dart';
 import 'opening_hours.dart';
 import 'photo.dart';
 
 class Result {
-  final Geometry geometry; //
-  //new
-  // final BitmapDescriptor icon;
-  // final int userRatingCount;
-  final String icon; //
+  final Geometry geometry; 
+  final String icon; 
   final String id;
-  final String name; //
+  final String name; 
   final List<Photo> photos;
   final String placeId;
-  final double rating; //
+  final double rating; 
   final String reference;
   final String scope;
   final List<String> types;
   final int userRatingsTotal;
-  final String vicinity; //
-  //
+  final String vicinity; 
+  
   OpeningHours openingHours;
 
   Result({
     this.geometry,
-    /*new*/
     this.icon,
-    // this.userRatingCount,
     this.id,
     this.name,
     this.photos,
@@ -38,22 +32,14 @@ class Result {
     this.types,
     this.userRatingsTotal,
     this.vicinity,
-    /*old this.icon*/
-    //
     this.openingHours,
   });
 
   factory Result.fromJson(
-      Map<String, dynamic> json /*, BitmapDescriptor icon*/) {
+      Map<String, dynamic> json ) {
     return Result(
         geometry: Geometry.fromJson(json['geometry']),
-        //new
         icon: json['icon'],
-        // icon=icon,
-        // userRatingCount: (json['user_ratings_total'] != null)
-        //     ? json['user_ratings_total']
-        //     : null,
-        //
         id: json['id'],
         name: json['name'],
         photos: json['photos'] != null
@@ -67,10 +53,7 @@ class Result {
         userRatingsTotal: json['user_ratings_total'],
         vicinity: json['vicinity'],
         openingHours: json['opening_hours'] != null? OpeningHours.fromJson(json['opening_hours']) : null,
-        //
-        // openingHours: json['opening_hours'] != null
-        //   ? new OpeningHours.fromJson(json['opening_hours'])
-        //   : null,
+        
         );
   }
 }

@@ -110,9 +110,6 @@ class _AddCommentState extends State<AddComment> {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     final arguments = ModalRoute.of(context).settings.arguments as Map;
 
-    // final placeid = arguments['current'];
-    // final placename = arguments['nameplace'];
-
     return FutureBuilder(
         future: firebase,
         builder: (context, snapshot) {
@@ -230,7 +227,8 @@ class _AddCommentState extends State<AddComment> {
                                               radius: 45.0,
                                               backgroundImage: NetworkImage(user ==
                                                           null ||
-                                                      user.isAnonymous || user.photoURL.isEmpty
+                                                      user.isAnonymous ||
+                                                      user.photoURL.isEmpty
                                                   ? 'https://api-private.atlassian.com/users/59e6130472109b7dbf87e89b024ef0b0/avatar'
                                                   : (user.photoURL)),
                                             ),
@@ -238,9 +236,6 @@ class _AddCommentState extends State<AddComment> {
                                           SizedBox(
                                             height: 2,
                                           ),
-                                          // SizedBox(
-                                          //   height: 10,
-                                          // ),
                                           Text(
                                             // 'Haruto',
                                             (user.displayName == null ||
@@ -263,10 +258,8 @@ class _AddCommentState extends State<AddComment> {
                                   //star ดาว
                                   Container(
                                       height: 70,
-                                      //ส่วนนี้เป็นดาวที่ให้เรทติ้งที่อยู่ หน้า star.dart
-                                      child:
-                                          // Star()
-                                          Center(
+                                      //ส่วนนี้เป็นดาวที่ให้เรทติ้ง
+                                      child: Center(
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
@@ -339,156 +332,35 @@ class _AddCommentState extends State<AddComment> {
                                         child: Form(
                                           key: fromKey,
                                           child: TextFormField(
-                                              autofocus: false,
-                                              textCapitalization:
-                                                  TextCapitalization.words,
-                                              textInputAction:
-                                                  TextInputAction.done,
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                fontFamily:
-                                                    'Sukhumvit' ?? 'SF-Pro',
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                              maxLines: 4,
-                                              decoration: InputDecoration(
-                                                hintText: "แสดงความคิดเห็น",
-                                                hintStyle: TextStyle(
-                                                    fontSize: 12,
-                                                    fontFamily:
-                                                        'Sukhumvit' ?? 'SF-Pro',
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.black45),
-                                                border: OutlineInputBorder(),
-                                              ),
-                                              onSaved: (String review) {
-                                                userComment.review = review;
-                                                print(
-                                                    "+++++++++++++++${review}");
-                                              },
-                                              // validator: (value) {
-                                              //   if (value.isEmpty) {
-                                              //     showDialog(
-                                              //         context: context,
-                                              //         barrierDismissible: false,
-                                              //         builder: (BuildContext
-                                              //             context) {
-                                              //           return AlertDialog(
-                                              //             actionsAlignment:
-                                              //                 MainAxisAlignment
-                                              //                     .center,
-                                              //             actions: <Widget>[
-                                              //               SizedBox(
-                                              //                 height: 10,
-                                              //               ),
-                                              //               Column(children: [
-                                              //                 // Image.asset(
-                                              //                 //   'images/toiletPlus.png',
-                                              //                 //   width: 50,
-                                              //                 //   height: 50,
-                                              //                 // ),
-                                              //                 Image.network(
-                                              //                     'https://www.shareicon.net/data/512x512/2015/08/18/86945_warning_512x512.png'),
-                                              //                 SizedBox(
-                                              //                   height: 18,
-                                              //                 ),
-                                              //                 // Text(
-                                              //                 //   "ขอบคุณสำหรับการเพิ่มห้องน้ำ",
-                                              //                 //   style: TextStyle(
-                                              //                 //     color: Colors.black,
-                                              //                 //     fontWeight:
-                                              //                 //         FontWeight.w600,
-                                              //                 //     fontSize: 18,
-                                              //                 //     fontFamily:
-                                              //                 //         'Sukhumvit' ??
-                                              //                 //             'SF-Pro',
-                                              //                 //   ),
-                                              //                 // ),
-                                              //                 // SizedBox(
-                                              //                 //   height: 10,
-                                              //                 // ),
-                                              //                 Container(
-                                              //                   child: Text(
-                                              //                     "คุณยังไม่ได้กรอกข้อความ\nกรุณาใส่ข้อความ",
-                                              //                     style:
-                                              //                         TextStyle(
-                                              //                       color: Colors
-                                              //                           .black87,
-                                              //                       fontWeight:
-                                              //                           FontWeight
-                                              //                               .w500,
-                                              //                       fontSize:
-                                              //                           15,
-                                              //                       fontFamily:
-                                              //                           'Sukhumvit' ??
-                                              //                               'SF-Pro',
-                                              //                     ),
-                                              //                     textAlign:
-                                              //                         TextAlign
-                                              //                             .center,
-                                              //                   ),
-                                              //                   alignment:
-                                              //                       Alignment
-                                              //                           .topCenter,
-                                              //                   padding:
-                                              //                       EdgeInsets
-                                              //                           .all(5),
-                                              //                   height: 80,
-                                              //                   width: 200,
-                                              //                 ),
-                                              //                 Container(
-                                              //                   width: 100,
-                                              //                   height: 47,
-                                              //                   child:
-                                              //                       ElevatedButton(
-                                              //                     style: ElevatedButton.styleFrom(
-                                              //                         shape:
-                                              //                             StadiumBorder(),
-                                              //                         primary:
-                                              //                             ToiletColors
-                                              //                                 .colorButton2,
-                                              //                         elevation:
-                                              //                             5.0),
-                                              //                     child: Text(
-                                              //                       'ยืนยัน',
-                                              //                       style: TextStyle(
-                                              //                           fontFamily:
-                                              //                               'Sukhumvit' ??
-                                              //                                   'SF-Pro',
-                                              //                           fontSize:
-                                              //                               20),
-                                              //                     ),
-                                              //                     onPressed:
-                                              //                         () async {
-                                              //                       //ยืนยัน
-                                              //                       // Navigator.of(
-                                              //                       //         context)
-                                              //                       //     .pop();
-                                              //                     },
-                                              //                   ),
-                                              //                 ),
-                                              //                 SizedBox(
-                                              //                   height: 15,
-                                              //                 ),
-                                              //               ]),
-                                              //             ],
-                                              //             elevation: 10.0,
-                                              //             shape:
-                                              //                 RoundedRectangleBorder(
-                                              //               borderRadius:
-                                              //                   BorderRadius
-                                              //                       .circular(
-                                              //                           10.0),
-                                              //             ),
-                                              //           );
-                                              //         });
-                                              //   }
-                                              //   return null;
-                                              // }
-
-                                              validator: RequiredValidator(
-                                                  errorText: "Please comment"),
-                                              ),
+                                            autofocus: false,
+                                            textCapitalization:
+                                                TextCapitalization.words,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              fontFamily:
+                                                  'Sukhumvit' ?? 'SF-Pro',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            maxLines: 4,
+                                            decoration: InputDecoration(
+                                              hintText: "แสดงความคิดเห็น",
+                                              hintStyle: TextStyle(
+                                                  fontSize: 12,
+                                                  fontFamily:
+                                                      'Sukhumvit' ?? 'SF-Pro',
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black45),
+                                              border: OutlineInputBorder(),
+                                            ),
+                                            onSaved: (String review) {
+                                              userComment.review = review;
+                                              print("+++++++++++++++${review}");
+                                            },
+                                            validator: RequiredValidator(
+                                                errorText: "Please comment"),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -504,13 +376,9 @@ class _AddCommentState extends State<AddComment> {
                                         alignment: Alignment.topLeft,
                                         child: Column(
                                           children: <Widget>[
-                                            //  Expanded(
-                                            //   child: buildGridView(),
-                                            // ),
                                             Row(
                                               children: [
                                                 Container(
-                                                  // padding: EdgeInsets.only(top: 36),
                                                   alignment: Alignment.topLeft,
                                                   child: Container(
                                                     height: 83,
@@ -532,99 +400,6 @@ class _AddCommentState extends State<AddComment> {
                                                       onPressed: () {
                                                         tripEditModalBottomSheet(
                                                             context);
-
-                                                        // showDialog(
-                                                        //     context: context,
-                                                        //     builder: (context) =>
-                                                        //         // AddImage1()
-                                                        //         // showAlertImgDialog(context)
-                                                        //         );
-
-                                                        // showDialog(
-                                                        //     context: context,
-                                                        //     builder: (context) =>
-                                                        //       AlertDialog(
-                                                        //         shape: RoundedRectangleBorder(
-                                                        //             borderRadius:
-                                                        //                 BorderRadius.all(
-                                                        //                     Radius.circular(10.0))),
-                                                        //         title: Text(
-                                                        //             "Add Images"),
-                                                        //         content:
-                                                        //             Container(
-                                                        //           alignment:
-                                                        //               Alignment
-                                                        //                   .topLeft,
-                                                        //           height: 180,
-                                                        //           width: 200,
-                                                        //           child: Row(
-                                                        //             children: [
-                                                        //               Expanded(
-                                                        //                 child: GridView
-                                                        //                     .builder(
-                                                        //                   shrinkWrap:
-                                                        //                       true,
-                                                        //                   gridDelegate:
-                                                        //                       SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-                                                        //                   itemBuilder:
-                                                        //                       (BuildContext context, int index) {
-                                                        //                     return index == 0
-                                                        //                         ? Center(
-                                                        //                             child: IconButton(icon: Icon(Icons.add), onPressed: () => !uploading ? chooseImage() : null),
-                                                        //                           )
-                                                        //                         : Container(
-                                                        //                             margin: EdgeInsets.all(3),
-                                                        //                             decoration: BoxDecoration(image: DecorationImage(image: FileImage(_image[index - 1]), fit: BoxFit.cover)),
-                                                        //                           );
-                                                        //                   },
-                                                        //                   itemCount:
-                                                        //                       _image.length + 1,
-                                                        //                 ),
-                                                        //               ),
-                                                        //             ],
-                                                        //           ),
-                                                        //         ),
-                                                        //         actions: [
-                                                        //           FlatButton(
-                                                        //             textColor:
-                                                        //                 Color(
-                                                        //                     0xFF6200EE),
-                                                        //             onPressed: () =>
-                                                        //                 Navigator.pop(
-                                                        //                     context,
-                                                        //                     false),
-                                                        //             child: Text(
-                                                        //                 'CANCEL'),
-                                                        //           ),
-                                                        //           FlatButton(
-                                                        //             textColor:
-                                                        //                 Color(
-                                                        //                     0xFF6200EE),
-                                                        //             // onPressed:
-                                                        //             //     () {
-                                                        //             //   Navigator.of(context)
-                                                        //             //       .pop();
-                                                        //             // },
-                                                        //             onPressed:
-                                                        //                 () {
-                                                        //               setState(
-                                                        //                   () {
-                                                        //                 uploading =
-                                                        //                     true;
-                                                        //               });
-                                                        //               // uploadInfo().whenComplete(() =>
-                                                        //               //     Navigator.of(context).pop());
-                                                        //               // uploadFile().whenComplete(() => Navigator.of(context).pop());
-                                                        //               Navigator.pop(
-                                                        //                   context,
-                                                        //                   true);
-                                                        //             },
-                                                        //             child: Text(
-                                                        //                 'CONFIRM'),
-                                                        //           ),
-                                                        //         ],
-                                                        //       ),
-                                                        //     );
                                                       },
                                                     ),
                                                   ),
@@ -895,11 +670,6 @@ class _AddCommentState extends State<AddComment> {
                                       ),
                                     ),
                                   ),
-                                  // Padding(
-                                  //   padding:
-                                  //       const EdgeInsets.only(left: 25),
-                                  //   child: addPhotocomment(context),
-                                  // ),
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         top: 0, bottom: 0),
@@ -920,117 +690,9 @@ class _AddCommentState extends State<AddComment> {
                                         onPressed: () async {
                                           //ยืนยัน
                                           List<String> imageUrlList = [];
-                                          // if (userComment.review == "") {
-                                          //   return showDialog(
-                                          //       context: context,
-                                          //       barrierDismissible: false,
-                                          //       builder:
-                                          //           (BuildContext context) {
-                                          //         return AlertDialog(
-                                          //           actionsAlignment:
-                                          //               MainAxisAlignment
-                                          //                   .center,
-                                          //           actions: <Widget>[
-                                          //             SizedBox(
-                                          //               height: 10,
-                                          //             ),
-                                          //             Column(children: [
-                                          //               // Image.asset(
-                                          //               //   'images/toiletPlus.png',
-                                          //               //   width: 50,
-                                          //               //   height: 50,
-                                          //               // ),
-                                          //               Image.network(
-                                          //                 'https://www.shareicon.net/data/512x512/2015/08/18/86945_warning_512x512.png',
-                                          //                 width: 50,
-                                          //                 height: 50,
-                                          //               ),
-                                          //               SizedBox(
-                                          //                 height: 18,
-                                          //               ),
-                                          //               // Text(
-                                          //               //   "ขอบคุณสำหรับการเพิ่มห้องน้ำ",
-                                          //               //   style: TextStyle(
-                                          //               //     color: Colors.black,
-                                          //               //     fontWeight:
-                                          //               //         FontWeight.w600,
-                                          //               //     fontSize: 18,
-                                          //               //     fontFamily:
-                                          //               //         'Sukhumvit' ??
-                                          //               //             'SF-Pro',
-                                          //               //   ),
-                                          //               // ),
-                                          //               // SizedBox(
-                                          //               //   height: 10,
-                                          //               // ),
-                                          //               Container(
-                                          //                 child: Text(
-                                          //                   "คุณยังไม่ได้กรอกข้อความ\nกรุณาใส่ข้อความ",
-                                          //                   style: TextStyle(
-                                          //                     color: Colors
-                                          //                         .black87,
-                                          //                     fontWeight:
-                                          //                         FontWeight
-                                          //                             .w500,
-                                          //                     fontSize: 15,
-                                          //                     fontFamily:
-                                          //                         'Sukhumvit' ??
-                                          //                             'SF-Pro',
-                                          //                   ),
-                                          //                   textAlign: TextAlign
-                                          //                       .center,
-                                          //                 ),
-                                          //                 alignment: Alignment
-                                          //                     .topCenter,
-                                          //                 padding:
-                                          //                     EdgeInsets.all(5),
-                                          //                 height: 80,
-                                          //                 width: 200,
-                                          //               ),
-                                          //               Container(
-                                          //                 width: 100,
-                                          //                 height: 47,
-                                          //                 child: ElevatedButton(
-                                          //                   style: ElevatedButton.styleFrom(
-                                          //                       shape:
-                                          //                           StadiumBorder(),
-                                          //                       primary:
-                                          //                           ToiletColors
-                                          //                               .colorButton2,
-                                          //                       elevation: 5.0),
-                                          //                   child: Text(
-                                          //                     'ยืนยัน',
-                                          //                     style: TextStyle(
-                                          //                         fontFamily:
-                                          //                             'Sukhumvit' ??
-                                          //                                 'SF-Pro',
-                                          //                         fontSize: 20),
-                                          //                   ),
-                                          //                   onPressed:
-                                          //                       () async {
-                                          //                     //ยืนยัน
-                                          //                     Navigator.of(
-                                          //                             context)
-                                          //                         .pop();
-                                          //                   },
-                                          //                 ),
-                                          //               ),
-                                          //               SizedBox(
-                                          //                 height: 15,
-                                          //               ),
-                                          //             ]),
-                                          //           ],
-                                          //           elevation: 10.0,
-                                          //           shape:
-                                          //               RoundedRectangleBorder(
-                                          //             borderRadius:
-                                          //                 BorderRadius.circular(
-                                          //                     10.0),
-                                          //           ),
-                                          //         );
-                                          //       });
-                                          // }
-                                          if (fromKey.currentState.validate()|| userComment.review.isNotEmpty || userComment.review == null) {
+                                          if (fromKey.currentState.validate() ||
+                                              userComment.review.isNotEmpty ||
+                                              userComment.review == null) {
                                             fromKey.currentState.save();
                                             for (var img in _image) {
                                               ref = firebase_storage
@@ -1254,17 +916,11 @@ class _AddCommentState extends State<AddComment> {
         ),
         FlatButton(
           textColor: Color(0xFF6200EE),
-          // onPressed:
-          //     () {
-          //   Navigator.of(context)
-          //       .pop();
-          // },
           onPressed: () {
             setState(() {
               uploading = true;
             });
             uploadInfo().whenComplete(() => Navigator.of(context).pop());
-            // uploadFile().whenComplete(() => Navigator.of(context).pop());
           },
           child: Text('CONFIRM'),
         ),

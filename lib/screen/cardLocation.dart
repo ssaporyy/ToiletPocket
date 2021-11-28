@@ -16,7 +16,6 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
       children: <Widget>[
         Text(
           toiletName,
-          // toiletName,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
               color: Color(0xff6200ee),
@@ -41,7 +40,6 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
                 ),
                 Text(
                   '($score)',
-                  // '($score)',
                   style: TextStyle(
                       color: Colors.black54,
                       fontSize: 35.0,
@@ -64,7 +62,6 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
                       return (meters != null)
                           ? Text(
                               '$address',
-                              // '$address',
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: TextStyle(
@@ -94,24 +91,10 @@ Widget myDetailsContainer1(String toiletName, score, rating, address, openClose,
                     fontWeight: FontWeight.normal),
               ),
               SizedBox(width: 50.0),
-              // Consumer<double>(
-              //   builder: (context, meters, wiget) {
-              //     return (meters != null)
-              //         ? Text(
-              //             '\u00b7  ${(meters / 1609).round()} km',
-              //             style: TextStyle(
-              //                 color: Colors.blue,
-              //                 fontSize: 30.0,
-              //                 fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-              //                 fontWeight: FontWeight.normal),
-              //           )
-              //         : Container();
-              //   },
-              // ),
+              
             ],
           ),
         ),
-        // SizedBox(height: 5.0),
       ],
     ),
   );

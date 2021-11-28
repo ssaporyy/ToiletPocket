@@ -1,7 +1,5 @@
-// import 'dart:convert';
 
 import 'package:ToiletPocket/models/periods.dart';
-// import 'package:flutter/foundation.dart';
 
 class OpeningHours {
   final bool openNow;

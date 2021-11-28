@@ -1,10 +1,7 @@
 import 'dart:async';
 
 import 'package:ToiletPocket/blocs/application_bloc.dart';
-// import 'package:ToiletPocket/models/open.dart';
-// import 'package:ToiletPocket/models/place_response.dart';
 import 'package:ToiletPocket/models/places.dart';
-// import 'package:ToiletPocket/models/result.dart';
 import 'package:ToiletPocket/screen/cardLocation.dart';
 import 'package:ToiletPocket/screen/search.dart';
 import 'package:ToiletPocket/services/places_service.dart';
@@ -99,23 +96,12 @@ class _HomePageState extends State<HomePage> {
     ));
   }
 
-  // Future<void> _gotoMarker(double lat, double long) async {
-  //   final GoogleMapController controller = await _mapController.future;
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-  //     target: LatLng(lat, long),
-  //     zoom: 16,
-  //     tilt: 50.0,
-  //     // bearing: 45.0,
-  //   )));
-  // }
-
   @override
   Widget build(BuildContext context) {
     final currentPosition = Provider.of<Position>(context);
     final placesProvider = Provider.of<Future<List<Places>>>(context);
     final geoService = GeoLocatorService();
     final markerService = MarkerService();
-    //new
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     List<Marker> _marker = <Marker>[];
 
@@ -133,10 +119,7 @@ class _HomePageState extends State<HomePage> {
                     return (places != null)
                         ? Stack(
                             children: [
-                              // Maps(),
                               Container(
-                                // height: MediaQuery.of(context).size.height / 2,
-                                // height: 500,
                                 height: MediaQuery.of(context).size.height,
                                 width: MediaQuery.of(context).size.width,
                                 child: GoogleMap(
@@ -145,7 +128,6 @@ class _HomePageState extends State<HomePage> {
                                         currentPosition.longitude),
                                     zoom: 16.0,
                                     tilt: 50.0,
-                                    // bearing: 30,
                                   ),
 
                                   onCameraMove: (position) {
@@ -155,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                                   zoomGesturesEnabled: true,
                                   zoomControlsEnabled: false,
                                   compassEnabled: false,
-                                  //เลื่อนปุ่ม current ให้ขึ้นมา
+                                  //ปุ่ม current 
                                   padding: EdgeInsets.only(
                                     bottom: 255.0,
                                   ),
@@ -231,9 +213,8 @@ class _HomePageState extends State<HomePage> {
                                   height: 250.0,
                                   child: (places.length > 0)
                                       ? ListView.builder(
-                                          //ตั้งให้แสดงขึ้นมา 5 ที่โดยไม่ได้กำหนดระยะทาง
+                                          
                                           itemCount: 5,
-                                          // itemCount: places.length,
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (context, index) {
                                             final photoReference = places[index]
@@ -241,12 +222,7 @@ class _HomePageState extends State<HomePage> {
                                                     .isEmpty
                                                 ? ''
                                                 : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
-                                            // print(
-                                            //   'lat:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lat}',
-                                            // );
-                                            // print(
-                                            //   'lng:-----------------------------------------------------------------${applicationBloc.selectedLocationStatic.geometry.location.lng}',
-                                            // );
+                                            
                                             return FutureProvider(
                                               create: (context) =>
                                                   geoService.getDistance(
@@ -267,9 +243,7 @@ class _HomePageState extends State<HomePage> {
                                                 child: GestureDetector(
                                                   child: boxes(
                                                       photoReference,
-                                                      // '',
 
-                                                      // 13.1667,100.9333,
                                                       places[index]
                                                           .geometry
                                                           .location
@@ -278,31 +252,31 @@ class _HomePageState extends State<HomePage> {
                                                           .geometry
                                                           .location
                                                           .lng,
-                                                      // currentPosition.latitude,
-                                                      // currentPosition.longitude,
                                                       "${places[index].name}",
-                                                      // "${places[index].name}",
                                                       /*score*/ places[index]
                                                           .userRatingsTotal,
                                                       /*rating*/ places[index],
                                                       /*address*/ places[index]
                                                           .vicinity,
                                                       places[index],
-                                                      // places[index],
+                                                      /*positionUser*/
                                                       currentPosition,
+                                                      /*lat1*/
                                                       currentPosition.latitude,
+                                                      /*lng1*/
                                                       currentPosition.longitude,
+                                                      /*lat2*/
                                                       places[index]
                                                           .geometry
                                                           .location
                                                           .lat,
+                                                      /*lng2*/
                                                       places[index]
                                                           .geometry
                                                           .location
                                                           .lng,
 
                                                       /**openClose */
-                                                      //'',
                                                       '${places[index].openingHours == null || places[index].openingHours.openNow.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
                                                       context),
                                                   onTap: () async {
@@ -378,13 +352,10 @@ class _HomePageState extends State<HomePage> {
             borderRadius: BorderRadius.circular(24.0),
             shadowColor: Color(0x802196F3),
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
                   width: 850,
                   height: 400,
-                  // height: MediaQuery.of(context).size.width + 5,
-                  // width: MediaQuery.of(context).size.width / 3,
                   child: ClipRRect(
                     borderRadius: new BorderRadius.only(
                       topRight: Radius.circular(15.0),
@@ -405,7 +376,6 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   width: 800,
                   height: 450,
-                  // height: MediaQuery.of(context).size.width + 5,
                   padding: const EdgeInsets.only(
                       bottom: 40, top: 15, left: 20, right: 20),
                   margin: EdgeInsets.all(20),
@@ -431,16 +401,12 @@ class _HomePageState extends State<HomePage> {
                                   color: ToiletColors.colorButton,
                                   onPressed: () async {
                                     //กดไปหน้า นำทาง
-                                    //set direction
-                                    // final direction = await placesService.getDirection(lat1, lng1, lat2, lng2);
-
                                     Navigator.pushNamed(
                                       context,
                                       '/eight',
                                       arguments: {
                                         'places': push,
                                         'current': navigate,
-                                        // 'direction': direction,
                                       },
                                     );
                                   },
@@ -468,7 +434,6 @@ class _HomePageState extends State<HomePage> {
                                           color: ToiletColors.colorText,
                                           fontSize: 30.0,
                                           fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                                          // fontWeight: FontWeight.normal
                                         ),
                                       ),
                                     ],
@@ -478,7 +443,6 @@ class _HomePageState extends State<HomePage> {
                                       new EdgeInsets.fromLTRB(28, 7, 28, 7),
                                 ),
                               ),
-                              // SizedBox(width: 50.0),
                               Container(
                                 child: Row(
                                   children: [
