@@ -4,87 +4,136 @@ import 'package:ToiletPocket/screen/homepage.dart';
 import 'package:ToiletPocket/screen/showUp.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rive/rive.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class FirstScreen extends StatefulWidget {
+class LoginGoogleAddcomment extends StatefulWidget {
   @override
-  FirstScreenState createState() => FirstScreenState();
+  LoginGoogleAddcommentState createState() => LoginGoogleAddcommentState();
 }
 
-class FirstScreenState extends State<FirstScreen> {
+class LoginGoogleAddcommentState extends State<LoginGoogleAddcomment> {
+  launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url, forceWebView: true);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _launchURLBrowser() async {
+    const url = 'https://flutterdevs.com/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _launchURLApp() async {
+    const url = 'https://flutterdevs.com/';
+    if (await canLaunch(url)) {
+      await launch(url, forceSafariVC: true, forceWebView: true);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    int delayAmount = 3500;
+    int delayAmount = 1500;
     return Material(
         child: Stack(children: <Widget>[
       Align(
-        child: RiveAnimation.asset(
-          'images/login.riv',
+        child: Image.asset(
+          'images/signUp.png',
+          width: 500,
           fit: BoxFit.fill,
         ),
       ),
-      ShowUp(
-        delay: delayAmount,
-        child: Align(
-          child: ListView(
-            children: [
-              Container(
-                height: 65,
-                margin: EdgeInsets.only(left: 50, top: 126),
-                child: Text(
-                  'ยินดีต้อนรับ',
-                  textAlign: TextAlign.left,
+      Container(
+        padding: EdgeInsets.only(top: 43.0, left: 20.0, right: 0.0),
+        child: Container(
+          padding: EdgeInsets.only(top: 30.0),
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.arrow_back_ios_rounded,
+                  size: 18,
+                  color: Colors.blue,
+                ),
+                Text(
+                  'กลับ',
                   style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 15.0,
                     fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                    color: Colors.black,
-                    fontSize: 55,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-              ),
-              Container(
-                height: 45,
-                margin: EdgeInsets.only(left: 50, top: 0),
-                child: Text(
-                  'Toilet Pocket',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-                    color: Colors.black,
-                    fontSize: 35,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 13,
-              ),
-              Container(
-                width: 20,
-                height: 45,
-                margin: EdgeInsets.only(left: 50, right: 200),
-                child: ElevatedButton(
-                  // Within the `FirstScreen` widget
-                  style: ElevatedButton.styleFrom(
-                      shape: StadiumBorder(),
-                      primary: ToiletColors.colorButton2,
-                      elevation: 5.0),
+              ],
+            ),
+          ),
+        ),
+      ),
 
-                  child: Text(
-                    'เริ่มต้น',
-                    style: TextStyle(
-                        fontFamily: 'Sukhumvit' ?? 'SF-Pro', fontSize: 20),
+      Padding(
+        padding: const EdgeInsets.only(top: 120),
+        child: ShowUp(
+          delay: delayAmount,
+          child: Align(
+            child: ListView(
+              children: [
+                Container(
+                  width: 20,
+                  height: 45,
+                  margin: EdgeInsets.only(left: 50, right: 230),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: StadiumBorder(),
+                        primary: ToiletColors.colorButton2,
+                        elevation: 5.0),
+
+                    child: Text(
+                      'Hey,',
+                      style: TextStyle(
+                          fontFamily: 'Sukhumvit' ?? 'SF-Pro', fontSize: 20),
+                    ),
+                    onPressed: () {},
                   ),
-                  onPressed: () {
-                    final provider = Provider.of<GoogleSignInProvider>(context,
-                        listen: false);
-                    provider.signInAnonymously();
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) {
-                      return HomePage();
-                    }));
-                  },
                 ),
-              ),
-            ],
+                Container(
+                  height: 75,
+                  margin: EdgeInsets.only(left: 50, top: 0),
+                  child: Text(
+                    'Already have',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                      color: Colors.black,
+                      fontSize: 45,
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 65,
+                  margin: EdgeInsets.only(left: 50, top: 0),
+                  child: Text(
+                    'an account?',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                        color: Colors.black,
+                        fontSize: 45,
+                        height: 0.8),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -96,14 +145,17 @@ class FirstScreenState extends State<FirstScreen> {
             Container(
               height: 48,
               child: Text(
-                'Sign up',
+                'Toilet Pocket',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 35.0,
+                  fontSize: 38.0,
                   fontFamily: 'Sukhumvit' ?? 'SF-Pro',
                   fontWeight: FontWeight.w500,
                 ),
               ),
+            ),
+            SizedBox(
+              height: 8,
             ),
             Text(
               'เข้าสู่ระบบได้ง่ายขึ้น',
@@ -115,7 +167,7 @@ class FirstScreenState extends State<FirstScreen> {
               ),
             ),
             SizedBox(
-              height: 8,
+              height: 30,
             ),
             Opacity(
               opacity: 0.7,
@@ -142,7 +194,7 @@ class FirstScreenState extends State<FirstScreen> {
                       )),
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5), 
+                        borderRadius: BorderRadius.circular(5), // <-- Radius
                       ),
                       primary: Colors.white.withOpacity(0.7),
                       shadowColor: Colors.white,
@@ -205,6 +257,7 @@ class FirstScreenState extends State<FirstScreen> {
           ],
         ),
       ),
+      // ),
     ]));
   }
 }

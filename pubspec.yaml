@@ -28,36 +28,51 @@ dependencies:
   
   firebase_auth: ^3.1.1
   google_sign_in: ^5.1.0
-  cloud_firestore: ^2.5.3
-  # firebase_storage: ^10.0.1
+  cloud_firestore: ^3.1.0
+  firebase_storage: ^10.0.1
+
+  url_launcher: ^6.0.12
 
   cupertino_icons: ^1.0.0
-  json_serializable: ^4.1.0
+  json_serializable: ^6.0.1
   pedantic: ^1.11.0
   geolocator: ^7.6.0
   firebase: ^9.0.2
   outline_material_icons: ^0.1.1
   material_floating_search_bar: ^0.3.4
   android_intent: ^2.0.0
-  flutter_polyline_points: ^0.2.4
+  flutter_polyline_points: ^1.0.0
   permission_handler: ^8.1.6
   fluttertoast: ^8.0.7
   # provider: ^5.0.0
-  provider: ^4.3.2+2
+  provider: ^6.0.1
   google_place: ^0.4.3
 
-  carousel_slider: ^3.0.0
+  carousel_slider: ^4.0.0
   flutter_rating_bar: ^4.0.0
   smooth_star_rating: ^1.1.1
 
   multi_image_picker: ^4.8.1
+  image_picker: ^0.8.4+4
+  flutter_staggered_grid_view: ^0.4.1
+  path_provider: ^2.0.6
+  # flutter_absolute_path: ^1.0.6
 
+  shared_preferences: ^2.0.8
+
+  form_field_validator: ^1.1.0
+  intl: ^0.17.0
+  
   http: ^0.13.3
   uuid: ^3.0.4
   
   rive: ^0.7.16
   flutter_launcher_icons: ^0.9.2
   http_parser: ^4.0.0
+  geocoding: ^2.0.1
+  dio: ^4.0.4
+  firebase_database: ^8.1.0
+  
 
 flutter_icons:
   image_path: "images/icon_app_white.png"
@@ -85,7 +100,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/mmm.png
+    - images/Icon-flush.png
     - images/flush.png
     - images/welcome.png
     - images/star.png
@@ -97,14 +112,9 @@ flutter:
     - images/toiletPlus.png
     - images/toiletplus_.png
     - images/direction.png
-    - images/ruto.jpg
-    - images/toilets/1.jpg
-    - images/toilets/2.jpg
-    - images/toilets/3.jpg
-    - images/toilets/4.jpg
-    - images/toilets/5.jpg
-    - images/toilets/6.jpg
     - images/banner.png
+    - images/signUp.png
+    - images/navigation.png
 
   #   - images/a_dot_ham.jpeg
 

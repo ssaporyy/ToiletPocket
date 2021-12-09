@@ -2,6 +2,7 @@ import 'package:ToiletPocket/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+
 class CarouselWithDotsPage extends StatefulWidget {
   List<String> imgList;
 
@@ -16,6 +17,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
 
   @override
   Widget build(BuildContext context) {
+
     final List<Widget> imageSliders = widget.imgList
         .map((item) => Container(
           width: 400,height: 250,
@@ -26,50 +28,12 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                 child: Stack(
                   children: [
                     Image.network(
-                      item.isEmpty
-                          ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
-                          : item,
-                      // item,
+                      item,
                       fit: BoxFit.cover,
                       width: 400,
                       height: 250,
                     ),
-                    // Image.asset(
-                    //   item,
-                    //   fit: BoxFit.cover,
-                    //   width: 400,
-                    //   height: 250,
-                    // ),
-                    //เงารูป
-                    // Positioned(
-                    //   bottom: 0.0,
-                    //   left: 0.0,
-                    //   right: 0.0,
-                    //   child: Container(
-                    //     decoration: BoxDecoration(
-                    //       gradient: LinearGradient(
-                    //         colors: [
-                    //           Color.fromARGB(50, 0, 0, 0),
-                    //           Color.fromARGB(0, 0, 0, 0),
-                    //         ],
-                    //         begin: Alignment.bottomCenter,
-                    //         end: Alignment.topCenter,
-                    //       ),
-                    //     ),
-                    //     padding: EdgeInsets.symmetric(
-                    //       horizontal: 20,
-                    //       vertical: 10,
-                    //     ),
-                    //     // child: Text(
-                    //     //   'No. ${widget.imgList.indexOf(item)} image',
-                    //     //   style: TextStyle(
-                    //     //     color: Colors.white,
-                    //     //     fontSize: 20.0,
-                    //     //     fontWeight: FontWeight.bold,
-                    //     //   ),
-                    //     // ),
-                    //   ),
-                    // ),
+                    
                   ],
                 ),
               ),
@@ -78,19 +42,6 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
 
     return Column(
       children: [
-        //ใส่ข้อความบนสุด
-        // Padding(
-        //   padding: EdgeInsets.all(20),
-        //   child: Text(
-        //     "Text",
-        //     style: TextStyle(
-        //       color: Colors.black,
-        //       fontSize: 20.0,
-        //       fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-        //       fontWeight: FontWeight.w700,
-        //     ),
-        //   ),
-        // ),
         CarouselSlider(
           items: imageSliders,
           options: CarouselOptions(
@@ -118,8 +69,6 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                 shape: BoxShape.circle,
                 color: _current == index
                 //สี dot
-                    // ? Color.fromRGBO(0, 0, 0, 0.9)
-                    // : Color.fromRGBO(0, 0, 0, 0.4),
                     ? ToiletColors.colorPurple
                     : ToiletColors.colorBackground
               ),

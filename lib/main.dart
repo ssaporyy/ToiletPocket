@@ -1,5 +1,6 @@
 import 'package:ToiletPocket/Show_toiletDetail_review/toiletdetail.dart';
-import 'package:ToiletPocket/addComment/destination.dart';
+import 'package:ToiletPocket/addComment/displaycomment.dart';
+import 'package:ToiletPocket/addToilet_InMap/displayAddToilet.dart';
 import 'package:ToiletPocket/addToilet_InMap/addToilet.dart';
 import 'package:ToiletPocket/addToilet_InMap/addToiletDetail.dart';
 import 'package:ToiletPocket/blocs/application_bloc.dart';
@@ -8,17 +9,19 @@ import 'package:ToiletPocket/addComment/addReviewComment.dart';
 import 'package:ToiletPocket/provider/google_sign_in.dart';
 import 'package:ToiletPocket/screen/firstScreen.dart';
 import 'package:ToiletPocket/screen/homepage.dart';
+import 'package:ToiletPocket/screen/loginwithGoogleAddcomment.dart';
+import 'package:ToiletPocket/screen/loginwithGoogleAddtoilet.dart';
+import 'package:ToiletPocket/screen/startNavigation.dart';
 import 'package:ToiletPocket/screen/profile.dart';
 import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:ToiletPocket/services/places_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ToiletPocket/show_toiletDetail_review/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-
 
 Future main() async {
   //
@@ -61,7 +64,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ApplicationBloc(),
         ), //new
-        ChangeNotifierProvider(create:  (context) => GoogleSignInProvider()),
+        ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
       ],
       child: MaterialApp(
         title: 'Toilet App',
@@ -69,16 +72,23 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/two',
+        initialRoute: '/one',
         routes: <String, WidgetBuilder>{
           '/one': (context) => FirstScreen(),
           '/two': (context) => HomePage(),
+          '/o': (context) => DisplayScreen(),
           '/third': (context) => ToiletDetail(),
           '/four': (context) => Profile(),
-          '/five': (context) => addToilet(),
+          '/five': (context) => AddToilet(),
           '/six': (context) => AddToiletDetail(),
           '/seven': (context) => AddComment(),
-          '/eight': (context) => Destination(),
+          '/eight': (context) => Navigation(),
+          '/nine': (context) => LoginGoogleAddcomment(),
+          '/ten': (context) => LoginGoogleAddToilet(),
+          '/t': (context) => CommentToiletDetail(),
+          '/n': (context) => DisplayAddToilets(),
+          // '/f':(context) => Test(),
+          // '/n': (context) => Direction(),
         },
       ),
     );

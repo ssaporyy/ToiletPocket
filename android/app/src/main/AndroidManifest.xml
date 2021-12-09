@@ -7,22 +7,40 @@
          FlutterApplication and put your custom class here. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
 
 <!-- add img -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
-    
+<!-- android:name="io.flutter.app.FlutterApplication" -->
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        
         android:label="ToiletPocket"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
-        >
+        > 
+
+        <!-- <<queries> -->
+        <!-- If your app opens https URLs -->
+        <!-- <intent> -->
+            <!-- <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" /> -->
+        <!-- </intent> -->
+        <!-- If your app makes calls -->
+        <!-- <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent> -->
+        <!-- If your app emails -->
+        <!-- <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="*/*" />
+        </intent>
+        </queries> -->
+        
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -68,6 +86,9 @@
             />
             
     </application>
+    <meta-data
+    android:name="flutterEmbedding"
+    android:value="2" />
 </manifest>
 
 

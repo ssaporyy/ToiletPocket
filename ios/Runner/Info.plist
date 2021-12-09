@@ -48,6 +48,13 @@
 	
 	<key>io.flutter.embedded_views_preview</key><true/>
 
+	<!-- add https -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	<string>https</string>
+	<string>http</string>
+	</array>
+
 <!-- add img -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Example usage description</string>

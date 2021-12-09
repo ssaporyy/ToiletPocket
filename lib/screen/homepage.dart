@@ -1,15 +1,11 @@
 import 'dart:async';
 
 import 'package:ToiletPocket/blocs/application_bloc.dart';
-import 'package:ToiletPocket/models/open.dart';
-import 'package:ToiletPocket/models/place_response.dart';
 import 'package:ToiletPocket/models/places.dart';
-import 'package:ToiletPocket/models/result.dart';
 import 'package:ToiletPocket/screen/cardLocation.dart';
 import 'package:ToiletPocket/screen/search.dart';
 import 'package:ToiletPocket/services/places_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -18,11 +14,6 @@ import 'package:ToiletPocket/colors.dart';
 import 'package:ToiletPocket/models/place.dart';
 import 'package:ToiletPocket/services/geolocator_service.dart';
 import 'package:ToiletPocket/services/marker_service.dart';
-
-//
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:ToiletPocket/models/error.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -49,7 +40,6 @@ class _HomePageState extends State<HomePage> {
       if (place != null) {
         _locationController.text = place.name;
         _goToPlace(place);
-        // applicationBloc.clearSelectedLocation();
       } else
         _locationController.text = "";
     });
@@ -59,31 +49,7 @@ class _HomePageState extends State<HomePage> {
       controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
     });
     super.initState();
-    // //new
-    // setCustomMapPin();
   }
-
-//   //new
-//   BitmapDescriptor pinLocationIcon;
-//   Error error;
-//   List<Result> places;
-//   bool searching = true;
-//   String keyword;
-//   List<Marker> markers = <Marker>[];
-//   static const String baseUrl =
-//       "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-//   static const String _API_KEY = 'AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno';
-//   double lat;
-//   double lng;
-//     // double lat = applicationBloc.currentLocation.longitude;
-//     // double lng = applicationBloc.currentLocation.latitude;
-//   // static double latitude = 13.736717;
-//   // static double longitude = 100.523186;
-// //new
-//   void setCustomMapPin() async {
-//     pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-//         ImageConfiguration(size: Size(10, 10)), 'images/flush.png');
-//   }
 
   @override
   void dispose() {
@@ -129,12 +95,6 @@ class _HomePageState extends State<HomePage> {
       ),
     ));
   }
-  // Update the position on CameraMove
-//  _onCameraMove(CameraPosition position) {
-//    LatLng _lastMapPosition = _center;
-// static const LatLng _center = LatLng(currentPosition.latitude,currentPosition.longitude);
-//     _lastMapPosition = position.target;
-//   }
 
   @override
   Widget build(BuildContext context) {
@@ -142,27 +102,24 @@ class _HomePageState extends State<HomePage> {
     final placesProvider = Provider.of<Future<List<Places>>>(context);
     final geoService = GeoLocatorService();
     final markerService = MarkerService();
-    //new
     final applicationBloc = Provider.of<ApplicationBloc>(context);
-    final _place = ModalRoute.of(context)?.settings.arguments as Places;
+    List<Marker> _marker = <Marker>[];
 
     return FutureProvider(
       create: (context) => placesProvider,
-      child: SafeArea(
+      child: Container(
         child: Scaffold(
           body: (currentPosition != null)
               ? Consumer<List<Places>>(
                   builder: (_, places, __) {
                     var markers = (places != null)
                         ? markerService.getMarkers(places)
-                        : List<Marker>();
+                        : _marker;
+
                     return (places != null)
                         ? Stack(
                             children: [
-                              // Maps(),
                               Container(
-                                // height: MediaQuery.of(context).size.height / 2,
-                                // height: 500,
                                 height: MediaQuery.of(context).size.height,
                                 width: MediaQuery.of(context).size.width,
                                 child: GoogleMap(
@@ -171,18 +128,16 @@ class _HomePageState extends State<HomePage> {
                                         currentPosition.longitude),
                                     zoom: 16.0,
                                     tilt: 50.0,
-                                    // bearing: 30,
                                   ),
-                                  // //new
-                                  onCameraMove:
-                                      (CameraPosition cameraPosition) {
-                                    print(cameraPosition.zoom);
+
+                                  onCameraMove: (position) {
+                                    print(position.target);
                                   },
                                   myLocationEnabled: true,
                                   zoomGesturesEnabled: true,
                                   zoomControlsEnabled: false,
                                   compassEnabled: false,
-                                  //เลื่อนปุ่ม current ให้ขึ้นมา
+                                  //ปุ่ม current 
                                   padding: EdgeInsets.only(
                                     bottom: 255.0,
                                   ),
@@ -234,20 +189,20 @@ class _HomePageState extends State<HomePage> {
                                         fit: BoxFit.cover,
                                         height: 20,
                                       ),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         // Navigate to the second screen using a named route.
-                                        Navigator.pushNamed(context, '/five');
+
+                                        Navigator.pushNamed(
+                                          context,
+                                          '/five',
+                                          arguments: {
+                                            'currentlocation':
+                                                applicationBloc.currentLocation,
+                                          },
+                                        );
                                       },
                                     ),
                                   ),
-                                  // FloatingActionButton(
-                                  //     backgroundColor: Colors.blue,
-                                  //     onPressed: () {},
-                                  //     child: Image.asset(
-                                  //       'images/toiletPlus.png',
-                                  //       fit: BoxFit.cover,
-                                  //       height: 20,
-                                  //     )),
                                 ),
                               ),
                               Align(
@@ -258,9 +213,8 @@ class _HomePageState extends State<HomePage> {
                                   height: 250.0,
                                   child: (places.length > 0)
                                       ? ListView.builder(
-                                          //ตั้งให้แสดงขึ้นมา 5 ที่โดยไม่ได้กำหนดระยะทาง
+                                          
                                           itemCount: 5,
-                                          // itemCount: places.length,
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (context, index) {
                                             final photoReference = places[index]
@@ -268,12 +222,28 @@ class _HomePageState extends State<HomePage> {
                                                     .isEmpty
                                                 ? ''
                                                 : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno";
-
+                                            
                                             return FutureProvider(
                                               create: (context) =>
                                                   geoService.getDistance(
-                                                      currentPosition.latitude,
-                                                      currentPosition.longitude,
+                                                currentPosition.latitude,
+                                                currentPosition.longitude,
+                                                places[index]
+                                                    .geometry
+                                                    .location
+                                                    .lat,
+                                                places[index]
+                                                    .geometry
+                                                    .location
+                                                    .lng,
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: GestureDetector(
+                                                  child: boxes(
+                                                      photoReference,
+
                                                       places[index]
                                                           .geometry
                                                           .location
@@ -281,29 +251,33 @@ class _HomePageState extends State<HomePage> {
                                                       places[index]
                                                           .geometry
                                                           .location
-                                                          .lng),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: GestureDetector(
-                                                  child: boxes(
-                                                      //ระเบิด !!!! .photos[0] ถ้าไม่มีรูปอยู่ใน list เรียกรูปออกมาไม่ได้ = ERROR !!!!!
-                                                      //"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${places[index].photos[0].photoReference}&key=AIzaSyBcpcEqe0gn9DwPRPzRvrqSvDtLZpvTtno",
-                                                      photoReference,
-                                                      // '',
-                                                      currentPosition.latitude,
-                                                      currentPosition.longitude,
+                                                          .lng,
                                                       "${places[index].name}",
-                                                      // "${places[index].name}",
                                                       /*score*/ places[index]
                                                           .userRatingsTotal,
                                                       /*rating*/ places[index],
                                                       /*address*/ places[index]
                                                           .vicinity,
-                                                      /**openClose */
-                                                      //'',
+                                                      places[index],
+                                                      /*positionUser*/
+                                                      currentPosition,
+                                                      /*lat1*/
+                                                      currentPosition.latitude,
+                                                      /*lng1*/
+                                                      currentPosition.longitude,
+                                                      /*lat2*/
+                                                      places[index]
+                                                          .geometry
+                                                          .location
+                                                          .lat,
+                                                      /*lng2*/
+                                                      places[index]
+                                                          .geometry
+                                                          .location
+                                                          .lng,
 
-                                                      '${places[index].openingHours == null || places[index].openingHours.open_now.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
+                                                      /**openClose */
+                                                      '${places[index].openingHours == null || places[index].openingHours.openNow.toString() == 'true' ? "เปิดทำการ" : "ปิดทำการ"}',
                                                       context),
                                                   onTap: () async {
                                                     final placeDetail =
@@ -319,9 +293,6 @@ class _HomePageState extends State<HomePage> {
                                                         'places': places[index],
                                                         'places_detail':
                                                             placeDetail,
-                                                        
-
-
                                                       },
                                                     );
                                                   },
@@ -341,20 +312,6 @@ class _HomePageState extends State<HomePage> {
                                 right: 20,
                                 child: Search(),
                               ),
-
-                              // Align(
-                              //   alignment: Alignment.bottomRight,
-                              //   child: Padding(
-                              //     padding: EdgeInsets.all(10),
-                              //     child: FloatingActionButton.extended(
-                              //       onPressed: () {
-                              //         searchNearby(lat, lng);
-                              //       },
-                              //       label: Text('Places Nearby'),
-                              //       icon: Icon(Icons.place),
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           )
                         : Center(child: CircularProgressIndicator());
@@ -368,60 +325,208 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // void searchNearby(double lat, double lng) async {
-  //   final applicationBloc = Provider.of<ApplicationBloc>(context);
-  //   double lat = applicationBloc.currentLocation.longitude;
-  //   double lng = applicationBloc.currentLocation.latitude;
-  //   // static double latitude = applicationBloc.currentLocation.longitude;
-  //   // static double longitude = applicationBloc.currentLocation.latitude;
-  //   setState(() {
-  //     markers.clear();
-  //   });
-  //   dynamic /*String */ url =
-  //       '$baseUrl?key=$_API_KEY&location=$lat,$lng&radius=1500&keyword=toilets';
-  //   print(url);
-  //   final response = await http.get(url);
-
-  //   if (response.statusCode == 200) {
-  //     final data = json.decode(response.body);
-  //     _handleResponse(data);
-  //   } else {
-  //     throw Exception('An error occurred getting places nearby');
-  //   }
-
-  //   // make sure to hide searching
-  //   setState(() {
-  //     searching = false;
-  //   });
-  // }
-
-  // void _handleResponse(data) {
-  //   // bad api key or otherwise
-  //   if (data['status'] == "REQUEST_DENIED") {
-  //     setState(() {
-  //       error = Error.fromJson(data);
-  //     });
-  //     // success
-  //   } else if (data['status'] == "OK") {
-  //     setState(() {
-  //       places = PlaceResponse.parseResults(data['results']);
-  //       for (int i = 0; i < places.length; i++) {
-  //         markers.add(
-  //           Marker(
-  //             markerId: MarkerId(places[i].placeId),
-  //             // icon: BitmapDescriptor.defaultMarkerWithHue(198.0),
-  //             icon: pinLocationIcon,
-  //             position: LatLng(places[i].geometry.location.lat,
-  //                 places[i].geometry.location.lng),
-  //             infoWindow: InfoWindow(
-  //                 title: places[i].name, snippet: places[i].vicinity),
-  //             onTap: () {},
-  //           ),
-  //         );
-  //       }
-  //     });
-  //   } else {
-  //     print(data);
-  //   }
-  // }
+  Widget boxes(
+    String _image,
+    double lat,
+    double long,
+    String toiletName,
+    score,
+    rating,
+    address,
+    push,
+    navigate,
+    lat1,
+    lng1,
+    lat2,
+    lng2,
+    openClose,
+    BuildContext context,
+  ) {
+    final placesService = PlacesService();
+    return Container(
+      child: new FittedBox(
+        fit: BoxFit.cover,
+        child: Material(
+            color: Colors.white,
+            elevation: 10.0,
+            borderRadius: BorderRadius.circular(24.0),
+            shadowColor: Color(0x802196F3),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 850,
+                  height: 400,
+                  child: ClipRRect(
+                    borderRadius: new BorderRadius.only(
+                      topRight: Radius.circular(15.0),
+                      topLeft: Radius.circular(15.0),
+                      bottomRight: Radius.circular(0.0),
+                      bottomLeft: Radius.circular(0.0),
+                    ),
+                    child: Image(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                        _image.isEmpty
+                            ? 'https://www.sarras-shop.com/out/pictures/master/product/1/no-image-available-icon.jpg'
+                            : _image,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 800,
+                  height: 450,
+                  padding: const EdgeInsets.only(
+                      bottom: 40, top: 15, left: 20, right: 20),
+                  margin: EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: myDetailsContainer1(toiletName, score, rating,
+                            address, openClose, context),
+                      ),
+                      Flexible(
+                        child: Container(
+                          padding: new EdgeInsets.only(right: 13.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 90,
+                                width: 240,
+                                child: RaisedButton(
+                                  color: ToiletColors.colorButton,
+                                  onPressed: () async {
+                                    //กดไปหน้า นำทาง
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/eight',
+                                      arguments: {
+                                        'places': push,
+                                        'current': navigate,
+                                      },
+                                    );
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(15),
+                                      bottom: Radius.circular(15),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.directions,
+                                        color: ToiletColors.colorText,
+                                        size: 35,
+                                      ),
+                                      SizedBox(width: 15.0),
+                                      Text(
+                                        'เส้นทาง',
+                                        style: TextStyle(
+                                          color: ToiletColors.colorText,
+                                          fontSize: 30.0,
+                                          fontFamily: 'Sukhumvit' ?? 'SF-Pro',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  elevation: 1,
+                                  padding:
+                                      new EdgeInsets.fromLTRB(28, 7, 28, 7),
+                                ),
+                              ),
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 85.0,
+                                      height: 80.0,
+                                      child: RaisedButton(
+                                        color: ToiletColors.colorButton,
+                                        onPressed: () {},
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(30),
+                                            bottom: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.smoking_rooms_rounded,
+                                          color: ToiletColors.colorText,
+                                          size: 35,
+                                        ),
+                                        elevation: 1,
+                                        padding:
+                                            new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                      ),
+                                    ),
+                                    SizedBox(width: 15.0),
+                                    Container(
+                                      width: 85.0,
+                                      height: 80.0,
+                                      child: RaisedButton(
+                                        color: ToiletColors.colorButton,
+                                        onPressed: () {},
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(30),
+                                            bottom: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.accessible,
+                                          color: ToiletColors.colorText,
+                                          size: 35,
+                                        ),
+                                        elevation: 1,
+                                        padding:
+                                            new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                      ),
+                                    ),
+                                    SizedBox(width: 15.0),
+                                    Container(
+                                      width: 85.0,
+                                      height: 80.0,
+                                      child: RaisedButton(
+                                        color: ToiletColors.colorButton,
+                                        onPressed: () {},
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(30),
+                                            bottom: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.wc,
+                                          color: ToiletColors.colorText,
+                                          size: 35,
+                                        ),
+                                        elevation: 1,
+                                        padding:
+                                            new EdgeInsets.fromLTRB(3, 7, 3, 7),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )),
+      ),
+    );
+  }
 }

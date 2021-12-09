@@ -16,10 +16,5 @@ class ToiletColors {
   static const Color colorbottonPhone = Color.fromARGB(0xFF, 0xFF, 0x7D, 0xCB);
   static const Color colorbottonGender = Color.fromARGB(0xFF, 0x57, 0xF0, 0xBE);
 
-  // static const Text textStyle = TextStyle(
-  //   color: Colors.black,
-  //   fontSize: 13.0,
-  //   fontFamily: 'Sukhumvit' ?? 'SF-Pro',
-  //   fontWeight: FontWeight.w700,
-  // );
+
 }
